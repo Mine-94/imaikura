@@ -201,6 +201,7 @@
     function value(id){return Number(document.getElementById(id).value)||0;}
     function calculate(event){
       if(event)event.preventDefault();
+      if(event&&typeof gtag==='function')gtag('year_end_calculate');
       const result=tax.yearEndAdjustment2026({
         annualSalary:value('annualSalary'),withheldTax:value('withheldTax'),socialInsurance:value('socialInsurance'),
         lifeInsuranceDeduction:value('lifeInsuranceDeduction'),earthquakeInsuranceDeduction:value('earthquakeInsuranceDeduction'),

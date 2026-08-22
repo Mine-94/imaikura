@@ -192,6 +192,7 @@
     const yen = n => Math.round(n).toLocaleString('ja-JP') + '円';
     function calculate(event){
       if(event) event.preventDefault();
+      if(event && typeof gtag === 'function') gtag('salary_calculate');
       const result = tax.takeHome2026({
         monthlySalary:Number(document.getElementById('monthlySalary').value), annualBonus:Number(document.getElementById('annualBonus').value),
         prefecture:prefecture.value, age:Number(document.getElementById('age').value), dependents:Number(document.getElementById('dependents').value),

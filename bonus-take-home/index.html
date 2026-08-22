@@ -94,6 +94,7 @@
     const value=id=>Number(document.getElementById(id).value)||0;
     function calculate(event){
       if(event)event.preventDefault();
+      if(event&&typeof gtag==='function')gtag('bonus_calculate');
       const result=tax.bonusTakeHome2026({bonus:value('bonus'),previousSalary:value('previousSalary'),prefecture:prefecture.value,age:value('age'),dependents:value('dependents'),declarationFiled:document.querySelector('input[name="filed"]:checked').value==='1',previousSocial:value('previousSocial'),healthCumulativeBefore:value('healthCumulativeBefore'),pensionSameMonthBefore:value('pensionSameMonthBefore')});
       document.getElementById('net').textContent=yen(result.net);document.getElementById('netRate').textContent=(result.netRate*100).toFixed(1)+'%';
       document.getElementById('gross').textContent=yen(result.bonus);document.getElementById('social').textContent='−'+yen(result.socialTotal);

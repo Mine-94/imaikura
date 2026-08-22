@@ -159,6 +159,7 @@
     const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
     function calculate(event){
       if(event)event.preventDefault();
+      if(event&&typeof gtag==='function')gtag('furusato_calculate');
       const result=tax.furusatoLimit2026({
         annualSalary:Number(document.getElementById('annualSalary').value),dependents:Number(document.getElementById('dependents').value),
         specificDependents:Number(document.getElementById('specificDependents').value),elderDependents:Number(document.getElementById('elderDependents').value),
