@@ -150,6 +150,53 @@
     };
   }
 
+  // 2026年のパート・アルバイト向け「年収の壁」判定。
+  function incomeWall2026(options) {
+    const annualSalary = clamp(options.annualSalary, 0, 10000000);
+    const weeklyHours = clamp(options.weeklyHours, 0, 80);
+    const age = clamp(options.age || 30, 15, 99);
+    const companyEmployees = Math.floor(clamp(options.companyEmployees || 50, 1, 1000000));
+    const student = Boolean(options.student);
+    const afterOctober = options.afterOctober !== false;
+    const healthDependentRequested = options.healthDependent !== false;
+    const monthlySalary = annualSalary / 12;
+    const shortTimeBase = companyEmployees >= 51 && weeklyHours >= 20 && !student;
+    const employeeSocialEligible = shortTimeBase && (afterOctober || monthlySalary >= 88000);
+    const dependentLimit = age >= 60 ? 1800000 : 1300000;
+    const healthDependent = healthDependentRequested && !employeeSocialEligible && annualSalary < dependentLimit;
+    const dependentLost = healthDependentRequested && !employeeSocialEligible && annualSalary >= dependentLimit;
+    let socialInsurance = 0;
+    let employmentInsurance = 0;
+    let socialBreakdown = null;
+    if (employeeSocialEligible) {
+      socialBreakdown = socialInsurance2026({monthlySalary, annualBonus:0, age, prefecture:options.prefecture || '東京都'});
+      socialInsurance = socialBreakdown.total;
+      employmentInsurance = socialBreakdown.employment;
+    } else if (weeklyHours >= 20 && !student) {
+      employmentInsurance = Math.floor(annualSalary * 0.005);
+      socialInsurance = employmentInsurance;
+    }
+    const salaryIncome = salaryIncome2026(annualSalary);
+    const basicDeduction = incomeBasicDeduction2026(salaryIncome);
+    const incomeTaxInfo = nationalIncomeTax(Math.max(0, salaryIncome - basicDeduction - socialInsurance));
+    const incomeTax = incomeTaxInfo.total;
+    const knownNet = Math.max(0, annualSalary - socialInsurance - incomeTax);
+    const walls = [
+      {amount:1100000,label:'住民税の非課税目安'},
+      {amount:1230000,label:'税法上の扶養目安'},
+      {amount:1300000,label:'社会保険の扶養'},
+      {amount:1780000,label:'本人の所得税'}
+    ];
+    const nextWall = walls.find(wall => annualSalary < wall.amount) || null;
+    return {
+      annualSalary, monthlySalary, weeklyHours, age, companyEmployees, student, afterOctober,
+      employeeSocialEligible, healthDependent, dependentLost, dependentLimit,
+      socialInsurance, employmentInsurance, socialBreakdown, salaryIncome, basicDeduction,
+      incomeTax, knownNet, netIsComplete:!dependentLost, nextWall,
+      remainingToNextWall:nextWall ? nextWall.amount - annualSalary : 0
+    };
+  }
+
   function incomeBasicDeduction2026(totalIncome) {
     const g = Math.max(0, totalIncome);
     if (g <= 4890000) return 1040000;
@@ -376,7 +423,7 @@
 
   return {
     HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
-    residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026,
+    residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026, incomeWall2026,
     incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-CSRJVE9RYK');</script>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>年収の壁 計算 2026｜扶養内であといくら働ける？｜いまいくら</title>
+  <meta name="description" content="2026年の年収の壁を無料計算。110万・123万・130万・178万円のどの壁まであといくらか、扶養と社会保険の加入判定、所得税と手取り目安を確認できます。">
+  <meta property="og:title" content="年収の壁 計算 2026｜扶養内であといくら？｜いまいくら"><meta property="og:description" content="年収と働き方から、次の壁までの金額と社会保険の加入を判定。"><meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://imaikura.com/income-wall/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"年収の壁 計算 2026","url":"https://imaikura.com/income-wall/","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"2026年の所得税の壁はいくらですか？","acceptedAnswer":{"@type":"Answer","text":"給与収入だけで他の所得がない場合、本人に所得税がかからない目安は年収178万円です。"}},{"@type":"Question","name":"106万円の壁は2026年になくなりますか？","acceptedAnswer":{"@type":"Answer","text":"2026年10月に月額8.8万円以上という賃金要件が撤廃予定です。51人以上の企業で週20時間以上働き、学生でない等の条件を満たすと年収額ではなく労働時間を中心に判定されます。"}},{"@type":"Question","name":"130万円の壁はなくなりますか？","acceptedAnswer":{"@type":"Answer","text":"健康保険の被扶養者となる年収130万円未満という基準は残ります。ただし勤務先の社会保険加入要件を満たす場合は130万円未満でも勤務先の社会保険に加入します。"}}]}</script>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a><nav class="nav"><a href="../">ツール一覧</a><a href="./" aria-current="page">年収の壁</a></nav></div></header>
+  <main>
+    <section class="hero"><div class="container hero-inner"><div><div class="kicker">2026年10月の社会保険改正に対応</div><h1>年収の壁まで、<br>あといくら？</h1><p class="lead">年収と働き方を入力すると、110万・123万・130万・178万円のどこにいるか、扶養と社会保険の状態をまとめて確認できます。</p></div><div class="trust-badge">税金と社会保険を分けて判定</div></div></section>
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="wallForm">
+          <h2 class="panel-title">2026年の働き方を入力</h2>
+          <div class="field-grid">
+            <div class="field"><label for="annualSalary">見込み年収（給与）<span class="required">必須</span></label><div class="input-wrap"><input id="annualSalary" type="number" inputmode="numeric" min="0" max="10000000" step="10000" value="1200000"><span class="unit">円</span></div><p class="help">交通費など非課税収入を除く給与収入</p></div>
+            <div class="field"><label for="weeklyHours">週の所定労働時間</label><div class="input-wrap"><input id="weeklyHours" type="number" min="0" max="80" step="0.5" value="18"><span class="unit">時間</span></div><p class="help">原則として契約上の時間。残業は含めません</p></div>
+            <div class="field"><label for="companyEmployees">勤務先の厚生年金加入者数</label><select id="companyEmployees"><option value="50">50人以下</option><option value="51">51人以上</option></select><p class="help">法人全体ではなく同一事業主の加入者数が目安</p></div>
+            <div class="field"><label for="age">年齢</label><div class="input-wrap"><input id="age" type="number" min="15" max="99" value="30"><span class="unit">歳</span></div></div>
+            <div class="field"><label>判定する時期</label><div class="choice-row"><span class="choice"><input type="radio" id="afterOct" name="period" value="after" checked><label for="afterOct">2026年10月以降</label></span><span class="choice"><input type="radio" id="beforeOct" name="period" value="before"><label for="beforeOct">1〜9月</label></span></div></div>
+            <div class="field"><label>学生ですか？</label><div class="choice-row"><span class="choice"><input type="radio" id="studentNo" name="student" value="0" checked><label for="studentNo">いいえ</label></span><span class="choice"><input type="radio" id="studentYes" name="student" value="1"><label for="studentYes">はい</label></span></div></div>
+            <div class="field"><label>家族の健康保険の扶養</label><div class="choice-row"><span class="choice"><input type="radio" id="dependentYes" name="dependent" value="1" checked><label for="dependentYes">入っている</label></span><span class="choice"><input type="radio" id="dependentNo" name="dependent" value="0"><label for="dependentNo">入っていない</label></span></div></div>
+          </div>
+          <button class="calculate" type="submit">年収の壁を判定する</button>
+        </form>
+        <section class="panel result-panel" aria-live="polite">
+          <div class="result-head" id="resultHead"><small id="resultLabel">次の年収の壁まで</small><div class="result-big" id="remaining">—</div><div class="result-sub" id="nextWall">—</div></div>
+          <div class="result-body">
+            <div class="metric"><span>勤務先の社会保険</span><strong id="employeeSocial">—</strong></div>
+            <div class="metric"><span>家族の健康保険扶養</span><strong id="healthDependent">—</strong></div>
+            <div class="metric"><span>本人の所得税</span><strong id="incomeTax">—</strong></div>
+            <div class="metric"><span>判明分を引いた手取り</span><strong id="knownNet">—</strong></div>
+            <div class="notice" id="notice">—</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section"><h2>2026年の年収の壁一覧</h2><div class="table-wrap"><table class="data-table"><thead><tr><th>年収の目安</th><th>何が変わる？</th><th>注意点</th></tr></thead><tbody><tr><td><strong>110万円</strong></td><td>住民税の非課税目安</td><td>扶養なし・給与のみの例。翌年度に影響</td></tr><tr><td><strong>123万円</strong></td><td>税法上の扶養目安</td><td>配偶者は配偶者特別控除へ段階的に移行</td></tr><tr><td><strong>130万円未満</strong></td><td>健康保険の被扶養者</td><td>勤務先の社会保険に加入する場合を除く</td></tr><tr><td><strong>178万円</strong></td><td>本人の所得税の非課税目安</td><td>給与のみ・他の控除なしの例</td></tr><tr><td><strong>週20時間</strong></td><td>勤務先の社会保険判定</td><td>51人以上・非学生等。10月以降は8.8万円要件撤廃予定</td></tr></tbody></table></div></section>
+
+      <section class="content-section"><h2>「106万円の壁」は年収だけで判断しない</h2><div class="content-card"><p class="plain-copy">2026年10月から、短時間労働者の社会保険について<strong>月額8.8万円以上という賃金要件が撤廃予定</strong>です。51人以上の勤務先で週20時間以上働き、学生ではないなどの条件を満たす場合、年収が106万円を超えたかではなく契約上の労働時間が重要になります。一方、家族の健康保険に入るための<strong>年収130万円未満</strong>という基準は別制度なので残ります。</p></div></section>
+
+      <section class="content-section"><h2>よくある質問</h2>
+        <details class="faq"><summary>2026年の所得税の壁はいくらですか？</summary><p>給与収入だけで他の所得がない場合、本人に所得税がかからない目安は年収178万円です。給与所得控除74万円と基礎控除104万円が適用される所得帯を想定しています。</p></details>
+        <details class="faq"><summary>106万円の壁は2026年になくなりますか？</summary><p>2026年10月に月額8.8万円以上という賃金要件が撤廃予定です。ただし週20時間以上、51人以上の勤務先、学生ではないなどの加入要件は残るため、社会保険の負担そのものがなくなるわけではありません。</p></details>
+        <details class="faq"><summary>130万円の壁はなくなりますか？</summary><p>健康保険の被扶養者となる年収130万円未満の基準は残ります。ただし勤務先の社会保険の加入要件を満たす人は、130万円未満でも勤務先の健康保険・厚生年金に加入します。</p></details>
+        <details class="faq"><summary>130万円を超えた場合の手取りが表示されないのはなぜですか？</summary><p>勤務先の社会保険に入らず扶養から外れる場合、国民健康保険料が自治体・前年所得・世帯構成で大きく変わるためです。誤った一律額を表示せず、税金までの判明分と別途負担があることを表示しています。</p></details>
+      </section>
+
+      <section class="content-section"><div class="section-head"><h2>関連する計算ツール</h2></div><div class="tool-grid compact-grid"><a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>会社員の社会保険料・所得税・住民税を含む手取りを確認。</p><span class="card-link">手取りを計算する</span></a><a class="tool-card" href="../resident-tax/"><h2>住民税の年額・月額計算</h2><p>前年の年収から翌年6月以降の住民税を確認。</p><span class="card-link">住民税を計算する</span></a></div></section>
+      <section class="content-section content-card sources"><strong>参照した公的資料（2026年8月22日確認）</strong><br><a href="https://www.nta.go.jp/users/gensen/2026kiso/index.htm" target="_blank" rel="noopener">国税庁「令和8年度税制改正による所得税の基礎控除の引上げ等」</a> ／ <a href="https://www.mhlw.go.jp/tekiyoukakudai/jugyouin/taisho/" target="_blank" rel="noopener">厚生労働省「社会保険加入の要件」</a> ／ <a href="https://www.nenkin.go.jp/oshirase/taisetu/jigyosho/2026/202605/0501.html" target="_blank" rel="noopener">日本年金機構「被扶養者認定の取扱い」</a> ／ <a href="https://www.city.edogawa.tokyo.jp/e013/kurashi/zeikin/juminzei/r8kaisei.html" target="_blank" rel="noopener">江戸川区「令和8年度 年収の壁の変動」</a></section>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。加入判定は勤務先・健康保険組合にもご確認ください。</div></div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax=window.ImaikuraTax,form=document.getElementById('wallForm');
+    const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円',val=id=>Number(document.getElementById(id).value)||0;
+    function calculate(event){
+      if(event)event.preventDefault(); if(event&&typeof gtag==='function')gtag('event','income_wall_calculate');
+      const r=tax.incomeWall2026({annualSalary:val('annualSalary'),weeklyHours:val('weeklyHours'),companyEmployees:val('companyEmployees'),age:val('age'),student:document.querySelector('input[name="student"]:checked').value==='1',afterOctober:document.querySelector('input[name="period"]:checked').value==='after',healthDependent:document.querySelector('input[name="dependent"]:checked').value==='1'});
+      document.getElementById('remaining').textContent=r.nextWall?yen(r.remainingToNextWall):'判定済み';document.getElementById('nextWall').textContent=r.nextWall?r.nextWall.label+'（'+(r.nextWall.amount/10000)+'万円）まで':'178万円を超えています';
+      document.getElementById('employeeSocial').textContent=r.employeeSocialEligible?'加入対象':'加入対象外の目安';document.getElementById('healthDependent').textContent=r.healthDependent?'扶養内':(r.dependentLost?'扶養外':'選択なし');document.getElementById('incomeTax').textContent=yen(r.incomeTax);
+      document.getElementById('knownNet').textContent=r.netIsComplete?yen(r.knownNet):yen(r.knownNet)+'＋国保・年金';
+      const n=document.getElementById('notice');n.textContent=r.employeeSocialEligible?'週20時間・勤務先規模などの条件から、勤務先の健康保険・厚生年金に加入する目安です。':r.dependentLost?'130万円以上で家族の健康保険扶養から外れる目安です。国民健康保険・国民年金は自治体等で異なるため結果に含めていません。':r.healthDependent?'健康保険の扶養内の目安です。税法上の扶養とは基準が異なります。':'表示額は所得税と判明する保険料のみを差し引いた概算です。';
+    }
+    form.addEventListener('submit',calculate);calculate();
+  </script>
+</body>
+</html>
