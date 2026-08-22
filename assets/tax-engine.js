@@ -129,6 +129,75 @@
     };
   }
 
+  const BONUS_RATES_2026 = [0,2.042,4.084,6.126,8.168,10.210,12.252,14.294,16.336,18.378,20.420,22.462,24.504,26.546,28.588,30.630,32.672,35.735,38.798,41.861,45.945];
+  const BONUS_THRESHOLDS_2026 = [
+    [82,94,260,309,342,372,402,433,520,605,684,715,752,795,854,922,1318,1521,2621,3495,Infinity],
+    [107,250,289,346,373,401,430,463,520,621,705,739,778,821,882,952,1342,1526,2645,3527,Infinity],
+    [143,276,321,377,400,426,457,492,525,636,728,764,804,848,910,983,1367,1526,2669,3559,Infinity],
+    [181,300,354,405,424,452,484,517,550,651,751,788,830,876,938,1013,1391,1538,2693,3590,Infinity],
+    [218,300,387,431,452,477,509,540,577,666,774,813,856,903,966,1044,1416,1555,2716,3622,Infinity],
+    [251,304,412,457,479,503,531,564,604,681,798,838,881,930,994,1074,1440,1555,2740,3654,Infinity],
+    [284,343,438,483,505,527,553,589,630,697,821,862,907,957,1022,1104,1464,1555,2764,3685,Infinity],
+    [317,383,463,508,529,552,578,614,657,708,845,887,933,985,1051,1135,1489,1583,2788,3717,Infinity]
+  ];
+
+  function bonusWithholdingRate2026(previousAfterSocial, dependents, declarationFiled) {
+    const baseThousands = Math.max(0, Number(previousAfterSocial) || 0) / 1000;
+    if (!declarationFiled) {
+      if (baseThousands < 224) return 0.10210;
+      if (baseThousands < 295) return 0.20420;
+      if (baseThousands < 527) return 0.30630;
+      if (baseThousands < 1118) return 0.38798;
+      return 0.45945;
+    }
+    const count = Math.min(7, Math.max(0, Math.floor(Number(dependents) || 0)));
+    const thresholds = BONUS_THRESHOLDS_2026[count];
+    const index = thresholds.findIndex(upper => baseThousands < upper);
+    return BONUS_RATES_2026[index < 0 ? BONUS_RATES_2026.length - 1 : index] / 100;
+  }
+
+  function bonusTakeHome2026(options) {
+    const bonus = clamp(options.bonus, 0, 100000000);
+    const previousSalary = clamp(options.previousSalary, 0, 5000000);
+    const age = clamp(options.age || 30, 18, 69);
+    const prefecture = HEALTH_RATES_2026[options.prefecture] ? options.prefecture : '東京都';
+    const dependents = clamp(options.dependents, 0, 20);
+    const declarationFiled = options.declarationFiled !== false;
+    const healthCumulativeBefore = clamp(options.healthCumulativeBefore, 0, 5730000);
+    const pensionSameMonthBefore = clamp(options.pensionSameMonthBefore, 0, 1500000);
+    const standardBonus = Math.floor(bonus / 1000) * 1000;
+    const healthBonusBase = Math.max(0, Math.min(standardBonus, 5730000 - healthCumulativeBefore));
+    const pensionBonusBase = Math.max(0, Math.min(standardBonus, 1500000 - pensionSameMonthBefore));
+    const healthRate = HEALTH_RATES_2026[prefecture] / 100;
+    const careRate = age >= 40 && age <= 64 ? 0.0162 : 0;
+    const supportRate = 0.0023;
+    const pensionRate = 0.183;
+    const employmentRate = 0.005;
+    const health = Math.round(healthBonusBase * healthRate / 2);
+    const care = Math.round(healthBonusBase * careRate / 2);
+    const childSupport = Math.round(healthBonusBase * supportRate / 2);
+    const pension = Math.round(pensionBonusBase * pensionRate / 2);
+    const employment = Math.floor(bonus * employmentRate);
+    const socialTotal = health + care + childSupport + pension + employment;
+    const healthStandard = standardAmount(previousSalary, HEALTH_STANDARDS);
+    const pensionStandard = standardAmount(previousSalary, PENSION_STANDARDS);
+    const previousSocialAuto = Math.round(healthStandard * healthRate / 2) +
+      Math.round(healthStandard * careRate / 2) + Math.round(healthStandard * supportRate / 2) +
+      Math.round(pensionStandard * pensionRate / 2) + Math.floor(previousSalary * employmentRate);
+    const previousSocial = Number(options.previousSocial) > 0 ? clamp(options.previousSocial, 0, previousSalary) : previousSocialAuto;
+    const previousAfterSocial = Math.max(0, previousSalary - previousSocial);
+    const withholdingRate = bonusWithholdingRate2026(previousAfterSocial, dependents, declarationFiled);
+    const taxableBonus = Math.max(0, bonus - socialTotal);
+    const incomeTax = Math.floor(taxableBonus * withholdingRate);
+    const net = Math.max(0, bonus - socialTotal - incomeTax);
+    const exceptional = previousAfterSocial <= 0 || taxableBonus > previousAfterSocial * 10;
+    return {
+      bonus, net, standardBonus, healthBonusBase, pensionBonusBase, health, care, childSupport,
+      pension, employment, socialTotal, previousSocial, previousAfterSocial, withholdingRate,
+      taxableBonus, incomeTax, exceptional, netRate: bonus ? net / bonus : 0
+    };
+  }
+
   function takeHome2026(options) {
     const monthlySalary = clamp(options.monthlySalary, 0, 5000000);
     const annualBonus = clamp(options.annualBonus, 0, 20000000);
@@ -218,6 +287,7 @@
   return {
     HEALTH_RATES_2026, salaryIncome2026, incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
-    socialInsurance2026, takeHome2026, furusatoLimit2026, yearEndAdjustment2026
+    socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
+    takeHome2026, furusatoLimit2026, yearEndAdjustment2026
   };
 });

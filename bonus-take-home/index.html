@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ボーナス手取り計算 2026｜賞与の税金・社会保険料｜いまいくら</title>
+  <meta name="description" content="2026年のボーナス・賞与の手取りを計算。額面賞与、前月給与、扶養人数、都道府県から所得税、健康保険、厚生年金、雇用保険の内訳がわかります。">
+  <meta property="og:title" content="ボーナス手取り計算 2026｜いまいくら">
+  <meta property="og:description" content="賞与から引かれる社会保険料と所得税を分けて、手取り額を計算。">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://imaikura.com/bonus-take-home/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebApplication","name":"ボーナス手取り計算 2026",
+    "url":"https://imaikura.com/bonus-take-home/","applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
+  }</script>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a><nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">ボーナス手取り</a></nav></div></header>
+
+  <main>
+    <section class="hero"><div class="container hero-inner"><div><div class="kicker">令和8年（2026年）源泉徴収税額表対応</div><h1>ボーナス・賞与の<br>手取り計算</h1><p class="lead">ボーナス額と前月の給与を入力すると、社会保険料と所得税を差し引いた振込額の目安がわかります。</p></div><div class="trust-badge">前月給与・扶養人数で税率を判定</div></div></section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="bonusForm">
+          <h2 class="panel-title">賞与の条件を入力</h2>
+          <div class="field-grid">
+            <div class="field"><label for="bonus">ボーナス額面 <span class="required">必須</span></label><div class="input-wrap"><input id="bonus" type="number" inputmode="numeric" min="0" max="100000000" step="10000" value="600000"><span class="unit">円</span></div><p class="help">税金・社会保険料が引かれる前の総支給額</p></div>
+            <div class="field"><label for="previousSalary">前月の給与総額 <span class="required">必須</span></label><div class="input-wrap"><input id="previousSalary" type="number" inputmode="numeric" min="0" max="5000000" step="1000" value="300000"><span class="unit">円</span></div><p class="help">ボーナスを除く、前月の給与明細の総支給額</p></div>
+            <div class="field"><label for="prefecture">協会けんぽの支部</label><select id="prefecture"></select><p class="help">居住地ではなく勤務先が加入する支部</p></div>
+            <div class="field"><label for="age">年齢</label><div class="input-wrap"><input id="age" type="number" inputmode="numeric" min="18" max="69" value="30"><span class="unit">歳</span></div><p class="help">40〜64歳は介護保険料を加算</p></div>
+            <div class="field"><label for="dependents">扶養親族等の数</label><div class="input-wrap"><input id="dependents" type="number" inputmode="numeric" min="0" max="20" value="0"><span class="unit">人</span></div><p class="help">源泉控除対象配偶者と源泉控除対象親族の合計</p></div>
+            <div class="field"><label>扶養控除等申告書</label><div class="choice-row" role="radiogroup" aria-label="扶養控除等申告書"><span class="choice"><input type="radio" id="filedYes" name="filed" value="1" checked><label for="filedYes">提出済み</label></span><span class="choice"><input type="radio" id="filedNo" name="filed" value="0"><label for="filedNo">未提出</label></span></div><p class="help">通常は主な勤務先へ提出済みです</p></div>
+          </div>
+          <details class="details-block">
+            <summary>給与明細・高額賞与の詳細を入力</summary>
+            <div class="field-grid">
+              <div class="field"><label for="previousSocial">前月の社会保険料</label><div class="input-wrap"><input id="previousSocial" type="number" inputmode="numeric" min="0" max="5000000" step="100" value="0"><span class="unit">円</span></div><p class="help">0なら自動推計。給与明細の合計額を入れると税率判定がより正確です</p></div>
+              <div class="field"><label for="healthCumulativeBefore">本年度の標準賞与額累計</label><div class="input-wrap"><input id="healthCumulativeBefore" type="number" inputmode="numeric" min="0" max="5730000" step="1000" value="0"><span class="unit">円</span></div><p class="help">今回支給前の累計。健康保険の年度上限573万円判定に使用</p></div>
+              <div class="field"><label for="pensionSameMonthBefore">同月に支給済みの賞与</label><div class="input-wrap"><input id="pensionSameMonthBefore" type="number" inputmode="numeric" min="0" max="1500000" step="1000" value="0"><span class="unit">円</span></div><p class="help">厚生年金の同月上限150万円判定に使用</p></div>
+            </div>
+          </details>
+          <button class="calculate" type="submit">ボーナスの手取りを計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head"><small id="resultTitle">ボーナス手取り（概算）</small><div class="result-big" id="net">—</div><div class="result-sub">手取り率 <strong id="netRate">—</strong></div></div>
+          <div class="result-body">
+            <div class="metric"><span>ボーナス額面</span><strong id="gross">—</strong></div>
+            <div class="metric"><span>社会保険料</span><strong id="social">—</strong></div>
+            <div class="metric submetric"><span>健康・介護・支援金</span><strong id="healthEtc">—</strong></div>
+            <div class="metric submetric"><span>厚生年金</span><strong id="pension">—</strong></div>
+            <div class="metric submetric"><span>雇用保険</span><strong id="employment">—</strong></div>
+            <div class="metric"><span>所得税・復興特別所得税</span><strong id="incomeTax">—</strong></div>
+            <div class="metric total"><span>賞与の源泉徴収率</span><strong id="withholdingRate">—</strong></div>
+            <div class="notice" id="resultNotice">住民税はボーナスから直接天引きされませんが、賞与を含む年間所得を基に翌年度の住民税へ反映されます。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section"><h2>ボーナスから引かれるもの</h2><div class="steps"><div class="step"><span>01</span><b>社会保険料</b><p>標準賞与額を基に健康保険・厚生年金・雇用保険などを計算。</p></div><div class="step"><span>02</span><b>所得税</b><p>前月給与の社会保険料控除後の金額と扶養人数から税率を判定。</p></div><div class="step"><span>03</span><b>住民税</b><p>賞与から直接は引かれず、年間所得として翌年度の住民税に反映。</p></div></div></section>
+
+      <section class="content-section"><h2>よくある質問</h2>
+        <details class="faq"><summary>ボーナス60万円の手取りはいくらですか？</summary><p>東京都、30歳、前月給与30万円、扶養0人、協会けんぽの場合は約49万1,000円が目安です。前月給与や扶養人数で所得税率が変わるため、同じ60万円でも手取りは異なります。</p></details>
+        <details class="faq"><summary>ボーナスから住民税が引かれないのはなぜですか？</summary><p>給与からの住民税は、前年所得を基に決められた年税額を通常12回に分けて徴収します。そのため賞与明細から住民税が直接控除されないのが一般的です。ただし賞与は所得に含まれるため、翌年度の住民税額には影響します。</p></details>
+        <details class="faq"><summary>前月給与の10倍を超えるボーナスも計算できますか？</summary><p>社会保険料控除後の賞与が前月給与の社会保険料控除後の金額の10倍を超える場合などは、通常の賞与算出率表ではなく月額表を使う例外計算になります。本ツールは画面上に注意を表示するため、勤務先の明細で確定額を確認してください。</p></details>
+      </section>
+
+      <section class="content-section"><div class="section-head"><h2>関連する計算ツール</h2></div><div class="tool-grid compact-grid"><a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>月給と年間賞与から年間の手取りと税金を確認。</p><span class="card-link">年収手取りを計算する</span></a><a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a></div></section>
+
+      <section class="content-section content-card sources"><strong>参照した公的資料（2026年8月22日確認）</strong><br><a href="https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/15-16.pdf" target="_blank" rel="noopener">国税庁「賞与に対する源泉徴収税額の算出率の表（令和8年分）」</a> ／ <a href="https://www.nenkin.go.jp/section/faq/kounen/hokenryo/shoyokeisan.html" target="_blank" rel="noopener">日本年金機構「賞与にかかる保険料の計算」</a> ／ <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">協会けんぽ 令和8年度都道府県単位保険料率</a> ／ <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/003/index.html" target="_blank" rel="noopener">協会けんぽ 子ども・子育て支援金率</a></section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先の賞与明細をご確認ください。</div></div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax=window.ImaikuraTax, form=document.getElementById('bonusForm'), prefecture=document.getElementById('prefecture');
+    Object.keys(tax.HEALTH_RATES_2026).forEach(name=>{const option=document.createElement('option');option.value=name;option.textContent=name+'（'+tax.HEALTH_RATES_2026[name].toFixed(2)+'%）';if(name==='東京都')option.selected=true;prefecture.appendChild(option);});
+    const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
+    const value=id=>Number(document.getElementById(id).value)||0;
+    function calculate(event){
+      if(event)event.preventDefault();
+      const result=tax.bonusTakeHome2026({bonus:value('bonus'),previousSalary:value('previousSalary'),prefecture:prefecture.value,age:value('age'),dependents:value('dependents'),declarationFiled:document.querySelector('input[name="filed"]:checked').value==='1',previousSocial:value('previousSocial'),healthCumulativeBefore:value('healthCumulativeBefore'),pensionSameMonthBefore:value('pensionSameMonthBefore')});
+      document.getElementById('net').textContent=yen(result.net);document.getElementById('netRate').textContent=(result.netRate*100).toFixed(1)+'%';
+      document.getElementById('gross').textContent=yen(result.bonus);document.getElementById('social').textContent='−'+yen(result.socialTotal);
+      document.getElementById('healthEtc').textContent='−'+yen(result.health+result.care+result.childSupport);document.getElementById('pension').textContent='−'+yen(result.pension);document.getElementById('employment').textContent='−'+yen(result.employment);document.getElementById('incomeTax').textContent='−'+yen(result.incomeTax);document.getElementById('withholdingRate').textContent=(result.withholdingRate*100).toFixed(3)+'%';
+      document.getElementById('resultNotice').textContent=result.exceptional?'この条件は国税庁の通常の賞与算出率表ではなく月額表を使う例外に該当します。表示額は参考にとどめ、勤務先の計算をご確認ください。':'住民税はボーナスから直接天引きされませんが、賞与を含む年間所得を基に翌年度の住民税へ反映されます。';
+    }
+    form.addEventListener('submit',calculate);calculate();
+  </script>
+</body>
+</html>

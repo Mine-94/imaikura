@@ -110,6 +110,15 @@ details.faq p{padding:0 16px 16px;color:var(--muted);font-size:13px;margin:0}
 .sources a{color:var(--blue);text-decoration:underline;text-underline-offset:2px}
 .plain-copy{margin:0;color:var(--muted);font-size:14px}
 .plain-copy b{color:var(--ink)}
+.table-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}
+.data-table{width:100%;border-collapse:collapse;min-width:720px;font-size:13px}
+.data-table th,.data-table td{padding:13px 15px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.data-table th:first-child,.data-table td:first-child{text-align:left}
+.data-table thead th{background:var(--wash);color:var(--navy);font-size:12px}
+.data-table tbody tr:last-child td{border-bottom:0}
+.data-table tbody tr:hover{background:#f8fafc}
+.data-table strong{color:var(--navy)}
+.table-note{color:var(--muted);font-size:11px;margin:9px 2px 0}
 .legal-shell{max-width:820px}
 .legal-shell .content-card{margin-bottom:16px}
 .legal-shell h2{font-size:18px;color:var(--navy);margin-bottom:10px}
