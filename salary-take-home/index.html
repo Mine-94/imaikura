@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>給与・年収の手取り計算 2026｜社会保険料・所得税・住民税｜いまいくら</title>
+  <meta name="description" content="2026年の月給・賞与から手取り年収と月平均を計算。47都道府県の協会けんぽ料率、厚生年金、雇用保険、所得税、住民税の内訳がわかります。">
+  <meta property="og:title" content="給与・年収の手取り計算 2026｜いまいくら">
+  <meta property="og:description" content="月給と賞与から、税金・社会保険料を差し引いた手取りを計算。">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://mine-94.github.io/imaikura/salary-take-home/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebApplication","name":"給与・年収の手取り計算 2026",
+    "url":"https://mine-94.github.io/imaikura/salary-take-home/","applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
+  }</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a>
+      <nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">手取り計算</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">令和8年（2026年）制度対応</div>
+          <h1>給与・年収の<br>手取り計算</h1>
+          <p class="lead">月給と賞与を入力すると、税金と社会保険料を差し引いた手取り年収・月平均がわかります。</p>
+        </div>
+        <div class="trust-badge">47都道府県の保険料率に対応</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="salaryForm">
+          <h2 class="panel-title">条件を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label for="monthlySalary">月給（総支給）<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="monthlySalary" type="number" inputmode="numeric" min="0" max="5000000" step="1000" value="300000"><span class="unit">円</span></div>
+              <p class="help">基本給・残業・通勤手当などを含む税引前の金額</p>
+            </div>
+            <div class="field">
+              <label for="annualBonus">年間賞与</label>
+              <div class="input-wrap"><input id="annualBonus" type="number" inputmode="numeric" min="0" max="20000000" step="10000" value="600000"><span class="unit">円</span></div>
+              <p class="help">年2回支給として社会保険料を概算</p>
+            </div>
+            <div class="field">
+              <label for="prefecture">協会けんぽの支部</label>
+              <select id="prefecture" aria-describedby="prefHelp"></select>
+              <p class="help" id="prefHelp">居住地ではなく勤務先が加入する支部を選択</p>
+            </div>
+            <div class="field">
+              <label for="age">年齢</label>
+              <div class="input-wrap"><input id="age" type="number" inputmode="numeric" min="18" max="69" value="30"><span class="unit">歳</span></div>
+              <p class="help">40〜64歳は介護保険料を加算</p>
+            </div>
+            <div class="field">
+              <label for="dependents">一般扶養親族</label>
+              <div class="input-wrap"><input id="dependents" type="number" inputmode="numeric" min="0" max="10" value="0"><span class="unit">人</span></div>
+              <p class="help">16〜18歳、23〜69歳の扶養親族</p>
+            </div>
+            <div class="field">
+              <label>配偶者控除</label>
+              <div class="choice-row" role="radiogroup" aria-label="配偶者控除">
+                <span class="choice"><input type="radio" id="spouseNo" name="spouse" value="0" checked><label for="spouseNo">なし</label></span>
+                <span class="choice"><input type="radio" id="spouseYes" name="spouse" value="1"><label for="spouseYes">あり</label></span>
+              </div>
+            </div>
+          </div>
+          <details class="details-block">
+            <summary>大学生・70歳以上の扶養親族を設定</summary>
+            <div class="field-grid">
+              <div class="field">
+                <label for="specificDependents">特定扶養親族（19〜22歳）</label>
+                <div class="input-wrap"><input id="specificDependents" type="number" inputmode="numeric" min="0" max="10" value="0"><span class="unit">人</span></div>
+              </div>
+              <div class="field">
+                <label for="elderDependents">老人扶養親族（70歳以上）</label>
+                <div class="input-wrap"><input id="elderDependents" type="number" inputmode="numeric" min="0" max="10" value="0"><span class="unit">人</span></div>
+              </div>
+            </div>
+          </details>
+          <button class="calculate" type="submit">手取りを計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head">
+            <small id="resultTitle">手取り年収（概算）</small>
+            <div class="result-big" id="annualNet">—</div>
+            <div class="result-sub">月平均 <strong id="monthlyNet">—</strong></div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>額面年収</span><strong id="gross">—</strong></div>
+            <div class="metric"><span>社会保険料</span><strong id="social">—</strong></div>
+            <div class="metric submetric"><span>健康・介護・支援金</span><strong id="healthEtc">—</strong></div>
+            <div class="metric submetric"><span>厚生年金</span><strong id="pension">—</strong></div>
+            <div class="metric submetric"><span>雇用保険</span><strong id="employment">—</strong></div>
+            <div class="metric"><span>所得税・復興特別所得税</span><strong id="incomeTax">—</strong></div>
+            <div class="metric"><span>住民税</span><strong id="residentTax">—</strong></div>
+            <div class="metric total"><span>手取り率</span><strong id="netRate">—</strong></div>
+            <div class="bar" aria-hidden="true"><span class="bar-net" id="barNet"></span><span class="bar-social" id="barSocial"></span><span class="bar-tax" id="barTax"></span></div>
+            <div class="legend"><span><i style="background:#16847c"></i>手取り</span><span><i style="background:#6ea4c9"></i>社会保険</span><span><i style="background:#d59b44"></i>税金</span></div>
+            <div class="notice">住民税は前年所得で決まります。この結果では入力した年収が前年も同じだったものとして概算しています。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section">
+        <h2>計算に含まれるもの</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>社会保険料</b><p>健康保険、厚生年金、雇用保険、介護保険、子ども・子育て支援金</p></div>
+          <div class="step"><span>02</span><b>所得税</b><p>2026年の給与所得控除・基礎控除と復興特別所得税を反映</p></div>
+          <div class="step"><span>03</span><b>住民税</b><p>所得割10％、均等割と森林環境税の合計5,000円で概算</p></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>給与明細と数百円〜数千円ずれるのはなぜですか？</summary><p>実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当、賞与の支給回数、住民税の前年所得、端数処理などが影響します。本ツールは協会けんぽ加入の会社員を想定した年間の概算です。</p></details>
+        <details class="faq"><summary>「月給」には交通費を含めますか？</summary><p>社会保険の標準報酬月額には通勤手当も含まれるため、総支給額に含めてください。所得税では非課税限度額内の通勤手当は課税されませんが、本ツールは入力負担を減らすため総支給額で概算します。</p></details>
+        <details class="faq"><summary>2026年の「子ども・子育て支援金」も入っていますか？</summary><p>はい。2026年4月分からの協会けんぽの支援金率0.23％を労使折半し、本人負担分を社会保険料に含めています。</p></details>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>参照した公的資料（2026年8月22日確認）</strong><br>
+        <a href="https://www.nta.go.jp/publication/pamph/gensen/2026kaisei.pdf" target="_blank" rel="noopener">国税庁「源泉所得税の改正のあらまし（令和8年4月）」</a> ／
+        <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm" target="_blank" rel="noopener">国税庁 No.2260 所得税の税率</a> ／
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">協会けんぽ 令和8年度都道府県単位保険料率</a> ／
+        <a href="https://www.nenkin.go.jp/service/kounen/hokenryo/ryogaku/ryogakuhyo/index.html" target="_blank" rel="noopener">日本年金機構 厚生年金保険料額表</a> ／
+        <a href="https://www.mhlw.go.jp/content/001692566.pdf" target="_blank" rel="noopener">厚生労働省 令和8年度雇用保険料率</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div>計算結果は概算です。確定額は勤務先・自治体の通知をご確認ください。</div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax = window.ImaikuraTax;
+    const form = document.getElementById('salaryForm');
+    const prefecture = document.getElementById('prefecture');
+    Object.keys(tax.HEALTH_RATES_2026).forEach(name => {
+      const option = document.createElement('option'); option.value = name; option.textContent = name + '（' + tax.HEALTH_RATES_2026[name].toFixed(2) + '%）';
+      if (name === '東京都') option.selected = true; prefecture.appendChild(option);
+    });
+    const yen = n => Math.round(n).toLocaleString('ja-JP') + '円';
+    function calculate(event){
+      if(event) event.preventDefault();
+      const result = tax.takeHome2026({
+        monthlySalary:Number(document.getElementById('monthlySalary').value), annualBonus:Number(document.getElementById('annualBonus').value),
+        prefecture:prefecture.value, age:Number(document.getElementById('age').value), dependents:Number(document.getElementById('dependents').value),
+        specificDependents:Number(document.getElementById('specificDependents').value), elderDependents:Number(document.getElementById('elderDependents').value),
+        spouse:document.querySelector('input[name="spouse"]:checked').value === '1', bonusPayments:2
+      });
+      document.getElementById('annualNet').textContent=yen(result.annualNet); document.getElementById('monthlyNet').textContent=yen(result.monthlyNet);
+      document.getElementById('gross').textContent=yen(result.gross); document.getElementById('social').textContent='−'+yen(result.social.total);
+      document.getElementById('healthEtc').textContent='−'+yen(result.social.health+result.social.care+result.social.childSupport);
+      document.getElementById('pension').textContent='−'+yen(result.social.pension); document.getElementById('employment').textContent='−'+yen(result.social.employment);
+      document.getElementById('incomeTax').textContent='−'+yen(result.incomeTax); document.getElementById('residentTax').textContent='−'+yen(result.residentTax);
+      document.getElementById('netRate').textContent=(result.netRate*100).toFixed(1)+'%';
+      const socialPct=result.gross?result.social.total/result.gross*100:0, taxPct=result.gross?(result.incomeTax+result.residentTax)/result.gross*100:0;
+      document.getElementById('barNet').style.width=(result.netRate*100)+'%'; document.getElementById('barSocial').style.width=socialPct+'%'; document.getElementById('barTax').style.width=taxPct+'%';
+    }
+    form.addEventListener('submit',calculate); calculate();
+  </script>
+</body>
+</html>
