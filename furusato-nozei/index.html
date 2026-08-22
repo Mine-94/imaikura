@@ -112,16 +112,24 @@
         <h2>以前の簡易計算から変わった点</h2>
         <div class="steps">
           <div class="step"><span>01</span><b>社会保険料を控除</b><p>上限額を過大表示しないよう、健康保険・厚生年金などを推計します。</p></div>
-          <div class="step"><span>02</span><b>2026年改正を反映</b><p>給与所得控除の最低保障74万円と、改正後の基礎控除を使用します。</p></div>
+          <div class="step"><span>02</span><b>2026年改正を反映</b><p>給与所得控除の最低保障74万円と、所得489万円以下で104万円となる基礎控除を使用します。</p></div>
           <div class="step"><span>03</span><b>前提を変更可能</b><p>都道府県・年齢・源泉徴収票の社会保険料を入力できます。</p></div>
         </div>
       </section>
 
       <section class="content-section">
         <h2>よくある質問</h2>
-        <details class="faq"><summary>年収500万円・独身なら上限はいくらですか？</summary><p>東京都の協会けんぽ、30歳、給与以外の所得や追加控除なしで計算すると、おおむね6万円台が目安です。実際の社会保険料や控除によって変わるため、源泉徴収票があれば詳細設定に「社会保険料等の金額」を入力してください。</p></details>
+        <details class="faq"><summary>年収500万円・独身なら上限はいくらですか？</summary><p>東京都の協会けんぽ、30歳、給与以外の所得や追加控除なしで2026年改正を反映すると、5万8,000円前後が目安です。従来の早見表にある6万1,000円とは異なる場合があります。実際の社会保険料や控除によって変わるため、源泉徴収票があれば詳細設定に「社会保険料等の金額」を入力してください。</p></details>
         <details class="faq"><summary>年収にはボーナスを含めますか？</summary><p>はい。1月から12月までの税引前給与と賞与の合計、または源泉徴収票の「支払金額」を入力してください。</p></details>
         <details class="faq"><summary>上限を超えて寄付するとどうなりますか？</summary><p>上限を超えた部分は全額控除されず、自己負担が2,000円より増えます。不確定な控除がある場合は、表示額を使い切らず余裕を残してください。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を含む年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a>
+        </div>
       </section>
 
       <section class="content-section content-card sources">
@@ -134,7 +142,7 @@
     </div>
   </main>
 
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div>計算結果は概算です。確定額は税務署・自治体の案内をご確認ください。</div></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は税務署・自治体の案内をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
   <script>
     const tax=window.ImaikuraTax, form=document.getElementById('furusatoForm'), prefecture=document.getElementById('prefecture');

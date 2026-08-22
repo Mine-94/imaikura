@@ -49,29 +49,40 @@
   // 令和8・9年分。220万円未満は国税庁の特例表を反映。
   function salaryIncome2026(gross) {
     const n = Math.max(0, Math.floor(gross));
-    if (n < 691000) return 0;
-    if (n < 741000) return Math.max(0, n - 740000);
+    if (n < 741000) return 0;
     if (n < 2191000) return n - 740000;
     if (n < 2193000) return 1451000;
     if (n < 2196000) return 1453000;
     if (n < 2200000) return 1456000;
-    if (n <= 3600000) return Math.floor(n - (n * 0.30 + 80000));
-    if (n <= 6600000) return Math.floor(n - (n * 0.20 + 440000));
-    if (n <= 8500000) return Math.floor(n - (n * 0.10 + 1100000));
+    if (n < 3600000) return Math.floor(n / 4 / 1000) * 1000 * 2.8 - 80000;
+    if (n < 6600000) return Math.floor(n / 4 / 1000) * 1000 * 3.2 - 440000;
+    if (n < 8500000) return Math.floor(n * 0.90 - 1100000);
     return n - 1950000;
   }
 
   function incomeBasicDeduction2026(totalIncome) {
     const g = Math.max(0, totalIncome);
-    if (g <= 1320000) return 1040000;
-    if (g <= 3360000) return 620000;
-    if (g <= 4890000) return 680000;
+    if (g <= 4890000) return 1040000;
     if (g <= 6550000) return 670000;
     if (g <= 23500000) return 620000;
     if (g <= 24000000) return 480000;
     if (g <= 24500000) return 320000;
     if (g <= 25000000) return 160000;
     return 0;
+  }
+
+  function spouseDeduction2026(totalIncome, eligible) {
+    if (!eligible) return 0;
+    const g = Math.max(0, totalIncome);
+    if (g <= 9000000) return 380000;
+    if (g <= 9500000) return 260000;
+    if (g <= 10000000) return 130000;
+    return 0;
+  }
+
+  function incomeAdjustmentDeduction2026(gross, eligible) {
+    if (!eligible || gross <= 8500000) return 0;
+    return Math.min(150000, Math.floor((Math.min(gross, 10000000) - 8500000) * 0.10));
   }
 
   function nationalIncomeTax(taxable) {
@@ -129,7 +140,8 @@
     const salaryIncome = salaryIncome2026(gross);
     const social = socialInsurance2026(options);
     const incomeDeduction = incomeBasicDeduction2026(salaryIncome);
-    const dependentIncomeDeduction = (dependents + spouse) * 380000 + specificDependents * 630000 + elderDependents * 480000;
+    const spouseDeduction = spouseDeduction2026(salaryIncome, spouse);
+    const dependentIncomeDeduction = dependents * 380000 + spouseDeduction + specificDependents * 630000 + elderDependents * 480000;
     const taxableIncome = Math.max(0, salaryIncome - incomeDeduction - dependentIncomeDeduction - social.total);
     const incomeTaxInfo = nationalIncomeTax(taxableIncome);
     const residentDependentDeduction = (dependents + spouse) * 330000 + specificDependents * 450000 + elderDependents * 380000;
@@ -156,7 +168,8 @@
       ? { total: Number(options.socialInsuranceAnnual) }
       : socialInsurance2026({ monthlySalary, annualBonus: 0, age: options.age || 30, prefecture: options.prefecture || '東京都' });
     const salaryIncome = salaryIncome2026(annualSalary);
-    const incomeDependentDeduction = (dependents + spouse) * 380000 + specificDependents * 630000 + elderDependents * 480000;
+    const spouseDeduction = spouseDeduction2026(salaryIncome, spouse);
+    const incomeDependentDeduction = dependents * 380000 + spouseDeduction + specificDependents * 630000 + elderDependents * 480000;
     const residentDependentDeduction = (dependents + spouse) * 330000 + specificDependents * 450000 + elderDependents * 380000;
     const incomeTaxable = Math.max(0, salaryIncome - incomeBasicDeduction2026(salaryIncome) - social.total - incomeDependentDeduction);
     const incomeInfo = nationalIncomeTax(incomeTaxable);
@@ -167,8 +180,44 @@
     return { annualSalary, salaryIncome, socialInsurance: social.total, incomeTaxable: incomeInfo.taxable, marginalRate: incomeInfo.rate, residentTaxable, residentIncomeLevy, limit };
   }
 
+  function yearEndAdjustment2026(options) {
+    const annualSalary = clamp(options.annualSalary, 0, 100000000);
+    const withheldTax = clamp(options.withheldTax, 0, 50000000);
+    const socialInsurance = clamp(options.socialInsurance, 0, 30000000);
+    const lifeInsuranceDeduction = clamp(options.lifeInsuranceDeduction, 0, 120000);
+    const earthquakeInsuranceDeduction = clamp(options.earthquakeInsuranceDeduction, 0, 50000);
+    const idecoDeduction = clamp(options.idecoDeduction, 0, 10000000);
+    const otherDeductions = clamp(options.otherDeductions, 0, 30000000);
+    const housingLoanCredit = clamp(options.housingLoanCredit, 0, 10000000);
+    const dependents = clamp(options.dependents, 0, 10);
+    const specificDependents = clamp(options.specificDependents, 0, 10);
+    const elderDependents = clamp(options.elderDependents, 0, 10);
+    const specialRelativeDeduction = clamp(options.specialRelativeDeduction, 0, 630000);
+    const incomeBeforeAdjustment = salaryIncome2026(annualSalary);
+    const incomeAdjustment = incomeAdjustmentDeduction2026(annualSalary, Boolean(options.incomeAdjustmentEligible));
+    const salaryIncome = Math.max(0, incomeBeforeAdjustment - incomeAdjustment);
+    const basicDeduction = incomeBasicDeduction2026(salaryIncome);
+    const spouseDeduction = spouseDeduction2026(salaryIncome, Boolean(options.spouse));
+    const dependentDeduction = dependents * 380000 + specificDependents * 630000 + elderDependents * 480000;
+    const totalDeductions = basicDeduction + socialInsurance + lifeInsuranceDeduction + earthquakeInsuranceDeduction +
+      idecoDeduction + otherDeductions + spouseDeduction + dependentDeduction + specialRelativeDeduction;
+    const taxableIncome = Math.floor(Math.max(0, salaryIncome - totalDeductions) / 1000) * 1000;
+    const incomeTaxInfo = nationalIncomeTax(taxableIncome);
+    const taxAfterCredit = Math.max(0, incomeTaxInfo.baseTax - housingLoanCredit);
+    const annualTax = Math.floor(taxAfterCredit * 1.021 / 100) * 100;
+    const balance = Math.floor(withheldTax - annualTax);
+    return {
+      annualSalary, withheldTax, incomeBeforeAdjustment, incomeAdjustment, salaryIncome,
+      basicDeduction, spouseDeduction, dependentDeduction, specialRelativeDeduction,
+      socialInsurance, lifeInsuranceDeduction, earthquakeInsuranceDeduction, idecoDeduction,
+      otherDeductions, totalDeductions, taxableIncome, baseTax: incomeTaxInfo.baseTax,
+      housingLoanCredit, annualTax, balance, refund: Math.max(0, balance), additional: Math.max(0, -balance)
+    };
+  }
+
   return {
     HEALTH_RATES_2026, salaryIncome2026, incomeBasicDeduction2026,
-    nationalIncomeTax, socialInsurance2026, takeHome2026, furusatoLimit2026
+    spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
+    socialInsurance2026, takeHome2026, furusatoLimit2026, yearEndAdjustment2026
   };
 });

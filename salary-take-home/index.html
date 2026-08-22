@@ -119,7 +119,7 @@
         <h2>計算に含まれるもの</h2>
         <div class="steps">
           <div class="step"><span>01</span><b>社会保険料</b><p>健康保険、厚生年金、雇用保険、介護保険、子ども・子育て支援金</p></div>
-          <div class="step"><span>02</span><b>所得税</b><p>2026年の給与所得控除・基礎控除と復興特別所得税を反映</p></div>
+          <div class="step"><span>02</span><b>所得税</b><p>最低74万円の給与所得控除と、所得489万円以下で104万円となる基礎控除を反映</p></div>
           <div class="step"><span>03</span><b>住民税</b><p>所得割10％、均等割と森林環境税の合計5,000円で概算</p></div>
         </div>
       </section>
@@ -129,6 +129,14 @@
         <details class="faq"><summary>給与明細と数百円〜数千円ずれるのはなぜですか？</summary><p>実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当、賞与の支給回数、住民税の前年所得、端数処理などが影響します。本ツールは協会けんぽ加入の会社員を想定した年間の概算です。</p></details>
         <details class="faq"><summary>「月給」には交通費を含めますか？</summary><p>社会保険の標準報酬月額には通勤手当も含まれるため、総支給額に含めてください。所得税では非課税限度額内の通勤手当は課税されませんが、本ツールは入力負担を減らすため総支給額で概算します。</p></details>
         <details class="faq"><summary>2026年の「子ども・子育て支援金」も入っていますか？</summary><p>はい。2026年4月分からの協会けんぽの支援金率0.23％を労使折半し、本人負担分を社会保険料に含めています。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a>
+          <a class="tool-card" href="../furusato-nozei/"><h2>ふるさと納税 上限額</h2><p>年収と控除から自己負担2,000円の寄付上限を確認。</p><span class="card-link">上限額を計算する</span></a>
+        </div>
       </section>
 
       <section class="content-section content-card sources">
@@ -142,7 +150,7 @@
     </div>
   </main>
 
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div>計算結果は概算です。確定額は勤務先・自治体の通知をご確認ください。</div></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先・自治体の通知をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
   <script>
     const tax = window.ImaikuraTax;
