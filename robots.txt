@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mine-94.github.io/imaikura/sitemap.xml
+Sitemap: https://imaikura.com/sitemap.xml
