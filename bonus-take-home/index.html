@@ -79,7 +79,7 @@
         <details class="faq"><summary>前月給与の10倍を超えるボーナスも計算できますか？</summary><p>社会保険料控除後の賞与が前月給与の社会保険料控除後の金額の10倍を超える場合などは、通常の賞与算出率表ではなく月額表を使う例外計算になります。本ツールは画面上に注意を表示するため、勤務先の明細で確定額を確認してください。</p></details>
       </section>
 
-      <section class="content-section"><div class="section-head"><h2>関連する計算ツール</h2></div><div class="tool-grid compact-grid"><a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>月給と年間賞与から年間の手取りと税金を確認。</p><span class="card-link">年収手取りを計算する</span></a><a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a></div></section>
+      <section class="content-section"><div class="section-head"><h2>関連する計算ツール</h2></div><div class="tool-grid compact-grid"><a class="tool-card" href="../resident-tax/"><h2>住民税の年額・月額計算</h2><p>前年の年収から翌年6月以降の住民税を確認。</p><span class="card-link">住民税を計算する</span></a><a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>月給と年間賞与から年間の手取りと税金を確認。</p><span class="card-link">年収手取りを計算する</span></a><a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a></div></section>
 
       <section class="content-section content-card sources"><strong>参照した公的資料（2026年8月22日確認）</strong><br><a href="https://www.nta.go.jp/publication/pamph/gensen/zeigakuhyo2026/data/15-16.pdf" target="_blank" rel="noopener">国税庁「賞与に対する源泉徴収税額の算出率の表（令和8年分）」</a> ／ <a href="https://www.nenkin.go.jp/section/faq/kounen/hokenryo/shoyokeisan.html" target="_blank" rel="noopener">日本年金機構「賞与にかかる保険料の計算」</a> ／ <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">協会けんぽ 令和8年度都道府県単位保険料率</a> ／ <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/003/index.html" target="_blank" rel="noopener">協会けんぽ 子ども・子育て支援金率</a></section>
     </div>
@@ -94,7 +94,7 @@
     const value=id=>Number(document.getElementById(id).value)||0;
     function calculate(event){
       if(event)event.preventDefault();
-      if(event&&typeof gtag==='function')gtag('bonus_calculate');
+      if(event&&typeof gtag==='function')gtag('event','bonus_calculate');
       const result=tax.bonusTakeHome2026({bonus:value('bonus'),previousSalary:value('previousSalary'),prefecture:prefecture.value,age:value('age'),dependents:value('dependents'),declarationFiled:document.querySelector('input[name="filed"]:checked').value==='1',previousSocial:value('previousSocial'),healthCumulativeBefore:value('healthCumulativeBefore'),pensionSameMonthBefore:value('pensionSameMonthBefore')});
       document.getElementById('net').textContent=yen(result.net);document.getElementById('netRate').textContent=(result.netRate*100).toFixed(1)+'%';
       document.getElementById('gross').textContent=yen(result.bonus);document.getElementById('social').textContent='−'+yen(result.socialTotal);

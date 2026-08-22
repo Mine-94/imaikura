@@ -135,6 +135,7 @@
       <section class="content-section">
         <div class="section-head"><h2>関連する計算ツール</h2></div>
         <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../resident-tax/"><h2>住民税の年額・月額計算</h2><p>前年の年収から住民税所得割と毎月の天引きを確認。</p><span class="card-link">住民税を計算する</span></a>
           <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を含む年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
           <a class="tool-card" href="../bonus-take-home/"><h2>ボーナスの手取り計算</h2><p>前月給与と扶養人数から、賞与の控除と振込額を確認。</p><span class="card-link">賞与手取りを計算する</span></a>
           <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a>
@@ -159,7 +160,7 @@
     const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
     function calculate(event){
       if(event)event.preventDefault();
-      if(event&&typeof gtag==='function')gtag('furusato_calculate');
+      if(event&&typeof gtag==='function')gtag('event','furusato_calculate');
       const result=tax.furusatoLimit2026({
         annualSalary:Number(document.getElementById('annualSalary').value),dependents:Number(document.getElementById('dependents').value),
         specificDependents:Number(document.getElementById('specificDependents').value),elderDependents:Number(document.getElementById('elderDependents').value),

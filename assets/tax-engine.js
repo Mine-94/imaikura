@@ -60,6 +60,96 @@
     return n - 1950000;
   }
 
+  // 令和8年度住民税（令和7年分給与）。給与所得控除の最低保障額は65万円。
+  function residentSalaryIncome2026(gross) {
+    const n = Math.max(0, Math.floor(gross));
+    if (n <= 1900000) return Math.max(0, n - 650000);
+    if (n < 3600000) return Math.floor(n / 4 / 1000) * 1000 * 2.8 - 80000;
+    if (n < 6600000) return Math.floor(n / 4 / 1000) * 1000 * 3.2 - 440000;
+    if (n < 8500000) return Math.floor(n * 0.90 - 1100000);
+    return n - 1950000;
+  }
+
+  function residentBasicDeduction2026(totalIncome) {
+    const g = Math.max(0, totalIncome);
+    if (g <= 24000000) return 430000;
+    if (g <= 24500000) return 290000;
+    if (g <= 25000000) return 150000;
+    return 0;
+  }
+
+  function residentSpouseDeduction2026(totalIncome, eligible) {
+    if (!eligible) return 0;
+    const g = Math.max(0, totalIncome);
+    if (g <= 9000000) return 330000;
+    if (g <= 9500000) return 220000;
+    if (g <= 10000000) return 110000;
+    return 0;
+  }
+
+  // 東京23区の標準税率で令和8年度の住民税を概算する。
+  function residentTax2026(options) {
+    const annualSalary = clamp(options.annualSalary, 0, 100000000);
+    const socialInsurance = clamp(options.socialInsurance, 0, 30000000);
+    const lifeInsuranceDeduction = clamp(options.lifeInsuranceDeduction, 0, 70000);
+    const earthquakeInsuranceDeduction = clamp(options.earthquakeInsuranceDeduction, 0, 25000);
+    const idecoDeduction = clamp(options.idecoDeduction, 0, 10000000);
+    const medicalExpenseDeduction = clamp(options.medicalExpenseDeduction, 0, 30000000);
+    const otherDeductions = clamp(options.otherDeductions, 0, 30000000);
+    const dependents = Math.floor(clamp(options.dependents, 0, 20));
+    const specificDependents = Math.floor(clamp(options.specificDependents, 0, 20));
+    const elderDependents = Math.floor(clamp(options.elderDependents, 0, 20));
+    const spouse = Boolean(options.spouse);
+    const salaryIncome = residentSalaryIncome2026(annualSalary);
+    const basicDeduction = residentBasicDeduction2026(salaryIncome);
+    const spouseDeduction = residentSpouseDeduction2026(salaryIncome, spouse);
+    const dependentDeduction = dependents * 330000 + specificDependents * 450000 + elderDependents * 380000;
+    const totalDeductions = basicDeduction + socialInsurance + lifeInsuranceDeduction +
+      earthquakeInsuranceDeduction + idecoDeduction + medicalExpenseDeduction + otherDeductions +
+      spouseDeduction + dependentDeduction;
+    const taxableIncome = Math.floor(Math.max(0, salaryIncome - totalDeductions) / 1000) * 1000;
+
+    const familyCount = 1 + (spouse ? 1 : 0) + dependents + specificDependents + elderDependents;
+    const fullyExemptLimit = familyCount === 1 ? 450000 : 350000 * familyCount + 310000;
+    const incomeLevyExemptLimit = familyCount === 1 ? 450000 : 350000 * familyCount + 420000;
+    const fullyExempt = salaryIncome <= fullyExemptLimit;
+    const incomeLevyExempt = salaryIncome <= incomeLevyExemptLimit;
+
+    let spouseDifference = 0;
+    if (spouse) {
+      if (salaryIncome <= 9000000) spouseDifference = 50000;
+      else if (salaryIncome <= 9500000) spouseDifference = 40000;
+      else if (salaryIncome <= 10000000) spouseDifference = 20000;
+    }
+    const humanDifference = 50000 + spouseDifference + dependents * 50000 +
+      specificDependents * 180000 + elderDependents * 100000;
+    let adjustmentBase = 0;
+    if (salaryIncome <= 25000000 && taxableIncome > 0) {
+      adjustmentBase = taxableIncome <= 2000000
+        ? Math.min(humanDifference, taxableIncome)
+        : Math.max(humanDifference - (taxableIncome - 2000000), 50000);
+    }
+    const cityAdjustment = Math.floor(adjustmentBase * 0.03);
+    const metroAdjustment = Math.floor(adjustmentBase * 0.02);
+    const cityIncomeLevy = incomeLevyExempt ? 0 : Math.floor(Math.max(0, taxableIncome * 0.06 - cityAdjustment) / 100) * 100;
+    const metroIncomeLevy = incomeLevyExempt ? 0 : Math.floor(Math.max(0, taxableIncome * 0.04 - metroAdjustment) / 100) * 100;
+    const incomeLevy = cityIncomeLevy + metroIncomeLevy;
+    const perCapitaLevy = fullyExempt ? 0 : 4000;
+    const forestTax = fullyExempt ? 0 : 1000;
+    const annualTax = incomeLevy + perCapitaLevy + forestTax;
+    const julyToMay = Math.floor(annualTax / 12 / 100) * 100;
+    const june = annualTax - julyToMay * 11;
+    return {
+      annualSalary, salaryIncome, basicDeduction, spouseDeduction, dependentDeduction,
+      socialInsurance, lifeInsuranceDeduction, earthquakeInsuranceDeduction, idecoDeduction,
+      medicalExpenseDeduction, otherDeductions, totalDeductions, taxableIncome,
+      humanDifference, adjustmentDeduction: cityAdjustment + metroAdjustment,
+      cityIncomeLevy, metroIncomeLevy, incomeLevy, perCapitaLevy, forestTax,
+      annualTax, june, julyToMay, fullyExempt, incomeLevyExempt,
+      fullyExemptLimit, incomeLevyExemptLimit
+    };
+  }
+
   function incomeBasicDeduction2026(totalIncome) {
     const g = Math.max(0, totalIncome);
     if (g <= 4890000) return 1040000;
@@ -285,7 +375,9 @@
   }
 
   return {
-    HEALTH_RATES_2026, salaryIncome2026, incomeBasicDeduction2026,
+    HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
+    residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026,
+    incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
     takeHome2026, furusatoLimit2026, yearEndAdjustment2026

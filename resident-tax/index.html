@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>住民税 計算 2026｜年収から月額・6月の天引きを計算｜いまいくら</title>
+  <meta name="description" content="2025年の年収から2026年度（令和8年度）の住民税を計算。年額、6月の天引き額、7月以降の月額、所得割・均等割の内訳がわかります。東京23区の標準税率に対応。">
+  <meta property="og:title" content="住民税 計算 2026｜月額・6月の天引き｜いまいくら">
+  <meta property="og:description" content="前年の年収と控除から、2026年度の住民税年額と毎月の天引きを計算。">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://imaikura.com/resident-tax/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebApplication","name":"住民税 計算 2026",
+    "url":"https://imaikura.com/resident-tax/","applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"住民税はいつの年収で決まりますか？","acceptedAnswer":{"@type":"Answer","text":"住民税は前年1月から12月の所得を基に計算され、会社員は原則として翌年6月から翌々年5月まで給与から天引きされます。"}},
+      {"@type":"Question","name":"住民税は6月だけ高いのですか？","acceptedAnswer":{"@type":"Answer","text":"年税額を100円単位で12回に分けるため、端数をまとめる6月分が7月以降より高くなることがあります。"}},
+      {"@type":"Question","name":"新卒2年目に住民税が増えるのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"入社1年目は前年の給与所得が少ないかないため住民税が少なく、前年に1年分働いた所得が反映される2年目の6月から負担が増えることが一般的です。"}}
+    ]
+  }</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a>
+      <nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">住民税計算</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">令和8年度（2026年度）対応</div>
+          <h1>住民税の年額・月額を<br>年収から計算</h1>
+          <p class="lead">2025年1月〜12月の給与と控除を入力すると、2026年6月からの住民税の年額、6月分、7月以降の月額がわかります。</p>
+        </div>
+        <div class="trust-badge">東京23区の標準税率で計算</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="residentForm">
+          <h2 class="panel-title">前年（2025年）の条件を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label for="annualSalary">年間給与（総支給）<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="annualSalary" type="number" inputmode="numeric" min="0" max="100000000" step="10000" value="5000000"><span class="unit">円</span></div>
+              <p class="help">源泉徴収票の「支払金額」</p>
+            </div>
+            <div class="field">
+              <label for="socialInsurance">社会保険料等の金額</label>
+              <div class="input-wrap"><input id="socialInsurance" type="number" inputmode="numeric" min="0" max="30000000" step="1000" value="750000"><span class="unit">円</span></div>
+              <p class="help">源泉徴収票の同名欄。給与天引きの健康保険・年金など</p>
+            </div>
+            <div class="field">
+              <label for="dependents">一般扶養親族</label>
+              <div class="input-wrap"><input id="dependents" type="number" inputmode="numeric" min="0" max="20" value="0"><span class="unit">人</span></div>
+              <p class="help">16〜18歳、23〜69歳の扶養親族</p>
+            </div>
+            <div class="field">
+              <label>配偶者控除</label>
+              <div class="choice-row" role="radiogroup" aria-label="配偶者控除">
+                <span class="choice"><input type="radio" id="spouseNo" name="spouse" value="0" checked><label for="spouseNo">なし</label></span>
+                <span class="choice"><input type="radio" id="spouseYes" name="spouse" value="1"><label for="spouseYes">あり</label></span>
+              </div>
+            </div>
+          </div>
+          <details class="details-block">
+            <summary>大学生・70歳以上・追加控除を設定</summary>
+            <div class="field-grid">
+              <div class="field"><label for="specificDependents">特定扶養親族（19〜22歳）</label><div class="input-wrap"><input id="specificDependents" type="number" min="0" max="20" value="0"><span class="unit">人</span></div></div>
+              <div class="field"><label for="elderDependents">老人扶養親族（70歳以上）</label><div class="input-wrap"><input id="elderDependents" type="number" min="0" max="20" value="0"><span class="unit">人</span></div></div>
+              <div class="field"><label for="lifeInsuranceDeduction">生命保険料控除額</label><div class="input-wrap"><input id="lifeInsuranceDeduction" type="number" min="0" max="70000" step="1000" value="0"><span class="unit">円</span></div><p class="help">住民税の控除額を入力（上限7万円）</p></div>
+              <div class="field"><label for="earthquakeInsuranceDeduction">地震保険料控除額</label><div class="input-wrap"><input id="earthquakeInsuranceDeduction" type="number" min="0" max="25000" step="1000" value="0"><span class="unit">円</span></div></div>
+              <div class="field"><label for="idecoDeduction">iDeCo・小規模企業共済等</label><div class="input-wrap"><input id="idecoDeduction" type="number" min="0" max="10000000" step="1000" value="0"><span class="unit">円</span></div></div>
+              <div class="field"><label for="medicalExpenseDeduction">医療費控除額</label><div class="input-wrap"><input id="medicalExpenseDeduction" type="number" min="0" max="30000000" step="1000" value="0"><span class="unit">円</span></div><p class="help">支払った医療費ではなく、申告した控除額</p></div>
+              <div class="field"><label for="otherDeductions">その他の所得控除</label><div class="input-wrap"><input id="otherDeductions" type="number" min="0" max="30000000" step="1000" value="0"><span class="unit">円</span></div></div>
+            </div>
+          </details>
+          <button class="calculate" type="submit">住民税を計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head" id="resultHead">
+            <small id="resultTitle">2026年度の住民税（年額）</small>
+            <div class="result-big" id="annualTax">—</div>
+            <div class="result-sub">6月 <strong id="juneTax">—</strong> ／ 7月〜翌5月 <strong id="monthlyTax">—</strong></div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>給与所得</span><strong id="salaryIncome">—</strong></div>
+            <div class="metric"><span>所得控除の合計</span><strong id="totalDeductions">—</strong></div>
+            <div class="metric"><span>課税所得</span><strong id="taxableIncome">—</strong></div>
+            <div class="metric"><span>所得割（調整控除後）</span><strong id="incomeLevy">—</strong></div>
+            <div class="metric submetric"><span>調整控除</span><strong id="adjustmentDeduction">—</strong></div>
+            <div class="metric"><span>均等割</span><strong id="perCapitaLevy">—</strong></div>
+            <div class="metric"><span>森林環境税</span><strong id="forestTax">—</strong></div>
+            <div class="notice" id="resultNotice">東京都23区の標準税率（特別区民税6％・都民税4％）で概算します。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section">
+        <h2>住民税の計算方法</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>前年の給与所得</b><p>2025年の給与から令和8年度の給与所得控除を差し引きます。</p></div>
+          <div class="step"><span>02</span><b>所得割</b><p>所得控除後の課税所得に区民税6％・都民税4％を掛け、調整控除を差し引きます。</p></div>
+          <div class="step"><span>03</span><b>均等割・森林環境税</b><p>均等割4,000円と森林環境税1,000円を加え、6月〜翌5月の12回に分けます。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="table-title">
+        <h2 id="table-title">年収別の住民税早見表【2026年度・東京】</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>前年の年収</th><th>住民税年額</th><th>6月</th><th>7月〜翌5月</th></tr></thead>
+            <tbody id="quickTable"></tbody>
+          </table>
+        </div>
+        <p class="table-note">東京23区、独身・扶養なし、社会保険料は年収の15％、追加控除・税額控除なしで概算。実額は自治体や控除により異なります。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>年収500万円の住民税はいくらですか？</summary><p>東京23区、独身・扶養なし、社会保険料75万円、追加控除なしの場合、2026年度の住民税は年約24万円です。6月は約2万500円、7月から翌年5月は月約2万円が目安です。</p></details>
+        <details class="faq"><summary>住民税はいつの年収で決まりますか？</summary><p>2026年度の住民税は、2025年1月から12月までの所得を基に計算されます。会社員は原則として2026年6月から2027年5月まで給与から天引きされます。</p></details>
+        <details class="faq"><summary>住民税は6月だけ高いのですか？</summary><p>年税額を100円単位で12回に分けるため、割り切れない端数を6月分にまとめます。そのため6月だけ数百円〜千円程度高くなることがあります。</p></details>
+        <details class="faq"><summary>新卒2年目に住民税が増えるのはなぜですか？</summary><p>住民税は前年所得に対してかかります。入社1年目は前年の給与所得が少ないかないため負担が少なく、1年分の給与が反映される2年目の6月から増えることが一般的です。</p></details>
+        <details class="faq"><summary>自治体の通知と結果が違うのはなぜですか？</summary><p>住宅ローン控除、ふるさと納税、配当・副業などの給与以外の所得、障害者・ひとり親控除、自治体独自の上乗せ税、非課税判定の個別条件はこの簡易計算に含めていません。確定額は自治体の税額決定通知書をご確認ください。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を引いた年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../furusato-nozei/"><h2>ふるさと納税 上限額</h2><p>住民税所得割と年収から自己負担2,000円の寄付上限を確認。</p><span class="card-link">上限額を計算する</span></a>
+          <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>所得税の年税額と源泉徴収額から還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a>
+          <a class="tool-card" href="../bonus-take-home/"><h2>ボーナスの手取り計算</h2><p>賞与から社会保険料と所得税を引いた振込額を確認。</p><span class="card-link">賞与手取りを計算する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>参照した公的資料（2026年8月22日確認）</strong><br>
+        <a href="https://www.tax.metro.tokyo.lg.jp/kazei/life/kojin_ju" target="_blank" rel="noopener">東京都主税局「個人住民税」</a> ／
+        <a href="https://www.city.yokohama.lg.jp/kurashi/koseki-zei-hoken/zeikin/y-shizei/kojin-shiminzei-kenminzei/kaisei/zeiseikaiseiR8.html" target="_blank" rel="noopener">横浜市「令和8年度実施の税制改正」</a> ／
+        <a href="https://www.city.yokohama.lg.jp/kurashi/koseki-zei-hoken/zeikin/y-shizei/kojin-shiminzei-kenminzei/tokubetsuchoshu-keisan/zeituuR8.html" target="_blank" rel="noopener">横浜市「令和8年度 市民税・県民税の計算」</a> ／
+        <a href="https://www.city.yokohama.lg.jp/kurashi/koseki-zei-hoken/zeikin/y-shizei/kojin-shiminzei-kenminzei/kojin-shiminzei-shosai/kojinkeisan.html" target="_blank" rel="noopener">横浜市「個人の市民税・県民税の計算例」</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は自治体の税額決定通知書をご確認ください。</div></div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax = window.ImaikuraTax;
+    const form = document.getElementById('residentForm');
+    const yen = n => Math.round(n).toLocaleString('ja-JP') + '円';
+    const val = id => Number(document.getElementById(id).value) || 0;
+    function getResult() {
+      return tax.residentTax2026({
+        annualSalary:val('annualSalary'), socialInsurance:val('socialInsurance'),
+        dependents:val('dependents'), specificDependents:val('specificDependents'), elderDependents:val('elderDependents'),
+        spouse:document.querySelector('input[name="spouse"]:checked').value === '1',
+        lifeInsuranceDeduction:val('lifeInsuranceDeduction'), earthquakeInsuranceDeduction:val('earthquakeInsuranceDeduction'),
+        idecoDeduction:val('idecoDeduction'), medicalExpenseDeduction:val('medicalExpenseDeduction'), otherDeductions:val('otherDeductions')
+      });
+    }
+    function calculate(event) {
+      if (event) event.preventDefault();
+      if (event && typeof gtag === 'function') gtag('event', 'resident_tax_calculate');
+      const r = getResult();
+      document.getElementById('annualTax').textContent=yen(r.annualTax);
+      document.getElementById('juneTax').textContent=yen(r.june); document.getElementById('monthlyTax').textContent=yen(r.julyToMay);
+      document.getElementById('salaryIncome').textContent=yen(r.salaryIncome); document.getElementById('totalDeductions').textContent=yen(r.totalDeductions);
+      document.getElementById('taxableIncome').textContent=yen(r.taxableIncome); document.getElementById('incomeLevy').textContent=yen(r.incomeLevy);
+      document.getElementById('adjustmentDeduction').textContent='−'+yen(r.adjustmentDeduction); document.getElementById('perCapitaLevy').textContent=yen(r.perCapitaLevy);
+      document.getElementById('forestTax').textContent=yen(r.forestTax);
+      const notice=document.getElementById('resultNotice');
+      notice.textContent=r.fullyExempt ? '入力条件では住民税非課税の目安に該当します。自治体ごとの条件と本人の状況で判定が変わる場合があります。' :
+        (r.incomeLevyExempt ? '入力条件では所得割は非課税、均等割と森林環境税のみの目安です。' : '東京23区の標準税率で概算。住宅ローン・ふるさと納税などの税額控除や給与以外の所得は含みません。');
+    }
+    form.addEventListener('submit',calculate); calculate();
+    [3000000,4000000,5000000,6000000,7000000,8000000,10000000].forEach(gross=>{
+      const r=tax.residentTax2026({annualSalary:gross,socialInsurance:gross*.15});
+      const tr=document.createElement('tr'); tr.innerHTML='<td><strong>'+Math.round(gross/10000).toLocaleString('ja-JP')+'万円</strong></td><td>'+yen(r.annualTax)+'</td><td>'+yen(r.june)+'</td><td>'+yen(r.julyToMay)+'</td>';
+      document.getElementById('quickTable').appendChild(tr);
+    });
+  </script>
+</body>
+</html>

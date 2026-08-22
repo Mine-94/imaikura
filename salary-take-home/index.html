@@ -162,6 +162,7 @@
       <section class="content-section">
         <div class="section-head"><h2>関連する計算ツール</h2></div>
         <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../resident-tax/"><h2>住民税の年額・月額計算</h2><p>前年の年収から6月の天引きと7月以降の月額を確認。</p><span class="card-link">住民税を計算する</span></a>
           <a class="tool-card" href="../bonus-take-home/"><h2>ボーナスの手取り計算</h2><p>前月給与と扶養人数から、賞与の社会保険料・所得税を計算。</p><span class="card-link">賞与手取りを計算する</span></a>
           <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a>
           <a class="tool-card" href="../furusato-nozei/"><h2>ふるさと納税 上限額</h2><p>年収と控除から自己負担2,000円の寄付上限を確認。</p><span class="card-link">上限額を計算する</span></a>
@@ -192,7 +193,7 @@
     const yen = n => Math.round(n).toLocaleString('ja-JP') + '円';
     function calculate(event){
       if(event) event.preventDefault();
-      if(event && typeof gtag === 'function') gtag('salary_calculate');
+      if(event && typeof gtag === 'function') gtag('event', 'salary_calculate');
       const result = tax.takeHome2026({
         monthlySalary:Number(document.getElementById('monthlySalary').value), annualBonus:Number(document.getElementById('annualBonus').value),
         prefecture:prefecture.value, age:Number(document.getElementById('age').value), dependents:Number(document.getElementById('dependents').value),
