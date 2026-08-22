@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ふるさと納税 上限額シミュレーター 2026 | いまいくら</title>
+<meta name="description" content="年収と扶養人数を入力するだけで、ふるさと納税の控除上限額を計算。国税庁の給与所得控除・基礎控除の最新基準に基づく無料シミュレーターです。">
+<meta property="og:title" content="ふるさと納税 上限額シミュレーター | いまいくら">
+<meta property="og:description" content="年収・扶養人数を入力するだけで、実質2,000円で寄付できる上限額がすぐわかります。">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://mine-94.github.io/imaikura/furusato-nozei/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ふるさと納税 上限額シミュレーター",
+  "url": "https://mine-94.github.io/imaikura/furusato-nozei/",
+  "applicationCategory": "FinanceApplication",
+  "description": "年収と扶養人数からふるさと納税の控除上限額を計算する無料シミュレーター",
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}
+}
+</script>
+<style>
+:root{
+  --bg:#f5f7fb;--bg-2:#ffffff;--card:#ffffff;--card-2:#f8fafc;
+  --border:#e2e8f0;--border-strong:#cbd5e1;
+  --text:#0f1b2d;--text-2:#4b5c73;--text-3:#8695a8;
+  --navy:#1e3a6e;--navy-2:#2c5296;--accent:#1e56a0;--accent-2:#0e7fb0;
+  --ok:#0f8a5f;--ok-bg:#e7f6ee;--danger:#c0392b;
+  --radius:14px;--radius-sm:10px;
+  font-family:'Noto Sans JP',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px;}
+header.top{background:var(--navy);color:#fff;}
+.top-inner{max-width:680px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-weight:700;font-size:16px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px;color:#fff;}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:#4fd1c5;}
+.badge{font-size:11px;font-weight:600;color:#fff;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.24);padding:4px 10px;border-radius:20px;}
+.hero{padding:36px 0 20px;text-align:center;border-bottom:1px solid var(--border);background:var(--bg-2);}
+.eyebrow{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);background:#e8f0fb;border:1px solid #cfe0f5;padding:5px 12px;border-radius:20px;margin-bottom:14px;letter-spacing:0.02em;}
+h1{font-size:24px;font-weight:800;letter-spacing:-0.01em;line-height:1.5;margin-bottom:10px;color:var(--navy);}
+.hero p.sub{color:var(--text-2);font-size:14px;max-width:480px;margin:0 auto;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:24px 0;box-shadow:0 1px 2px rgba(15,27,45,0.04);}
+.field{margin-bottom:18px;}
+.field label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:8px;}
+.field label span.val{color:var(--accent);font-weight:800;font-size:14px;}
+input[type=number]{
+  width:100%;background:var(--card-2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:11px 14px;color:var(--text);font-size:16px;font-family:inherit;font-weight:600;
+}
+input[type=number]:focus{outline:none;border-color:var(--accent);}
+input[type=range]{width:100%;accent-color:var(--accent);height:6px;}
+.hint{font-size:12px;color:var(--text-3);margin-top:6px;}
+.result-box{
+  background:linear-gradient(180deg,#eef4fc,#e4edfa);
+  border:1px solid #cfe0f5;border-radius:var(--radius);padding:26px;text-align:center;margin:24px 0;
+}
+.result-label{font-size:13px;color:var(--text-2);font-weight:700;margin-bottom:6px;}
+.result-num{font-size:36px;font-weight:800;letter-spacing:-0.01em;color:var(--navy);}
+.result-sub{font-size:13px;color:var(--text-2);margin-top:10px;background:var(--ok-bg);color:var(--ok);display:inline-block;padding:4px 12px;border-radius:20px;font-weight:700;}
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+.bd-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 15px;}
+.bd-item .k{font-size:11px;color:var(--text-3);margin-bottom:4px;font-weight:600;}
+.bd-item .v{font-size:15px;font-weight:700;color:var(--navy);}
+section.note{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:16px 18px;font-size:13px;color:#78530e;margin-bottom:24px;line-height:1.7;}
+section.tips{margin-bottom:32px;}
+section.tips h2{font-size:17px;font-weight:800;margin-bottom:12px;color:var(--navy);}
+section.tips ul{list-style:none;}
+section.tips li{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-2);display:flex;gap:10px;}
+section.tips li:last-child{border-bottom:none;}
+section.tips li .ico{color:var(--accent);flex-shrink:0;}
+section.faq{margin-bottom:32px;}
+section.faq h2{font-size:17px;font-weight:800;margin-bottom:12px;color:var(--navy);}
+details{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden;}
+details summary{padding:14px 16px;font-size:14px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;color:var(--text);}
+details summary::-webkit-details-marker{display:none;}
+details summary::after{content:'+';color:var(--accent);font-size:18px;}
+details[open] summary::after{content:'–';}
+details p{padding:0 16px 16px;font-size:13px;color:var(--text-2);line-height:1.7;}
+section.related{margin-bottom:36px;}
+section.related h2{font-size:15px;font-weight:800;margin-bottom:12px;color:var(--text-2);}
+.related-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.related-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-size:13px;font-weight:700;transition:.15s;color:var(--navy);}
+.related-card:hover{border-color:var(--accent);}
+.related-card .ic{font-size:18px;margin-bottom:6px;}
+.sources{font-size:12px;color:var(--text-3);margin-bottom:36px;line-height:1.8;}
+.sources a{color:var(--accent);text-decoration:underline;}
+footer{padding:22px 0 50px;border-top:1px solid var(--border);color:var(--text-3);font-size:12px;}
+@media(max-width:480px){h1{font-size:19px;}.result-num{font-size:28px;}.breakdown{grid-template-columns:1fr;}.related-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><a href="../" style="display:flex;align-items:center;gap:8px;color:#fff;"><span class="dot"></span>いまいくら</a></div>
+    <span class="badge">2026年分基準</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow">実質2,000円で寄付できる上限は？</span>
+    <h1>ふるさと納税、いくらまで得する？</h1>
+    <p class="sub">年収と扶養人数を入力するだけで、控除上限額の目安をすぐに計算します。</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="field">
+      <label>年収（給与収入） <span class="val" id="payVal">500万円</span></label>
+      <input type="range" id="payRange" min="100" max="2000" step="10" value="500">
+      <input type="number" id="payInput" value="500" style="margin-top:8px;">
+      <div class="hint">万円単位で入力（例: 500 = 年収500万円、源泉徴収票の「支払金額」）</div>
+    </div>
+    <div class="field">
+      <label>扶養人数（配偶者を含む） <span class="val" id="fuyoVal">0人</span></label>
+      <input type="range" id="fuyoRange" min="0" max="5" step="1" value="0">
+      <input type="number" id="fuyoInput" value="0" style="margin-top:8px;">
+      <div class="hint">16歳未満の子は扶養控除の対象外のため人数に含めません</div>
+    </div>
+  </div>
+
+  <div class="result-box">
+    <div class="result-label">ふるさと納税 控除上限額（目安）</div>
+    <div class="result-num" id="limitResult">¥0</div>
+    <div class="result-sub">この金額まで実質負担2,000円</div>
+  </div>
+
+  <div class="breakdown">
+    <div class="bd-item"><div class="k">給与所得</div><div class="v" id="bdKyuyo">-</div></div>
+    <div class="bd-item"><div class="k">所得税 限界税率</div><div class="v" id="bdRate">-</div></div>
+    <div class="bd-item"><div class="k">住民税 課税所得</div><div class="v" id="bdJuminBase">-</div></div>
+    <div class="bd-item"><div class="k">住民税所得割額</div><div class="v" id="bdJumin">-</div></div>
+  </div>
+
+  <section class="note">
+    ⚠️ この計算は国税庁「No.1410 給与所得控除」「No.1199 基礎控除」（いずれも令和7年分・令和8年分基準）と、住民税基礎控除43万円（令和8年度も据え置き）を用いた概算です。医療費控除・iDeCo・住宅ローン控除など個別の控除がある場合は結果が異なります。正確な上限額は住民税決定通知書（5〜6月頃）の「所得割額」でご確認ください。
+  </section>
+
+  <section class="tips">
+    <h2>知っておきたいポイント</h2>
+    <ul>
+      <li><span class="ico">●</span> 上限額の目安は「住民税所得割額 × 約20%」です。所得割額が大きいほど上限も上がります。</li>
+      <li><span class="ico">●</span> 年の途中では正確な年収が確定しないため、賞与を含めた見込み額で計算し、年末に近づいたら再計算するのがおすすめです。</li>
+      <li><span class="ico">●</span> iDeCo（個人型確定拠出年金）を利用している場合、掛金分だけ課税所得が下がるため、上限額も下がります。</li>
+      <li><span class="ico">●</span> ワンストップ特例は「寄付先が5自治体以内」かつ「確定申告が不要な給与所得者」が対象です。確定申告をする場合はワンストップ特例の申請を取り下げる必要があります。</li>
+    </ul>
+  </section>
+
+  <section class="faq">
+    <h2>よくある質問</h2>
+    <details>
+      <summary>上限額はどうやって計算されていますか？</summary>
+      <p>ふるさと納税の寄付額は「所得税の還付」「住民税の基本控除（10%）」「住民税の特例控除」の3つに分けて控除されます。このうち特例控除には「住民税所得割額の20%」という上限があり、これが実質的な上限額を決めています。本ツールでは、給与収入から給与所得控除・基礎控除・扶養控除を差し引いて課税所得を計算し、そこから所得税の限界税率と住民税所得割額を求めて上限額を算出しています。</p>
+    </details>
+    <details>
+      <summary>年収はボーナスを含めた金額ですか？</summary>
+      <p>はい。源泉徴収票に記載される「支払金額」（税引前の総支給額、賞与を含む1月〜12月の合計）で計算してください。</p>
+    </details>
+    <details>
+      <summary>上限額を超えて寄付するとどうなりますか？</summary>
+      <p>上限額を超えた部分は控除の対象外となり、その分は純粋な寄付（自己負担）になります。心配な場合は上限額の8〜9割程度を目安に寄付すると安全です。</p>
+    </details>
+    <details>
+      <summary>配偶者控除と扶養控除の違いは？</summary>
+      <p>配偶者控除は年収150万円以下の配偶者がいる場合に、扶養控除は16歳以上の子や親などの扶養親族がいる場合に適用されます。本ツールの「扶養人数」には配偶者を含めた合計人数を入力してください。</p>
+    </details>
+  </section>
+
+  <section class="related">
+    <h2>関連ツール</h2>
+    <div class="related-grid">
+      <a class="related-card" href="../"><div class="ic">🏠</div>いまいくら トップ</a>
+    </div>
+  </section>
+
+  <p class="sources">
+    参考: <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1410.htm" target="_blank" rel="noopener">国税庁 No.1410 給与所得控除</a> / <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1199.htm" target="_blank" rel="noopener">国税庁 No.1199 基礎控除</a> / <a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/furusato/" target="_blank" rel="noopener">総務省 ふるさと納税ポータルサイト</a>
+  </p>
+
+  <footer>
+    <div>いまいくら — 税金・お金の計算ツール集。計算結果は概算であり、法的効力はありません。正確な金額は税務署・お住まいの自治体にご確認ください。</div>
+  </footer>
+</div>
+
+<script>
+function yen(n){ return '¥' + Math.round(n).toLocaleString('ja-JP'); }
+function man(n){ return Math.round(n/10000).toLocaleString('ja-JP') + '万円'; }
+
+function kyuyoKojo(nenshu){
+  if (nenshu <= 1900000) return 650000;
+  if (nenshu <= 3600000) return nenshu*0.3+80000;
+  if (nenshu <= 6600000) return nenshu*0.2+440000;
+  if (nenshu <= 8500000) return nenshu*0.1+1100000;
+  return 1950000;
+}
+function kisoKojoShotoku(g){
+  if (g <= 1320000) return 950000;
+  if (g <= 3360000) return 880000;
+  if (g <= 4890000) return 680000;
+  if (g <= 6550000) return 630000;
+  if (g <= 23500000) return 580000;
+  if (g <= 24000000) return 480000;
+  if (g <= 24500000) return 320000;
+  if (g <= 25000000) return 160000;
+  return 0;
+}
+const kisoKojoJuminzei = 430000;
+const fuyoShotoku = 380000;
+const fuyoJuminzei = 330000;
+
+function shotokuzeiInfo(kazeiShotoku){
+  const b = [
+    [1950000,0.05,0],
+    [3300000,0.10,97500],
+    [6950000,0.20,427500],
+    [9000000,0.23,636000],
+    [18000000,0.33,1536000],
+    [40000000,0.40,2796000]
+  ];
+  for (const [limit,rate,ded] of b){
+    if (kazeiShotoku <= limit) return rate;
+  }
+  return 0.45;
+}
+
+function calc(){
+  const nenshuMan = parseFloat(document.getElementById('payInput').value) || 0;
+  const fuyo = parseInt(document.getElementById('fuyoInput').value) || 0;
+  const nenshu = nenshuMan * 10000;
+
+  const kyuyoShotoku = Math.max(0, nenshu - kyuyoKojo(nenshu));
+  const kisoS = kisoKojoShotoku(kyuyoShotoku);
+  const kazeiShotokuShotoku = Math.max(0, kyuyoShotoku - kisoS - fuyoShotoku*fuyo);
+  const genkaiZeiritsu = shotokuzeiInfo(kazeiShotokuShotoku);
+
+  const kazeiShotokuJumin = Math.max(0, kyuyoShotoku - kisoKojoJuminzei - fuyoJuminzei*fuyo);
+  const juminShotowari = Math.floor(kazeiShotokuJumin * 0.10);
+
+  const bunbo = 0.90 - genkaiZeiritsu*1.021;
+  const genkaigaku = bunbo > 0 ? Math.floor((juminShotowari*0.20/bunbo + 2000)/1000)*1000 : 0;
+
+  document.getElementById('limitResult').textContent = yen(genkaigaku);
+  document.getElementById('bdKyuyo').textContent = man(kyuyoShotoku);
+  document.getElementById('bdRate').textContent = Math.round(genkaiZeiritsu*100) + '%';
+  document.getElementById('bdJuminBase').textContent = man(kazeiShotokuJumin);
+  document.getElementById('bdJumin').textContent = yen(juminShotowari);
+
+  document.getElementById('payVal').textContent = nenshuMan.toLocaleString('ja-JP') + '万円';
+  document.getElementById('fuyoVal').textContent = fuyo + '人';
+}
+
+const payRange = document.getElementById('payRange');
+const payInput = document.getElementById('payInput');
+const fuyoRange = document.getElementById('fuyoRange');
+const fuyoInput = document.getElementById('fuyoInput');
+
+payRange.addEventListener('input', ()=>{ payInput.value = payRange.value; calc(); });
+payInput.addEventListener('input', ()=>{ if(payInput.value <= 2000) payRange.value = payInput.value; calc(); });
+fuyoRange.addEventListener('input', ()=>{ fuyoInput.value = fuyoRange.value; calc(); });
+fuyoInput.addEventListener('input', ()=>{ if(fuyoInput.value <= 5) fuyoRange.value = fuyoInput.value; calc(); });
+
+calc();
+</script>
+
+</body>
+</html>
