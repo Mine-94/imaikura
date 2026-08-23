@@ -421,12 +421,55 @@
     };
   }
 
+  // 退職所得（令和8年分）。国税庁タックスアンサーNo.1420・退職所得の源泉徴収税額の速算表に基づく。
+  function retirementIncome2026(options) {
+    const retirementPay = clamp(options.retirementPay, 0, 1000000000);
+    const wholeYears = Math.floor(clamp(options.years, 0, 99));
+    const extraMonths = Math.floor(clamp(options.months, 0, 11));
+    const years = Math.max(1, wholeYears + (extraMonths > 0 ? 1 : 0));
+    const isOfficer = Boolean(options.isOfficer);
+    const disability = Boolean(options.disability);
+    const declarationSubmitted = options.declarationSubmitted !== false;
+
+    let deduction = years <= 20 ? 400000 * years : 8000000 + 700000 * (years - 20);
+    deduction = Math.max(deduction, 800000);
+    if (disability) deduction += 1000000;
+
+    const excess = Math.max(0, retirementPay - deduction);
+    const isSpecialOfficer = years <= 5 && isOfficer;
+    const isShortTerm = years <= 5 && !isOfficer;
+
+    let taxableRetirementIncome;
+    if (isSpecialOfficer) {
+      taxableRetirementIncome = excess;
+    } else if (isShortTerm && excess > 3000000) {
+      taxableRetirementIncome = 1500000 + (excess - 3000000);
+    } else {
+      taxableRetirementIncome = excess / 2;
+    }
+    taxableRetirementIncome = Math.floor(taxableRetirementIncome / 1000) * 1000;
+
+    const incomeInfo = nationalIncomeTax(taxableRetirementIncome);
+    const prefecturalTax = Math.floor(taxableRetirementIncome * 0.04 / 100) * 100;
+    const municipalTax = Math.floor(taxableRetirementIncome * 0.06 / 100) * 100;
+    const residentTax = prefecturalTax + municipalTax;
+    const incomeTax = declarationSubmitted ? incomeInfo.total : Math.floor(retirementPay * 0.2042);
+    const net = Math.max(0, retirementPay - incomeTax - residentTax);
+
+    return {
+      retirementPay, years, wholeYears, extraMonths, isOfficer, disability, declarationSubmitted,
+      deduction, excess, isSpecialOfficer, isShortTerm, taxableRetirementIncome,
+      marginalRate: incomeInfo.rate, incomeTax, prefecturalTax, municipalTax, residentTax,
+      net, netRate: retirementPay ? net / retirementPay : 0
+    };
+  }
+
   return {
     HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
     residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026, incomeWall2026,
     incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
-    takeHome2026, furusatoLimit2026, yearEndAdjustment2026
+    takeHome2026, furusatoLimit2026, yearEndAdjustment2026, retirementIncome2026
   };
 });
