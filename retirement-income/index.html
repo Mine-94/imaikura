@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>退職金の手取り計算 2026｜退職所得税・住民税をシミュレーション｜いまいくら</title>
+  <meta name="description" content="2026年（令和8年）の退職金の手取りを計算。退職金額と勤続年数から退職所得控除額、所得税・復興特別所得税、住民税を試算します。">
+  <meta property="og:title" content="退職金の手取り計算 2026｜いまいくら">
+  <meta property="og:description" content="退職金額と勤続年数から、退職所得控除後の税額と手取りを試算。">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://imaikura.com/retirement-income/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebApplication","name":"退職金の手取り計算 2026",
+    "url":"https://imaikura.com/retirement-income/","applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
+  }</script>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a><nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">退職金手取り</a></nav></div></header>
+
+  <main>
+    <section class="hero"><div class="container hero-inner"><div><div class="kicker">令和8年（2026年）分対応</div><h1>退職金の<br>手取り計算</h1><p class="lead">退職金額と勤続年数を入力すると、退職所得控除後の所得税・住民税を差し引いた手取り額の目安がわかります。</p></div><div class="trust-badge">退職所得控除・1/2課税に対応</div></div></section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="retirementForm">
+          <h2 class="panel-title">退職金の条件を入力</h2>
+          <div class="field-grid">
+            <div class="field"><label for="retirementPay">退職金額面 <span class="required">必須</span></label><div class="input-wrap"><input id="retirementPay" type="number" inputmode="numeric" min="0" max="1000000000" step="10000" value="10000000"><span class="unit">円</span></div><p class="help">源泉徴収される前の、勤務先から支給される退職金の総額</p></div>
+            <div class="field"><label for="years">勤続年数 <span class="required">必須</span></label><div class="input-wrap"><input id="years" type="number" inputmode="numeric" min="0" max="99" value="20"><span class="unit">年</span></div><p class="help">入社日から退職日までの年数（端数は下欄で入力）</p></div>
+            <div class="field"><label for="months">勤続年数の端数</label><div class="input-wrap"><input id="months" type="number" inputmode="numeric" min="0" max="11" value="0"><span class="unit">ヶ月</span></div><p class="help">1ヶ月でも端数があれば勤続年数は1年切り上げられます</p></div>
+            <div class="field"><label>退職所得の受給に関する申告書</label><div class="choice-row" role="radiogroup" aria-label="退職所得の受給に関する申告書"><span class="choice"><input type="radio" id="declYes" name="declaration" value="1" checked><label for="declYes">提出済み</label></span><span class="choice"><input type="radio" id="declNo" name="declaration" value="0"><label for="declNo">未提出</label></span></div><p class="help">通常は退職前に勤務先へ提出します</p></div>
+          </div>
+          <details class="details-block">
+            <summary>障害退職・役員等の詳細を設定</summary>
+            <div class="field-grid">
+              <div class="field"><label>障害者になったことが直接の原因での退職</label><div class="choice-row" role="radiogroup" aria-label="障害退職"><span class="choice"><input type="radio" id="disNo" name="disability" value="0" checked><label for="disNo">いいえ</label></span><span class="choice"><input type="radio" id="disYes" name="disability" value="1"><label for="disYes">はい</label></span></div><p class="help">該当する場合、退職所得控除額に100万円が加算されます</p></div>
+              <div class="field"><label>役員等勤続年数5年以下の役員等に該当</label><div class="choice-row" role="radiogroup" aria-label="役員等該当"><span class="choice"><input type="radio" id="offNo" name="officer" value="0" checked><label for="offNo">いいえ</label></span><span class="choice"><input type="radio" id="offYes" name="officer" value="1"><label for="offYes">はい</label></span></div><p class="help">取締役・国会議員・公務員などで役員等勤続年数が5年以下の場合</p></div>
+            </div>
+          </details>
+          <button class="calculate" type="submit">退職金の手取りを計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head"><small id="resultTitle">退職金の手取り（概算）</small><div class="result-big" id="net">—</div><div class="result-sub">手取り率 <strong id="netRate">—</strong></div></div>
+          <div class="result-body">
+            <div class="metric"><span>退職金額面</span><strong id="gross">—</strong></div>
+            <div class="metric"><span>退職所得控除額</span><strong id="deduction">—</strong></div>
+            <div class="metric"><span>課税退職所得金額</span><strong id="taxable">—</strong></div>
+            <div class="metric"><span>所得税・復興特別所得税</span><strong id="incomeTax">—</strong></div>
+            <div class="metric submetric"><span>道府県民税（4%）</span><strong id="prefecturalTax">—</strong></div>
+            <div class="metric submetric"><span>市区町村民税（6%）</span><strong id="municipalTax">—</strong></div>
+            <div class="metric total"><span>住民税の合計</span><strong id="residentTax">—</strong></div>
+            <div class="notice" id="resultNotice">「退職所得の受給に関する申告書」を提出していれば、勤務先が正しい税額で源泉徴収するため、原則として確定申告は不要です。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section">
+        <h2>退職金の税金はどう決まる？</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>退職所得控除額を計算</b><p>勤続20年以下は「40万円×勤続年数」、20年超は「800万円＋70万円×（勤続年数−20年）」。最低保証額は80万円です。</p></div>
+          <div class="step"><span>02</span><b>控除後の金額を原則1/2に</b><p>退職金から控除額を引いた残額を2分の1にした金額が課税対象（勤続5年以下は例外あり）。</p></div>
+          <div class="step"><span>03</span><b>所得税・住民税を分離課税で計算</b><p>他の所得と合算せず、退職金だけで税額を計算する「分離課税」が適用されます。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>勤続年数別の退職所得控除額</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>勤続年数</th><th>退職所得控除額</th></tr></thead>
+            <tbody>
+              <tr><td>5年</td><td><strong>200万円</strong></td></tr>
+              <tr><td>10年</td><td><strong>400万円</strong></td></tr>
+              <tr><td>15年</td><td><strong>600万円</strong></td></tr>
+              <tr><td>20年</td><td><strong>800万円</strong></td></tr>
+              <tr><td>25年</td><td><strong>1,150万円</strong></td></tr>
+              <tr><td>30年</td><td><strong>1,500万円</strong></td></tr>
+              <tr><td>35年</td><td><strong>1,850万円</strong></td></tr>
+              <tr><td>40年</td><td><strong>2,200万円</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">20年以下は「40万円×勤続年数」（最低80万円）、20年超は「800万円＋70万円×（勤続年数−20年）」で計算します（本ツールの計算式による）。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>退職金2,000万円の場合の手取り目安</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>勤続年数</th><th>課税退職所得金額</th><th>手取り額</th></tr></thead>
+            <tbody>
+              <tr><td>10年</td><td>800万円</td><td><strong>17,970,716円</strong></td></tr>
+              <tr><td>20年</td><td>600万円</td><td><strong>18,611,278円</strong></td></tr>
+              <tr><td>30年</td><td>250万円</td><td><strong>19,594,298円</strong></td></tr>
+              <tr><td>40年</td><td>0円</td><td><strong>20,000,000円</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">退職所得の受給に関する申告書を提出済みの場合の試算です（本ツールの計算式による）。勤続年数が長いほど控除額が増え、手取り率も高くなります。</p>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>勤続5年以下の退職金は計算方法が異なる</h2>
+        <p class="plain-copy">勤続年数が5年以下の場合、控除後の金額のうち<b>300万円を超える部分</b>には1/2課税が適用されません（短期退職手当等）。さらに役員等（取締役・国会議員・公務員など）としての勤続年数が5年以下の場合は、控除後の金額の<b>全額</b>が課税対象になります（特定役員退職手当等）。短期間の転職や役員退任による退職金は、長期勤続の場合より税負担が重くなる点に注意してください。</p>
+      </section>
+
+      <section class="content-section"><h2>よくある質問</h2>
+        <details class="faq"><summary>「退職所得の受給に関する申告書」を提出しないとどうなりますか？</summary><p>退職金額面の20.42%が一律で源泉徴収されます。本来の税額より多く引かれることが多いため、確定申告をすることで還付を受けられますが、資金が半年〜1年程度拘束される点に注意してください。退職前に勤務先へ提出するのが一般的です。</p></details>
+        <details class="faq"><summary>iDeCoの一時金と退職金を両方受け取る場合はどうなりますか？</summary><p>同一年またはiDeCoとの受取時期が近い場合、退職所得控除額の計算が調整されることがあります。2026年（令和8年）1月1日以降の受取分からは、この調整対象期間が5年から10年に延長されました。詳細は勤務先やiDeCoの運営管理機関にご確認ください。</p></details>
+        <details class="faq"><summary>退職金には住民税がかかりますか？</summary><p>はい。退職所得の受給に関する申告書の提出有無にかかわらず、退職金支払時に勤務先が住民税（道府県民税4%・市区町村民税6%）を特別徴収します。所得税と異なり、申告書未提出でも税率は変わりません。</p></details>
+        <details class="faq"><summary>医療費控除やふるさと納税と一緒に申告できますか？</summary><p>退職所得も含めて確定申告書を提出できます。医療費控除や寄附金控除の適用を受ける場合は、確定申告書に退職所得の金額を記載する必要があります。</p></details>
+      </section>
+
+      <section class="content-section"><div class="section-head"><h2>関連する計算ツール</h2></div><div class="tool-grid compact-grid"><a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を含む年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a><a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金計算</h2><p>源泉徴収税額と年税額を比べて還付・追加徴収を試算。</p><span class="card-link">還付金を計算する</span></a><a class="tool-card" href="../resident-tax/"><h2>住民税の年額・月額計算</h2><p>前年の年収と所得控除から翌年度の住民税を確認。</p><span class="card-link">住民税を計算する</span></a></div></section>
+
+      <section class="content-section content-card sources"><strong>参照した公的資料（2026年8月23日確認）</strong><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1420.htm" target="_blank" rel="noopener">国税庁タックスアンサー「No.1420 退職金を受け取ったとき（退職所得）」</a> ／ <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732_besshi.htm" target="_blank" rel="noopener">国税庁「別紙 退職所得の源泉徴収税額の速算表」</a></section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先・税務署の案内をご確認ください。</div></div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax=window.ImaikuraTax, form=document.getElementById('retirementForm');
+    const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
+    const value=id=>Number(document.getElementById(id).value)||0;
+    function calculate(event){
+      if(event)event.preventDefault();
+      if(event&&typeof gtag==='function')gtag('event','retirement_calculate');
+      const result=tax.retirementIncome2026({
+        retirementPay:value('retirementPay'),years:value('years'),months:value('months'),
+        declarationSubmitted:document.querySelector('input[name="declaration"]:checked').value==='1',
+        disability:document.querySelector('input[name="disability"]:checked').value==='1',
+        isOfficer:document.querySelector('input[name="officer"]:checked').value==='1'
+      });
+      document.getElementById('net').textContent=yen(result.net);
+      document.getElementById('netRate').textContent=(result.netRate*100).toFixed(1)+'%';
+      document.getElementById('gross').textContent=yen(result.retirementPay);
+      document.getElementById('deduction').textContent=yen(result.deduction);
+      document.getElementById('taxable').textContent=yen(result.taxableRetirementIncome);
+      document.getElementById('incomeTax').textContent=yen(result.incomeTax);
+      document.getElementById('prefecturalTax').textContent=yen(result.prefecturalTax);
+      document.getElementById('municipalTax').textContent=yen(result.municipalTax);
+      document.getElementById('residentTax').textContent=yen(result.residentTax);
+      document.getElementById('resultNotice').textContent=result.declarationSubmitted
+        ? '「退職所得の受給に関する申告書」を提出済みのため、原則として確定申告は不要です。'
+        : '申告書未提出のため、退職金額面の20.42%が源泉徴収されます。確定申告で正しい税額との差額を精算できます。';
+    }
+    form.addEventListener('submit',calculate);calculate();
+  </script>
+</body>
+</html>
