@@ -46,7 +46,6 @@
     return row ? row[1] : table[table.length - 1][1];
   }
 
-  // 令和8・9年分。220万円未満は国税庁の特例表を反映。
   function salaryIncome2026(gross) {
     const n = Math.max(0, Math.floor(gross));
     if (n < 741000) return 0;
@@ -60,7 +59,6 @@
     return n - 1950000;
   }
 
-  // 令和8年度住民税（令和7年分給与）。給与所得控除の最低保障額は65万円。
   function residentSalaryIncome2026(gross) {
     const n = Math.max(0, Math.floor(gross));
     if (n <= 1900000) return Math.max(0, n - 650000);
@@ -87,7 +85,6 @@
     return 0;
   }
 
-  // 東京23区の標準税率で令和8年度の住民税を概算する。
   function residentTax2026(options) {
     const annualSalary = clamp(options.annualSalary, 0, 100000000);
     const socialInsurance = clamp(options.socialInsurance, 0, 30000000);
@@ -150,7 +147,6 @@
     };
   }
 
-  // 2026年のパート・アルバイト向け「年収の壁」判定。
   function incomeWall2026(options) {
     const annualSalary = clamp(options.annualSalary, 0, 10000000);
     const weeklyHours = clamp(options.weeklyHours, 0, 80);
@@ -421,46 +417,51 @@
     };
   }
 
-  // 退職所得（令和8年分）。国税庁タックスアンサーNo.1420・退職所得の源泉徴収税額の速算表に基づく。
-  function retirementIncome2026(options) {
-    const retirementPay = clamp(options.retirementPay, 0, 1000000000);
-    const wholeYears = Math.floor(clamp(options.years, 0, 99));
-    const extraMonths = Math.floor(clamp(options.months, 0, 11));
-    const years = Math.max(1, wholeYears + (extraMonths > 0 ? 1 : 0));
-    const isOfficer = Boolean(options.isOfficer);
-    const disability = Boolean(options.disability);
-    const declarationSubmitted = options.declarationSubmitted !== false;
+  function medicalExpenseDeduction2026(options) {
+    const annualSalary = clamp(options.annualSalary, 0, 100000000);
+    const medicalExpensesPaid = clamp(options.medicalExpensesPaid, 0, 100000000);
+    const insuranceReimbursement = clamp(options.insuranceReimbursement, 0, medicalExpensesPaid);
+    const dependents = clamp(options.dependents, 0, 10);
+    const specificDependents = clamp(options.specificDependents, 0, 10);
+    const elderDependents = clamp(options.elderDependents, 0, 10);
+    const spouse = options.spouse ? 1 : 0;
+    const monthlySalary = annualSalary / 12;
+    const social = options.socialInsuranceAnnual > 0
+      ? { total: Number(options.socialInsuranceAnnual) }
+      : socialInsurance2026({ monthlySalary, annualBonus: 0, age: options.age || 30, prefecture: options.prefecture || '東京都' });
+    const salaryIncome = salaryIncome2026(annualSalary);
 
-    let deduction = years <= 20 ? 400000 * years : 8000000 + 700000 * (years - 20);
-    deduction = Math.max(deduction, 800000);
-    if (disability) deduction += 1000000;
+    // 医療費控除額 = (支払った医療費 - 保険金等) - (10万円 or 総所得金額等×5%のいずれか低い方)、最高200万円
+    const netMedicalExpenses = Math.max(0, medicalExpensesPaid - insuranceReimbursement);
+    const threshold = Math.min(100000, Math.floor(salaryIncome * 0.05));
+    const medicalDeduction = Math.min(2000000, Math.max(0, netMedicalExpenses - threshold));
 
-    const excess = Math.max(0, retirementPay - deduction);
-    const isSpecialOfficer = years <= 5 && isOfficer;
-    const isShortTerm = years <= 5 && !isOfficer;
+    // 所得税：控除適用前後の税額差で還付額を精密計算（累進税率の段差を正確に反映）
+    const spouseDeduction = spouseDeduction2026(salaryIncome, spouse);
+    const incomeDependentDeduction = dependents * 380000 + spouseDeduction + specificDependents * 630000 + elderDependents * 480000;
+    const basicDeduction = incomeBasicDeduction2026(salaryIncome);
+    const taxableBefore = Math.max(0, salaryIncome - basicDeduction - social.total - incomeDependentDeduction);
+    const taxableAfter = Math.max(0, taxableBefore - medicalDeduction);
+    const taxInfoBefore = nationalIncomeTax(taxableBefore);
+    const taxInfoAfter = nationalIncomeTax(taxableAfter);
+    const incomeTaxRefund = Math.max(0, taxInfoBefore.total - taxInfoAfter.total);
 
-    let taxableRetirementIncome;
-    if (isSpecialOfficer) {
-      taxableRetirementIncome = excess;
-    } else if (isShortTerm && excess > 3000000) {
-      taxableRetirementIncome = 1500000 + (excess - 3000000);
-    } else {
-      taxableRetirementIncome = excess / 2;
-    }
-    taxableRetirementIncome = Math.floor(taxableRetirementIncome / 1000) * 1000;
+    // 住民税：所得割10%ベースで控除前後の差額を計算
+    const residentDependentDeduction = (dependents + spouse) * 330000 + specificDependents * 450000 + elderDependents * 380000;
+    const residentDeductionsBase = 430000 + social.total + residentDependentDeduction;
+    const residentTaxableBefore = Math.floor(Math.max(0, salaryIncome - residentDeductionsBase) / 1000) * 1000;
+    const residentTaxableAfter = Math.floor(Math.max(0, residentTaxableBefore - medicalDeduction) / 1000) * 1000;
+    const residentLevyBefore = Math.floor(residentTaxableBefore * 0.10 / 100) * 100;
+    const residentLevyAfter = Math.floor(residentTaxableAfter * 0.10 / 100) * 100;
+    const residentTaxSaving = Math.max(0, residentLevyBefore - residentLevyAfter);
 
-    const incomeInfo = nationalIncomeTax(taxableRetirementIncome);
-    const prefecturalTax = Math.floor(taxableRetirementIncome * 0.04 / 100) * 100;
-    const municipalTax = Math.floor(taxableRetirementIncome * 0.06 / 100) * 100;
-    const residentTax = prefecturalTax + municipalTax;
-    const incomeTax = declarationSubmitted ? incomeInfo.total : Math.floor(retirementPay * 0.2042);
-    const net = Math.max(0, retirementPay - incomeTax - residentTax);
+    const totalSaving = incomeTaxRefund + residentTaxSaving;
 
     return {
-      retirementPay, years, wholeYears, extraMonths, isOfficer, disability, declarationSubmitted,
-      deduction, excess, isSpecialOfficer, isShortTerm, taxableRetirementIncome,
-      marginalRate: incomeInfo.rate, incomeTax, prefecturalTax, municipalTax, residentTax,
-      net, netRate: retirementPay ? net / retirementPay : 0
+      annualSalary, salaryIncome, medicalExpensesPaid, insuranceReimbursement, netMedicalExpenses,
+      threshold, medicalDeduction, socialInsurance: social.total,
+      taxableBefore: taxInfoBefore.taxable, taxableAfter: taxInfoAfter.taxable,
+      marginalRate: taxInfoBefore.rate, incomeTaxRefund, residentTaxSaving, totalSaving
     };
   }
 
@@ -470,6 +471,6 @@
     incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
-    takeHome2026, furusatoLimit2026, yearEndAdjustment2026, retirementIncome2026
+    takeHome2026, furusatoLimit2026, yearEndAdjustment2026, medicalExpenseDeduction2026
   };
 });
