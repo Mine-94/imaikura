@@ -231,7 +231,7 @@ document.getElementById('baseTax').textContent=yen(result.baseTax);
 document.getElementById('annualTax').textContent=yen(result.annualTax);
 document.getElementById('withheld').textContent=yen(result.withheldTax);
 }
-form.addEventListener('submit',calculate);calculate();
+form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
 </script>
 </body>
 </html>
