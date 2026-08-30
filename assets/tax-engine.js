@@ -465,12 +465,68 @@
     };
   }
 
+  const HOUSING_LOAN_LIMITS_2026 = {
+    chotan: { base: 45000000, upgrade: 50000000, period: 13, label: '認定長期優良住宅・認定低炭素住宅' },
+    zeh: { base: 35000000, upgrade: 45000000, period: 13, label: 'ZEH水準省エネ住宅' },
+    shoene: { base: 20000000, upgrade: 30000000, period: 13, label: '省エネ基準適合住宅' },
+    sonotaQualified: { base: 20000000, upgrade: 20000000, period: 10, label: 'その他住宅（2023年末までに建築確認等）' },
+    sonotaNotQualified: { base: 0, upgrade: 0, period: 0, label: '対象外のその他住宅' }
+  };
+
+  function housingLoanDeduction2026(options) {
+    const annualSalary = clamp(options.annualSalary, 0, 100000000);
+    const loanYearEndBalance = clamp(options.loanYearEndBalance, 0, 100000000);
+    const dependents = clamp(options.dependents, 0, 10);
+    const specificDependents = clamp(options.specificDependents, 0, 10);
+    const elderDependents = clamp(options.elderDependents, 0, 10);
+    const spouse = options.spouse ? 1 : 0;
+    const childOrYoungCouple = Boolean(options.childOrYoungCouple);
+    const category = HOUSING_LOAN_LIMITS_2026[options.housingCategory] ? options.housingCategory : 'shoene';
+    const limits = HOUSING_LOAN_LIMITS_2026[category];
+    const monthlySalary = annualSalary / 12;
+    const social = options.socialInsuranceAnnual > 0
+      ? { total: Number(options.socialInsuranceAnnual) }
+      : socialInsurance2026({ monthlySalary, annualBonus: 0, age: options.age || 30, prefecture: options.prefecture || '東京都' });
+    const salaryIncome = salaryIncome2026(annualSalary);
+
+    const spouseDeduction = spouseDeduction2026(salaryIncome, spouse);
+    const incomeDependentDeduction = dependents * 380000 + spouseDeduction + specificDependents * 630000 + elderDependents * 480000;
+    const basicDeduction = incomeBasicDeduction2026(salaryIncome);
+    const taxableIncome = Math.max(0, salaryIncome - basicDeduction - social.total - incomeDependentDeduction);
+    const taxInfo = nationalIncomeTax(taxableIncome);
+
+    // 借入限度額 = 住宅区分・子育て世帯/若者夫婦世帯の上乗せ有無で決定
+    const borrowLimit = childOrYoungCouple ? limits.upgrade : limits.base;
+    const yearEndBalanceUsed = Math.min(loanYearEndBalance, borrowLimit);
+    // 住宅ローン控除額 = 年末残高等 × 0.7%（100円未満切捨て）
+    const housingLoanDeductionAmount = Math.floor(yearEndBalanceUsed * 0.007 / 100) * 100;
+
+    // 所得税から控除（基準所得税額が上限）
+    const incomeTaxReduction = Math.min(housingLoanDeductionAmount, taxInfo.baseTax);
+    const shortfall = Math.max(0, housingLoanDeductionAmount - taxInfo.baseTax);
+
+    // 控除しきれない場合、翌年度住民税から控除（課税総所得金額等×5%、上限97,500円）
+    const residentTaxLimit = Math.min(97500, Math.floor(taxableIncome * 0.05));
+    const residentTaxReduction = Math.min(shortfall, residentTaxLimit);
+
+    const totalSaving = incomeTaxReduction + residentTaxReduction;
+
+    return {
+      annualSalary, salaryIncome, loanYearEndBalance, category, categoryLabel: limits.label,
+      controlPeriod: limits.period, borrowLimit, yearEndBalanceUsed, socialInsurance: social.total,
+      taxableIncome: taxInfo.taxable, baseTax: taxInfo.baseTax, marginalRate: taxInfo.rate,
+      housingLoanDeductionAmount, incomeTaxReduction, shortfall, residentTaxLimit, residentTaxReduction,
+      totalSaving, eligible: limits.period > 0
+    };
+  }
+
   return {
     HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
     residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026, incomeWall2026,
     incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
-    takeHome2026, furusatoLimit2026, yearEndAdjustment2026, medicalExpenseDeduction2026
+    takeHome2026, furusatoLimit2026, yearEndAdjustment2026, medicalExpenseDeduction2026,
+    HOUSING_LOAN_LIMITS_2026, housingLoanDeduction2026
   };
 });
