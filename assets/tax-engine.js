@@ -558,6 +558,34 @@
     };
   }
 
+  function consumptionTax2026(options) {
+    const mode = options.mode === 'includeToExclude' ? 'includeToExclude' : 'excludeToInclude';
+    const amount = clamp(options.amount, 0, 100000000000);
+    const rateType = options.rateType === 'reduced' ? 'reduced' : (options.rateType === 'custom' ? 'custom' : 'standard');
+    const ratePercent = rateType === 'reduced' ? 8 : rateType === 'standard' ? 10 : clamp(options.customRatePercent, 0, 100);
+    const rate = ratePercent / 100;
+    const roundMode = ['ceil', 'round'].includes(options.roundMode) ? options.roundMode : 'floor';
+
+    function applyRound(x) {
+      if (roundMode === 'ceil') return Math.ceil(x);
+      if (roundMode === 'round') return Math.round(x);
+      return Math.floor(x);
+    }
+
+    let excludeTax, taxAmount, includeTax;
+    if (mode === 'excludeToInclude') {
+      excludeTax = amount;
+      taxAmount = applyRound(excludeTax * rate);
+      includeTax = excludeTax + taxAmount;
+    } else {
+      includeTax = amount;
+      excludeTax = applyRound(includeTax / (1 + rate));
+      taxAmount = includeTax - excludeTax;
+    }
+
+    return { mode, rateType, ratePercent, roundMode, excludeTax, tax: taxAmount, includeTax };
+  }
+
   return {
     HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
     residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026, incomeWall2026,
@@ -565,6 +593,6 @@
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
     takeHome2026, furusatoLimit2026, yearEndAdjustment2026, medicalExpenseDeduction2026,
-    HOUSING_LOAN_LIMITS_2026, housingLoanDeduction2026, retirementIncome2026
+    HOUSING_LOAN_LIMITS_2026, housingLoanDeduction2026, retirementIncome2026, consumptionTax2026
   };
 });
