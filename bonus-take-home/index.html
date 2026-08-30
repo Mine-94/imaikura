@@ -136,7 +136,7 @@
       document.getElementById('healthEtc').textContent='−'+yen(result.health+result.care+result.childSupport);document.getElementById('pension').textContent='−'+yen(result.pension);document.getElementById('employment').textContent='−'+yen(result.employment);document.getElementById('incomeTax').textContent='−'+yen(result.incomeTax);document.getElementById('withholdingRate').textContent=(result.withholdingRate*100).toFixed(3)+'%';
       document.getElementById('resultNotice').textContent=result.exceptional?'この条件は国税庁の通常の賞与算出率表ではなく月額表を使う例外に該当します。表示額は参考にとどめ、勤務先の計算をご確認ください。':'住民税はボーナスから直接天引きされませんが、賞与を含む年間所得を基に翌年度の住民税へ反映されます。';
     }
-    form.addEventListener('submit',calculate);calculate();
+          form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
 </body>
 </html>
