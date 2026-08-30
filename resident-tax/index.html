@@ -192,7 +192,7 @@
       notice.textContent=r.fullyExempt ? '入力条件では住民税非課税の目安に該当します。自治体ごとの条件と本人の状況で判定が変わる場合があります。' :
         (r.incomeLevyExempt ? '入力条件では所得割は非課税、均等割と森林環境税のみの目安です。' : '東京23区の標準税率で概算。住宅ローン・ふるさと納税などの税額控除や給与以外の所得は含みません。');
     }
-    form.addEventListener('submit',calculate); calculate();
+          form.addEventListener('submit',calculate); form.addEventListener('input',calculate); form.addEventListener('change',calculate); calculate();
     [3000000,4000000,5000000,6000000,7000000,8000000,10000000].forEach(gross=>{
       const r=tax.residentTax2026({annualSalary:gross,socialInsurance:gross*.15});
       const tr=document.createElement('tr'); tr.innerHTML='<td><strong>'+Math.round(gross/10000).toLocaleString('ja-JP')+'万円</strong></td><td>'+yen(r.annualTax)+'</td><td>'+yen(r.june)+'</td><td>'+yen(r.julyToMay)+'</td>';
