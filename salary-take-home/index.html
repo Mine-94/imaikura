@@ -213,7 +213,7 @@
       const socialPct=result.gross?result.social.total/result.gross*100:0, taxPct=result.gross?(result.incomeTax+result.residentTax)/result.gross*100:0;
       document.getElementById('barNet').style.width=(result.netRate*100)+'%'; document.getElementById('barSocial').style.width=socialPct+'%'; document.getElementById('barTax').style.width=taxPct+'%';
     }
-    form.addEventListener('submit',calculate); calculate();
+          form.addEventListener('submit',calculate); form.addEventListener('input',calculate); form.addEventListener('change',calculate); calculate();
   </script>
 </body>
 </html>
