@@ -162,7 +162,7 @@
         ? '「退職所得の受給に関する申告書」を提出済みのため、原則として確定申告は不要です。'
         : '申告書未提出のため、退職金額面の20.42%が源泉徴収されます。確定申告で正しい税額との差額を精算できます。';
     }
-    form.addEventListener('submit',calculate);calculate();
+          form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
 </body>
 </html>
