@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>消費税計算機 2026｜税込み・税抜き変換シミュレーター｜いまいくら</title>
+  <meta name="description" content="金額と税率（標準10%・軽減8%）を入力するだけで、税込み価格・税抜き価格・消費税額を入力と同時に計算。端数処理（切り捨て・四捨五入・切り上げ）も選べます。">
+  <meta property="og:title" content="消費税計算機 2026｜税込み・税抜き変換シミュレーター｜いまいくら">
+  <meta property="og:description" content="税込み・税抜きの変換をその場で計算。標準税率10%・軽減税率8%に対応。">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <meta name="google-adsense-account" content="ca-pub-8602848692420724">
+  <link rel="canonical" href="https://imaikura.com/consumption-tax/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebApplication","name":"消費税計算機 2026",
+    "url":"https://imaikura.com/consumption-tax/","applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
+  }</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"軽減税率（8%）の対象は何ですか？","acceptedAnswer":{"@type":"Answer","text":"酒類・外食を除く飲食料品（食品表示法に規定する食品）と、週2回以上発行される新聞の定期購読契約が対象です。店内飲食（外食）やお酒は標準税率10%が適用されます。"}},{"@type":"Question","name":"端数処理はどの方法が正しいですか？","acceptedAnswer":{"@type":"Answer","text":"法令で特定の方法が強制されているわけではなく、事業者が請求書ごとに切り捨て・四捨五入・切り上げのいずれかを選び、統一して適用します。実務では切り捨てが使われることが多いです。"}},{"@type":"Question","name":"計算結果はインボイス（適格請求書）の税額と必ず一致しますか？","acceptedAnswer":{"@type":"Answer","text":"インボイス制度では1枚の請求書につき税率ごとに端数処理を1回だけ行うルールがあるため、商品ごとに個別計算するこのツールの結果を合算した金額と、まとめて発行される請求書の税額が数円ずれることがあります。目安としてご利用ください。"}},{"@type":"Question","name":"消費税率は今後変わりますか？","acceptedAnswer":{"@type":"Answer","text":"2026年8月時点で標準税率10%・軽減税率8%が適用されています。税率が改正された場合は、このページの内容も更新する予定です。"}}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a>
+      <nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">消費税計算</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">標準税率10%・軽減税率8%対応</div>
+          <h1>消費税計算機<br>（税込み・税抜き変換）</h1>
+          <p class="lead">金額と税率を入力すると、税込み価格・税抜き価格・消費税額を入力と同時に計算します。端数処理（切り捨て・四捨五入・切り上げ）も選べます。</p>
+        </div>
+        <div class="trust-badge">入力するとすぐ結果が変わります</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="taxForm">
+          <h2 class="panel-title">条件を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label>計算の向き<span class="required">必須</span></label>
+              <div class="choice-row" role="radiogroup" aria-label="計算の向き">
+                <span class="choice"><input type="radio" id="modeExclude" name="mode" value="excludeToInclude" checked><label for="modeExclude">税抜き→税込みを計算</label></span>
+                <span class="choice"><input type="radio" id="modeInclude" name="mode" value="includeToExclude"><label for="modeInclude">税込み→税抜きを計算</label></span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="amount" id="amountLabel">税抜き価格<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="amount" type="number" inputmode="numeric" min="0" max="100000000000" step="1" value="10000"><span class="unit">円</span></div>
+              <p class="help" id="amountHelp">消費税を含まない金額を入力してください</p>
+            </div>
+            <div class="field">
+              <label>税率<span class="required">必須</span></label>
+              <div class="choice-row" role="radiogroup" aria-label="税率">
+                <span class="choice"><input type="radio" id="rateStandard" name="rateType" value="standard" checked><label for="rateStandard">標準税率 10%</label></span>
+                <span class="choice"><input type="radio" id="rateReduced" name="rateType" value="reduced"><label for="rateReduced">軽減税率 8%</label></span>
+                <span class="choice"><input type="radio" id="rateCustom" name="rateType" value="custom"><label for="rateCustom">税率を指定</label></span>
+              </div>
+              <p class="help">軽減税率は酒類・外食を除く飲食料品と週2回以上発行の新聞が対象</p>
+            </div>
+            <div class="field">
+              <label for="customRatePercent">指定税率（「税率を指定」を選んだ場合）</label>
+              <div class="input-wrap"><input id="customRatePercent" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="10"><span class="unit">%</span></div>
+            </div>
+            <div class="field">
+              <label>端数処理</label>
+              <div class="choice-row" role="radiogroup" aria-label="端数処理">
+                <span class="choice"><input type="radio" id="roundFloor" name="roundMode" value="floor" checked><label for="roundFloor">切り捨て</label></span>
+                <span class="choice"><input type="radio" id="roundRound" name="roundMode" value="round"><label for="roundRound">四捨五入</label></span>
+                <span class="choice"><input type="radio" id="roundCeil" name="roundMode" value="ceil"><label for="roundCeil">切り上げ</label></span>
+              </div>
+              <p class="help">消費税額の円未満をどう処理するかを選びます（実務では切り捨てが多く使われます）</p>
+            </div>
+          </div>
+          <button class="calculate" type="submit">消費税を計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head">
+            <small id="resultTitle">税込み価格</small>
+            <div class="result-big" id="mainResult">—</div>
+            <div class="result-sub" id="resultSub">標準税率10%・切り捨てで計算</div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>税抜き価格</span><strong id="excludeTax">—</strong></div>
+            <div class="metric"><span>消費税額</span><strong id="taxAmount">—</strong></div>
+            <div class="metric"><span>税込み価格</span><strong id="includeTax">—</strong></div>
+            <div class="metric"><span>適用税率</span><strong id="appliedRate">—</strong></div>
+            <div class="metric"><span>端数処理</span><strong id="appliedRound">—</strong></div>
+            <div class="notice">このツールは商品単位の目安計算です。インボイス（適格請求書）では1枚あたり税率ごとに端数処理を1回行うため、複数商品の合計とは数円ずれる場合があります。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section content-card">
+        <h2>消費税とは</h2>
+        <p class="plain-copy">消費税は、物やサービスを購入したときにかかる税金です。国税である消費税（7.8%）と地方税である地方消費税（2.2%）を合わせて、標準税率10%が適用されます。酒類・外食を除く飲食料品と、週2回以上発行される新聞の定期購読契約には、軽減税率8%（消費税6.24%＋地方消費税1.76%）が適用されます。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>計算の3ステップ</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>計算の向きを選ぶ</b><p>「税抜き→税込み」か「税込み→税抜き」かを選びます。レシートの本体価格から支払額を出したいときは前者、支払った金額から本体価格を逆算したいときは後者です。</p></div>
+          <div class="step"><span>02</span><b>税率を選ぶ</b><p>標準税率10%・軽減税率8%・任意の税率（軽減税率の経過措置や海外の付加価値税の目安計算などに）から選びます。</p></div>
+          <div class="step"><span>03</span><b>端数処理を選ぶ</b><p>切り捨て・四捨五入・切り上げのいずれかを選ぶと、入力と同時に税込み価格・税抜き価格・消費税額が表示されます。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>軽減税率（8%）の対象は何ですか？</summary><p>酒類・外食を除く飲食料品（食品表示法に規定する食品）と、週2回以上発行される新聞の定期購読契約が対象です。店内飲食（外食）やお酒は標準税率10%が適用されます。</p></details>
+        <details class="faq"><summary>端数処理はどの方法が正しいですか？</summary><p>法令で特定の方法が強制されているわけではなく、事業者が請求書ごとに切り捨て・四捨五入・切り上げのいずれかを選び、統一して適用します。実務では切り捨てが使われることが多いです。</p></details>
+        <details class="faq"><summary>計算結果はインボイス（適格請求書）の税額と必ず一致しますか？</summary><p>インボイス制度では1枚の請求書につき税率ごとに端数処理を1回だけ行うルールがあるため、商品ごとに個別計算するこのツールの結果を合算した金額と、まとめて発行される請求書の税額が数円ずれることがあります。目安としてご利用ください。</p></details>
+        <details class="faq"><summary>消費税率は今後変わりますか？</summary><p>2026年8月時点で標準税率10%・軽減税率8%が適用されています。税率が改正された場合は、このページの内容も更新する予定です。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を含む年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金シミュレーター</h2><p>源泉徴収された所得税と年税額を比べて還付・追加徴収の見込みを確認。</p><span class="card-link">還付見込み額を計算する</span></a>
+          <a class="tool-card" href="../furusato-nozei/"><h2>ふるさと納税 上限額シミュレーター</h2><p>年収・家族構成・社会保険料から寄付できる上限額の目安を計算。</p><span class="card-link">上限額を計算する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>参照した公的資料（2026年8月30日確認）</strong><br>
+        <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6303.htm" target="_blank" rel="noopener">国税庁 タックスアンサー No.6303「消費税および地方消費税の税率」</a> ／
+        <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6102.htm" target="_blank" rel="noopener">国税庁 タックスアンサー No.6102「消費税の軽減税率制度」</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は税務署の案内をご確認ください。</div></div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax=window.ImaikuraTax, form=document.getElementById('taxForm');
+    const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
+    const roundLabel={floor:'切り捨て',round:'四捨五入',ceil:'切り上げ'};
+    function calculate(event){
+      if(event)event.preventDefault();
+      if(event&&event.type==='submit'&&typeof gtag==='function')gtag('event','consumption_tax_calculate');
+      const mode=document.querySelector('input[name="mode"]:checked').value;
+      const rateType=document.querySelector('input[name="rateType"]:checked').value;
+      const roundMode=document.querySelector('input[name="roundMode"]:checked').value;
+      const amountLabel=document.getElementById('amountLabel');
+      const amountHelp=document.getElementById('amountHelp');
+      if(mode==='excludeToInclude'){
+        amountLabel.firstChild.textContent='税抜き価格';
+        amountHelp.textContent='消費税を含まない金額を入力してください';
+      } else {
+        amountLabel.firstChild.textContent='税込み価格';
+        amountHelp.textContent='消費税を含んだ、実際に支払う金額を入力してください';
+      }
+      const result=tax.consumptionTax2026({
+        mode:mode,
+        amount:Number(document.getElementById('amount').value),
+        rateType:rateType,
+        customRatePercent:Number(document.getElementById('customRatePercent').value),
+        roundMode:roundMode
+      });
+      document.getElementById('resultTitle').textContent=mode==='excludeToInclude'?'税込み価格':'税抜き価格';
+      document.getElementById('mainResult').textContent=mode==='excludeToInclude'?yen(result.includeTax):yen(result.excludeTax);
+      document.getElementById('resultSub').textContent='税率'+result.ratePercent+'%・'+roundLabel[result.roundMode]+'で計算';
+      document.getElementById('excludeTax').textContent=yen(result.excludeTax);
+      document.getElementById('taxAmount').textContent=yen(result.tax);
+      document.getElementById('includeTax').textContent=yen(result.includeTax);
+      document.getElementById('appliedRate').textContent=result.ratePercent+'%';
+      document.getElementById('appliedRound').textContent=roundLabel[result.roundMode];
+    }
+    form.addEventListener('submit',calculate);
+    form.addEventListener('input',calculate);
+    form.addEventListener('change',calculate);
+    calculate();
+  </script>
+</body>
+</html>
