@@ -74,7 +74,7 @@
       document.getElementById('knownNet').textContent=r.netIsComplete?yen(r.knownNet):yen(r.knownNet)+'＋国保・年金';
       const n=document.getElementById('notice');n.textContent=r.employeeSocialEligible?'週20時間・勤務先規模などの条件から、勤務先の健康保険・厚生年金に加入する目安です。':r.dependentLost?'130万円以上で家族の健康保険扶養から外れる目安です。国民健康保険・国民年金は自治体等で異なるため結果に含めていません。':r.healthDependent?'健康保険の扶養内の目安です。税法上の扶養とは基準が異なります。':'表示額は所得税と判明する保険料のみを差し引いた概算です。';
     }
-    form.addEventListener('submit',calculate);calculate();
+          form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
 </body>
 </html>
