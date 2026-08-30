@@ -202,7 +202,7 @@
       document.getElementById('social').textContent=yen(result.socialInsurance);document.getElementById('rate').textContent=(result.marginalRate*100).toFixed(0)+'%';
       document.getElementById('residentLevy').textContent=yen(result.residentIncomeLevy);
     }
-    form.addEventListener('submit',calculate);calculate();
+          form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
 </body>
 </html>
