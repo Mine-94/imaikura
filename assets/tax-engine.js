@@ -417,6 +417,44 @@
     };
   }
 
+  function retirementIncome2026(options) {
+    const retirementPay = clamp(options.retirementPay, 0, 1000000000);
+    const yearsInput = clamp(options.years, 0, 75);
+    const monthsInput = clamp(options.months, 0, 11);
+    const disability = Boolean(options.disability);
+    const isOfficer = Boolean(options.isOfficer);
+    const declarationSubmitted = options.declarationSubmitted !== false;
+
+    const totalMonths = Math.round(yearsInput) * 12 + Math.round(monthsInput);
+    const years = Math.max(1, Math.ceil(totalMonths / 12));
+
+    let deduction = years <= 20
+      ? Math.max(800000, 400000 * years)
+      : 8000000 + 700000 * (years - 20);
+    if (disability) deduction += 1000000;
+
+    const excess = Math.max(0, retirementPay - deduction);
+    const halfTaxationApplies = !(isOfficer && years <= 5);
+    let taxableRetirementIncome = halfTaxationApplies ? Math.floor(excess / 2) : excess;
+    taxableRetirementIncome = Math.floor(taxableRetirementIncome / 1000) * 1000;
+
+    const taxInfo = nationalIncomeTax(taxableRetirementIncome);
+    const incomeTax = taxInfo.total;
+
+    const prefecturalTax = Math.floor(taxableRetirementIncome * 0.04 / 100) * 100;
+    const municipalTax = Math.floor(taxableRetirementIncome * 0.06 / 100) * 100;
+    const residentTax = prefecturalTax + municipalTax;
+
+    const net = retirementPay - incomeTax - residentTax;
+    const netRate = retirementPay > 0 ? net / retirementPay : 0;
+
+    return {
+      retirementPay, years, deduction, taxableRetirementIncome,
+      incomeTax, prefecturalTax, municipalTax, residentTax,
+      net, netRate, declarationSubmitted
+    };
+  }
+
   function medicalExpenseDeduction2026(options) {
     const annualSalary = clamp(options.annualSalary, 0, 100000000);
     const medicalExpensesPaid = clamp(options.medicalExpensesPaid, 0, 100000000);
@@ -527,6 +565,6 @@
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
     socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
     takeHome2026, furusatoLimit2026, yearEndAdjustment2026, medicalExpenseDeduction2026,
-    HOUSING_LOAN_LIMITS_2026, housingLoanDeduction2026
+    HOUSING_LOAN_LIMITS_2026, housingLoanDeduction2026, retirementIncome2026
   };
 });
