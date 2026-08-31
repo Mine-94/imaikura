@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>住民税非課税 判定シミュレーター 2026｜年収からすぐ確認｜いまいくら</title>
+  <meta name="description" content="年収と配偶者・扶養親族の人数を入力するだけで、住民税（均等割・所得割）が非課税になるか入力と同時に判定。非課税基準額の目安もあわせて表示します。">
+  <meta property="og:title" content="住民税非課税 判定シミュレーター 2026｜年収からすぐ確認｜いまいくら">
+  <meta property="og:description" content="年収と家族構成を入力するだけで、住民税が非課税になるかその場で判定。均等割・所得割の非課税基準額も確認できます。">
+  <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
+  <meta name="google-adsense-account" content="ca-pub-8602848692420724">
+  <link rel="canonical" href="https://imaikura.com/resident-tax-exemption/">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebApplication","name":"住民税非課税 判定シミュレーター 2026",
+    "url":"https://imaikura.com/resident-tax-exemption/","applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
+  }</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"住民税非課税の基準はどうやって決まりますか？","acceptedAnswer":{"@type":"Answer","text":"均等割は「35万円×家族の人数（本人・同一生計配偶者・扶養親族の合計）＋10万円＋21万円（扶養親族等がいる場合のみ加算）」以下、所得割は同じ人数に対して「35万円×人数＋42万円」以下（扶養親族等がいない単身者はどちらも45万円以下）で非課税になります。ここでいう金額は年収そのものではなく、給与所得控除後の所得金額です。"}},{"@type":"Question","name":"地域によって基準額が違うと聞きました。このツールはどの基準を使っていますか？","acceptedAnswer":{"@type":"Answer","text":"非課税基準額は物価等を踏まえた地域区分（1級地・2級地・3級地）ごとに係数（1.0／0.9／0.8）が掛けられ、市区町村によって金額が異なります。このツールは都市部の多くで採用されている1級地の基準で計算しているため、地方の市区町村では実際の非課税ラインがこれよりやや低くなる場合があります。正確な金額はお住まいの市区町村にご確認ください。"}},{"@type":"Question","name":"年収と所得は何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"年収（収入）は税引き前に受け取る給与の総額です。そこから給与所得控除（2026年分は最低65万円）を差し引いた金額が「給与所得」で、住民税の非課税判定はこの所得金額をもとに行われます。"}},{"@type":"Question","name":"住民税非課税だと何が変わりますか？","acceptedAnswer":{"@type":"Answer","text":"国民健康保険料の軽減や高額療養費・高額介護サービス費の自己負担上限の引き下げ、保育料の軽減、各種給付金の対象になるなど、多くの制度で住民税非課税（または非課税世帯）であることが基準に使われます。適用条件は制度ごとに異なるため、詳細はお住まいの市区町村や各制度の窓口にご確認ください。"}}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a>
+      <nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">住民税非課税判定</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">令和8年度（2026年度）基準に対応</div>
+          <h1>住民税非課税 判定シミュレーター</h1>
+          <p class="lead">年収と配偶者・扶養親族の人数を入力すると、住民税が非課税になるかどうかを入力と同時に判定します。均等割・所得割それぞれの非課税基準額もあわせて確認できます。</p>
+        </div>
+        <div class="trust-badge">入力するとすぐ結果が変わります</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="taxForm">
+          <h2 class="panel-title">条件を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label for="annualSalary">年収（給与収入）<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="annualSalary" type="number" inputmode="numeric" min="0" max="100000000" step="10000" value="1100000"><span class="unit">円</span></div>
+              <p class="help">税引き前、社会保険料等を差し引く前の年間の給与収入額を入力してください</p>
+            </div>
+            <div class="field">
+              <label>配偶者（同一生計配偶者）</label>
+              <div class="choice-row" role="radiogroup" aria-label="配偶者の有無">
+                <span class="choice"><input type="radio" id="spouseNo" name="spouse" value="no" checked><label for="spouseNo">いない</label></span>
+                <span class="choice"><input type="radio" id="spouseYes" name="spouse" value="yes"><label for="spouseYes">いる</label></span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="dependents">一般扶養親族の人数</label>
+              <div class="input-wrap"><input id="dependents" type="number" inputmode="numeric" min="0" max="20" step="1" value="0"><span class="unit">人</span></div>
+              <p class="help">16〜18歳・23〜69歳の扶養親族（下の特定・老人に該当する人は含めない）</p>
+            </div>
+            <div class="field">
+              <label for="specificDependents">特定扶養親族の人数（19〜22歳）</label>
+              <div class="input-wrap"><input id="specificDependents" type="number" inputmode="numeric" min="0" max="20" step="1" value="0"><span class="unit">人</span></div>
+            </div>
+            <div class="field">
+              <label for="elderDependents">老人扶養親族の人数（70歳以上）</label>
+              <div class="input-wrap"><input id="elderDependents" type="number" inputmode="numeric" min="0" max="20" step="1" value="0"><span class="unit">人</span></div>
+            </div>
+          </div>
+          <button class="calculate" type="submit">非課税かどうかを判定する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head">
+            <small id="resultTitle">判定結果</small>
+            <div class="result-big" id="mainResult">—</div>
+            <div class="result-sub" id="resultSub">—</div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>給与収入</span><strong id="annualSalaryOut">—</strong></div>
+            <div class="metric"><span>給与所得（控除後）</span><strong id="salaryIncomeOut">—</strong></div>
+            <div class="metric"><span>家族の人数（本人含む）</span><strong id="familyCountOut">—</strong></div>
+            <div class="metric"><span>均等割の非課税基準（所得）</span><strong id="fullyExemptLimitOut">—</strong></div>
+            <div class="metric"><span>所得割の非課税基準（所得）</span><strong id="incomeLevyExemptLimitOut">—</strong></div>
+            <div class="metric"><span>基準額との差額</span><strong id="diffOut">—</strong></div>
+            <div class="notice">この判定は都市部の多くで使われる1級地の基準にもとづく目安です。市区町村によって非課税基準額が異なる場合があります。正確な金額はお住まいの市区町村にご確認ください。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section content-card">
+        <h2>住民税非課税とは</h2>
+        <p class="plain-copy">個人住民税には、定額で課税される「均等割」と、所得に応じて課税される「所得割」があります。前年の所得が一定額以下の場合、均等割・所得割ともに課税されない「非課税」になります。非課税の基準額は「35万円×家族の人数（本人・同一生計配偶者・扶養親族の合計）＋加算額」で計算され、扶養親族等がいない単身者は所得45万円以下（2026年分の給与所得控除を踏まえると年収110万円以下が目安）で非課税になります。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>判定の3ステップ</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>年収を入力する</b><p>税引き前の年間給与収入額を入力します。ボーナスを含む年間の総支給額で構いません。</p></div>
+          <div class="step"><span>02</span><b>配偶者・扶養親族の人数を入力する</b><p>同一生計配偶者の有無と、扶養親族の人数を年齢区分（一般・特定・老人）ごとに入力します。</p></div>
+          <div class="step"><span>03</span><b>判定結果を確認する</b><p>入力と同時に、均等割・所得割それぞれの非課税基準額と現在の判定結果が表示されます。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>住民税非課税の基準はどうやって決まりますか？</summary><p>均等割は「35万円×家族の人数（本人・同一生計配偶者・扶養親族の合計）＋10万円＋21万円（扶養親族等がいる場合のみ加算）」以下、所得割は同じ人数に対して「35万円×人数＋42万円」以下（扶養親族等がいない単身者はどちらも45万円以下）で非課税になります。ここでいう金額は年収そのものではなく、給与所得控除後の所得金額です。</p></details>
+        <details class="faq"><summary>地域によって基準額が違うと聞きました。このツールはどの基準を使っていますか？</summary><p>非課税基準額は物価等を踏まえた地域区分（1級地・2級地・3級地）ごとに係数（1.0／0.9／0.8）が掛けられ、市区町村によって金額が異なります。このツールは都市部の多くで採用されている1級地の基準で計算しているため、地方の市区町村では実際の非課税ラインがこれよりやや低くなる場合があります。正確な金額はお住まいの市区町村にご確認ください。</p></details>
+        <details class="faq"><summary>年収と所得は何が違いますか？</summary><p>年収（収入）は税引き前に受け取る給与の総額です。そこから給与所得控除（2026年分は最低65万円）を差し引いた金額が「給与所得」で、住民税の非課税判定はこの所得金額をもとに行われます。</p></details>
+        <details class="faq"><summary>住民税非課税だと何が変わりますか？</summary><p>国民健康保険料の軽減や高額療養費・高額介護サービス費の自己負担上限の引き下げ、保育料の軽減、各種給付金の対象になるなど、多くの制度で住民税非課税（または非課税世帯）であることが基準に使われます。適用条件は制度ごとに異なるため、詳細はお住まいの市区町村や各制度の窓口にご確認ください。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を含む年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../year-end-adjustment/"><h2>年末調整の還付金シミュレーター</h2><p>源泉徴収された所得税と年税額を比べて還付・追加徴収の見込みを確認。</p><span class="card-link">還付見込み額を計算する</span></a>
+          <a class="tool-card" href="../furusato-nozei/"><h2>ふるさと納税 上限額シミュレーター</h2><p>年収・家族構成・社会保険料から寄付できる上限額の目安を計算。</p><span class="card-link">上限額を計算する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>参照した公的資料（2026年8月31日確認）</strong><br>
+        <a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/czaisei_seido/149767_03.html" target="_blank" rel="noopener">総務省 地方税制度「個人住民税」（均等割・所得割の非課税限度額）</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は市区町村の案内をご確認ください。</div></div></div></footer>
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    const tax=window.ImaikuraTax, form=document.getElementById('taxForm');
+    const yen=n=>Math.round(n).toLocaleString('ja-JP')+'円';
+    function calculate(event){
+      if(event)event.preventDefault();
+      if(event&&event.type==='submit'&&typeof gtag==='function')gtag('event','resident_tax_exemption_calculate');
+      const annualSalary=Number(document.getElementById('annualSalary').value);
+      const spouse=document.querySelector('input[name="spouse"]:checked').value==='yes';
+      const dependents=Number(document.getElementById('dependents').value);
+      const specificDependents=Number(document.getElementById('specificDependents').value);
+      const elderDependents=Number(document.getElementById('elderDependents').value);
+      const result=tax.residentTax2026({
+        annualSalary:annualSalary, spouse:spouse,
+        dependents:dependents, specificDependents:specificDependents, elderDependents:elderDependents,
+        socialInsurance:0, lifeInsuranceDeduction:0, earthquakeInsuranceDeduction:0,
+        idecoDeduction:0, medicalExpenseDeduction:0, otherDeductions:0
+      });
+      const familyCount=1+(spouse?1:0)+dependents+specificDependents+elderDependents;
+      let statusText, statusSub, diffText;
+      if(result.fullyExempt){
+        statusText='住民税は非課税です';
+        statusSub='均等割・所得割ともに課税されません';
+        const room=result.fullyExemptLimit-result.salaryIncome;
+        diffText='均等割の非課税基準まであと'+yen(room);
+      } else if(result.incomeLevyExempt){
+        statusText='均等割のみ課税されます';
+        statusSub='所得割は非課税ですが、均等割（定額）はかかります';
+        const room=result.incomeLevyExemptLimit-result.salaryIncome;
+        diffText='所得割の非課税基準まであと'+yen(room);
+      } else {
+        statusText='住民税がかかります';
+        statusSub='均等割・所得割ともに非課税の対象外です';
+        const over=result.salaryIncome-result.incomeLevyExemptLimit;
+        diffText='所得割の非課税基準を'+yen(over)+'超えています';
+      }
+      document.getElementById('mainResult').textContent=statusText;
+      document.getElementById('resultSub').textContent=statusSub;
+      document.getElementById('annualSalaryOut').textContent=yen(annualSalary);
+      document.getElementById('salaryIncomeOut').textContent=yen(result.salaryIncome);
+      document.getElementById('familyCountOut').textContent=familyCount+'人';
+      document.getElementById('fullyExemptLimitOut').textContent=yen(result.fullyExemptLimit);
+      document.getElementById('incomeLevyExemptLimitOut').textContent=yen(result.incomeLevyExemptLimit);
+      document.getElementById('diffOut').textContent=diffText;
+    }
+    form.addEventListener('submit',calculate);
+    form.addEventListener('input',calculate);
+    form.addEventListener('change',calculate);
+    calculate();
+  </script>
+</body>
+</html>
