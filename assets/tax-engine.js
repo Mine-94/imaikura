@@ -5,6 +5,18 @@
 })(typeof window !== 'undefined' ? window : globalThis, function () {
   'use strict';
 
+
+  const HEALTH_RATES_2025 = {
+    '北海道':10.31,'青森県':9.85,'岩手県':9.62,'宮城県':10.11,'秋田県':10.01,'山形県':9.75,'福島県':9.62,
+    '茨城県':9.67,'栃木県':9.82,'群馬県':9.77,'埼玉県':9.76,'千葉県':9.79,'東京都':9.91,'神奈川県':9.92,
+    '新潟県':9.55,'富山県':9.65,'石川県':9.88,'福井県':9.94,'山梨県':9.89,'長野県':9.69,
+    '岐阜県':9.93,'静岡県':9.80,'愛知県':10.03,'三重県':9.99,
+    '滋賀県':9.97,'京都府':10.03,'大阪府':10.24,'兵庫県':10.16,'奈良県':10.02,'和歌山県':10.19,
+    '鳥取県':9.93,'島根県':9.94,'岡山県':10.17,'広島県':9.97,'山口県':10.36,
+    '徳島県':10.47,'香川県':10.21,'愛媛県':10.18,'高知県':10.13,
+    '福岡県':10.31,'佐賀県':10.78,'長崎県':10.41,'熊本県':10.12,'大分県':10.25,'宮崎県':10.09,'鹿児島県':10.31,'沖縄県':9.44
+  };
+
   const HEALTH_RATES_2026 = {
     '北海道':10.28,'青森県':9.85,'岩手県':9.51,'宮城県':10.10,'秋田県':10.01,'山形県':9.75,'福島県':9.50,
     '茨城県':9.52,'栃木県':9.82,'群馬県':9.68,'埼玉県':9.67,'千葉県':9.73,'東京都':9.85,'神奈川県':9.92,
@@ -234,32 +246,134 @@
     return { taxable: base, rate, baseTax, total: baseTax + reconstructionSpecialTax };
   }
 
+  // 給与・賞与から本人負担分を源泉控除するときの法定端数処理。
+  // 50銭以下を切り捨て、50銭1厘以上を1円に切り上げる。
+  function roundEmployeeShare(amount) {
+    const value = Math.max(0, Number(amount) || 0);
+    return Math.max(0, Math.ceil(value - 0.5));
+  }
+
+  function contributionRates(year, month, prefecture, age) {
+    // このエンジンは令和7・8年度の公表済み料率だけを扱う。将来年を2026年料率で推定しない。
+    const y = Number(year) === 2025 ? 2025 : 2026;
+    const m = Math.min(12, Math.max(1, Math.floor(Number(month) || 1)));
+    const branch = HEALTH_RATES_2026[prefecture] ? prefecture : '東京都';
+    const newHealthRateApplies = y === 2026 && m >= 3;
+    const supportApplies = y === 2026 && m >= 4;
+    const employment2026Applies = y === 2026 && m >= 4;
+    const healthRatePercent = newHealthRateApplies ? HEALTH_RATES_2026[branch] : HEALTH_RATES_2025[branch];
+    const careRatePercent = age >= 40 && age <= 64 ? (newHealthRateApplies ? 1.62 : 1.59) : 0;
+    return {
+      year:y, month:m, prefecture:branch,
+      healthRatePercent, healthRate:healthRatePercent / 100,
+      careRatePercent, careRate:careRatePercent / 100,
+      supportRatePercent:supportApplies ? 0.23 : 0,
+      supportRate:supportApplies ? 0.0023 : 0,
+      pensionRatePercent:18.30, pensionRate:0.183,
+      employmentRatePercent:employment2026Applies ? 0.50 : 0.55,
+      employmentRate:employment2026Applies ? 0.005 : 0.0055
+    };
+  }
+
+  function salarySocialForMonth(monthlySalary, year, month, prefecture, age) {
+    const healthStandard = standardAmount(monthlySalary, HEALTH_STANDARDS);
+    const pensionStandard = standardAmount(monthlySalary, PENSION_STANDARDS);
+    const rates = contributionRates(year, month, prefecture, age);
+    const health = roundEmployeeShare(healthStandard * rates.healthRate / 2);
+    const care = roundEmployeeShare(healthStandard * rates.careRate / 2);
+    const childSupport = roundEmployeeShare(healthStandard * rates.supportRate / 2);
+    const pension = roundEmployeeShare(pensionStandard * rates.pensionRate / 2);
+    const employment = roundEmployeeShare(monthlySalary * rates.employmentRate);
+    return {
+      ...rates, healthStandard, pensionStandard,
+      health, care, childSupport, pension, employment,
+      total:health + care + childSupport + pension + employment
+    };
+  }
+
+  function defaultBonusMonths(paymentCount) {
+    const count = Math.min(12, Math.max(1, Math.floor(Number(paymentCount) || 2)));
+    if (count === 1) return [12];
+    if (count === 2) return [6, 12];
+    return Array.from({length:count}, (_, index) =>
+      Math.min(12, Math.max(4, Math.round(4 + (8 * index / (count - 1)))))
+    );
+  }
+
+  function normalizeBonusMonths(months, paymentCount) {
+    const count = Math.min(12, Math.max(1, Math.floor(Number(paymentCount) || 2)));
+    if (!Array.isArray(months) || months.length !== count) return defaultBonusMonths(count);
+    return months.map(month => Math.min(12, Math.max(1, Math.floor(Number(month) || 1))));
+  }
+
+  function splitAnnualBonus(annualBonus, paymentCount) {
+    const count = Math.min(12, Math.max(1, Math.floor(Number(paymentCount) || 2)));
+    const base = Math.floor(annualBonus / count);
+    const amounts = Array(count).fill(base);
+    amounts[count - 1] += annualBonus - base * count;
+    return amounts;
+  }
+
   function socialInsurance2026(options) {
     const monthlySalary = clamp(options.monthlySalary, 0, 5000000);
     const annualBonus = clamp(options.annualBonus, 0, 20000000);
-    const bonusPayments = clamp(options.bonusPayments || 2, 1, 12);
+    const bonusPayments = Math.min(12, Math.max(1, Math.floor(Number(options.bonusPayments) || 2)));
+    const bonusMonths = normalizeBonusMonths(options.bonusMonths, bonusPayments);
+    const bonusAmounts = splitAnnualBonus(annualBonus, bonusPayments);
     const age = clamp(options.age || 30, 18, 69);
     const prefecture = HEALTH_RATES_2026[options.prefecture] ? options.prefecture : '東京都';
-    const healthRate = HEALTH_RATES_2026[prefecture] / 100;
-    const careRate = age >= 40 && age <= 64 ? 0.0162 : 0;
-    const supportRate = 0.0023;
-    const pensionRate = 0.183;
-    const employmentRate = 0.005;
     const healthStandard = standardAmount(monthlySalary, HEALTH_STANDARDS);
     const pensionStandard = standardAmount(monthlySalary, PENSION_STANDARDS);
-    const healthBonusBase = Math.min(Math.floor(annualBonus / 1000) * 1000, 5730000);
-    const eachBonus = annualBonus / bonusPayments;
-    const pensionBonusBase = Math.min(Math.floor(eachBonus / 1000) * 1000, 1500000) * bonusPayments;
-    const health = Math.round((healthStandard * 12 + healthBonusBase) * healthRate / 2);
-    const care = Math.round((healthStandard * 12 + healthBonusBase) * careRate / 2);
-    const childSupport = Math.round((healthStandard * 12 + healthBonusBase) * supportRate / 2);
-    const pension = Math.round((pensionStandard * 12 + pensionBonusBase) * pensionRate / 2);
-    const gross = monthlySalary * 12 + annualBonus;
-    const employment = Math.floor(gross * employmentRate);
+
+    const salaryDetails = [];
+    for (let month = 1; month <= 12; month += 1) {
+      salaryDetails.push(salarySocialForMonth(monthlySalary, 2026, month, prefecture, age));
+    }
+
+    const fiscalHealthUsed = new Map();
+    const pensionUsedByMonth = new Map();
+    const bonusDetails = bonusAmounts.map((bonus, index) => {
+      const month = bonusMonths[index];
+      const rates = contributionRates(2026, month, prefecture, age);
+      const standardBonus = Math.floor(bonus / 1000) * 1000;
+      const fiscalYear = month <= 3 ? 2025 : 2026;
+      const healthUsedBefore = fiscalHealthUsed.get(fiscalYear) || 0;
+      const healthBonusBase = Math.max(0, Math.min(standardBonus, 5730000 - healthUsedBefore));
+      fiscalHealthUsed.set(fiscalYear, healthUsedBefore + healthBonusBase);
+      const pensionUsedBefore = pensionUsedByMonth.get(month) || 0;
+      const pensionBonusBase = Math.max(0, Math.min(standardBonus, 1500000 - pensionUsedBefore));
+      pensionUsedByMonth.set(month, pensionUsedBefore + pensionBonusBase);
+      const health = roundEmployeeShare(healthBonusBase * rates.healthRate / 2);
+      const care = roundEmployeeShare(healthBonusBase * rates.careRate / 2);
+      const childSupport = roundEmployeeShare(healthBonusBase * rates.supportRate / 2);
+      const pension = roundEmployeeShare(pensionBonusBase * rates.pensionRate / 2);
+      const employment = roundEmployeeShare(bonus * rates.employmentRate);
+      return {
+        ...rates, bonus, standardBonus, fiscalYear, healthBonusBase, pensionBonusBase,
+        health, care, childSupport, pension, employment,
+        total:health + care + childSupport + pension + employment
+      };
+    });
+
+    const sum = (details, key) => details.reduce((total, detail) => total + detail[key], 0);
+    const allDetails = salaryDetails.concat(bonusDetails);
+    const health = sum(allDetails, 'health');
+    const care = sum(allDetails, 'care');
+    const childSupport = sum(allDetails, 'childSupport');
+    const pension = sum(allDetails, 'pension');
+    const employment = sum(allDetails, 'employment');
+    const healthBonusBase = sum(bonusDetails, 'healthBonusBase');
+    const pensionBonusBase = sum(bonusDetails, 'pensionBonusBase');
     return {
-      prefecture, healthRate, healthStandard, pensionStandard,
+      prefecture,
+      healthRate:HEALTH_RATES_2026[prefecture] / 100,
+      healthRate2025:HEALTH_RATES_2025[prefecture] / 100,
+      healthRate2026:HEALTH_RATES_2026[prefecture] / 100,
+      healthStandard, pensionStandard, healthBonusBase, pensionBonusBase,
+      bonusPayments, bonusMonths, salaryDetails, bonusDetails,
       health, care, childSupport, pension, employment,
-      total: health + care + childSupport + pension + employment
+      total:health + care + childSupport + pension + employment,
+      basis:'2026年1〜12月の保険料所属月ベース。年間賞与は指定月に均等配分。'
     };
   }
 
@@ -293,6 +407,7 @@
   function bonusTakeHome2026(options) {
     const bonus = clamp(options.bonus, 0, 100000000);
     const previousSalary = clamp(options.previousSalary, 0, 5000000);
+    const paymentMonth = Math.min(12, Math.max(1, Math.floor(Number(options.paymentMonth) || 6)));
     const age = clamp(options.age || 30, 18, 69);
     const prefecture = HEALTH_RATES_2026[options.prefecture] ? options.prefecture : '東京都';
     const dependents = clamp(options.dependents, 0, 20);
@@ -302,23 +417,20 @@
     const standardBonus = Math.floor(bonus / 1000) * 1000;
     const healthBonusBase = Math.max(0, Math.min(standardBonus, 5730000 - healthCumulativeBefore));
     const pensionBonusBase = Math.max(0, Math.min(standardBonus, 1500000 - pensionSameMonthBefore));
-    const healthRate = HEALTH_RATES_2026[prefecture] / 100;
-    const careRate = age >= 40 && age <= 64 ? 0.0162 : 0;
-    const supportRate = 0.0023;
-    const pensionRate = 0.183;
-    const employmentRate = 0.005;
-    const health = Math.round(healthBonusBase * healthRate / 2);
-    const care = Math.round(healthBonusBase * careRate / 2);
-    const childSupport = Math.round(healthBonusBase * supportRate / 2);
-    const pension = Math.round(pensionBonusBase * pensionRate / 2);
-    const employment = Math.floor(bonus * employmentRate);
+    const rates = contributionRates(2026, paymentMonth, prefecture, age);
+    const health = roundEmployeeShare(healthBonusBase * rates.healthRate / 2);
+    const care = roundEmployeeShare(healthBonusBase * rates.careRate / 2);
+    const childSupport = roundEmployeeShare(healthBonusBase * rates.supportRate / 2);
+    const pension = roundEmployeeShare(pensionBonusBase * rates.pensionRate / 2);
+    const employment = roundEmployeeShare(bonus * rates.employmentRate);
     const socialTotal = health + care + childSupport + pension + employment;
-    const healthStandard = standardAmount(previousSalary, HEALTH_STANDARDS);
-    const pensionStandard = standardAmount(previousSalary, PENSION_STANDARDS);
-    const previousSocialAuto = Math.round(healthStandard * healthRate / 2) +
-      Math.round(healthStandard * careRate / 2) + Math.round(healthStandard * supportRate / 2) +
-      Math.round(pensionStandard * pensionRate / 2) + Math.floor(previousSalary * employmentRate);
-    const previousSocial = Number(options.previousSocial) > 0 ? clamp(options.previousSocial, 0, previousSalary) : previousSocialAuto;
+
+    const previousYear = paymentMonth === 1 ? 2025 : 2026;
+    const previousMonth = paymentMonth === 1 ? 12 : paymentMonth - 1;
+    const previousAuto = salarySocialForMonth(previousSalary, previousYear, previousMonth, prefecture, age);
+    const previousSocial = Number(options.previousSocial) > 0
+      ? clamp(options.previousSocial, 0, previousSalary)
+      : previousAuto.total;
     const previousAfterSocial = Math.max(0, previousSalary - previousSocial);
     const withholdingRate = bonusWithholdingRate2026(previousAfterSocial, dependents, declarationFiled);
     const taxableBonus = Math.max(0, bonus - socialTotal);
@@ -326,9 +438,13 @@
     const net = Math.max(0, bonus - socialTotal - incomeTax);
     const exceptional = previousAfterSocial <= 0 || taxableBonus > previousAfterSocial * 10;
     return {
-      bonus, net, standardBonus, healthBonusBase, pensionBonusBase, health, care, childSupport,
-      pension, employment, socialTotal, previousSocial, previousAfterSocial, withholdingRate,
-      taxableBonus, incomeTax, exceptional, netRate: bonus ? net / bonus : 0
+      bonus, net, paymentMonth, standardBonus, healthBonusBase, pensionBonusBase,
+      health, care, childSupport, pension, employment, socialTotal,
+      previousSocial, previousSocialAuto:previousAuto.total, previousAfterSocial,
+      withholdingRate, taxableBonus, incomeTax, exceptional, netRate:bonus ? net / bonus : 0,
+      healthRatePercent:rates.healthRatePercent, careRatePercent:rates.careRatePercent,
+      supportRatePercent:rates.supportRatePercent, employmentRatePercent:rates.employmentRatePercent,
+      ratePeriod:paymentMonth <= 2 ? '2025年度健康保険料率' : '2026年度健康保険料率'
     };
   }
 
@@ -347,16 +463,22 @@
     const dependentIncomeDeduction = dependents * 380000 + spouseDeduction + specificDependents * 630000 + elderDependents * 480000;
     const taxableIncome = Math.max(0, salaryIncome - incomeDeduction - dependentIncomeDeduction - social.total);
     const incomeTaxInfo = nationalIncomeTax(taxableIncome);
-    const residentDependentDeduction = (dependents + spouse) * 330000 + specificDependents * 450000 + elderDependents * 380000;
-    const residentDeductions = 430000 + residentDependentDeduction + social.total;
-    const residentTaxable = Math.floor(Math.max(0, salaryIncome - residentDeductions) / 1000) * 1000;
-    const residentTax = residentTaxable > 0 ? Math.floor(residentTaxable * 0.10 / 100) * 100 + 5000 : 0;
+    const resident = residentTax2026({
+      annualSalary:gross,
+      socialInsurance:social.total,
+      dependents,
+      specificDependents,
+      elderDependents,
+      spouse:Boolean(spouse)
+    });
+    const residentTax = resident.annualTax;
     const annualNet = Math.max(0, gross - social.total - incomeTaxInfo.total - residentTax);
     return {
       gross, salaryIncome, social, incomeDeduction, dependentIncomeDeduction,
-      taxableIncome: incomeTaxInfo.taxable, incomeTax: incomeTaxInfo.total,
-      marginalRate: incomeTaxInfo.rate, residentTaxable, residentTax,
-      annualNet, monthlyNet: Math.floor(annualNet / 12), netRate: gross ? annualNet / gross : 0
+      taxableIncome:incomeTaxInfo.taxable, incomeTax:incomeTaxInfo.total,
+      marginalRate:incomeTaxInfo.rate, residentTaxable:resident.taxableIncome,
+      residentTax, resident, annualNet, monthlyNet:Math.floor(annualNet / 12),
+      netRate:gross ? annualNet / gross : 0
     };
   }
 
@@ -610,11 +732,11 @@
   }
 
   return {
-    HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
+    HEALTH_RATES_2025, HEALTH_RATES_2026, salaryIncome2026, residentSalaryIncome2026,
     residentBasicDeduction2026, residentSpouseDeduction2026, residentTax2026, incomeWall2026,
     incomeBasicDeduction2026,
     spouseDeduction2026, incomeAdjustmentDeduction2026, nationalIncomeTax,
-    socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
+    roundEmployeeShare, contributionRates, socialInsurance2026, bonusWithholdingRate2026, bonusTakeHome2026,
     takeHome2026, furusatoLimit2026, yearEndAdjustment2026, medicalExpenseDeduction2026,
     HOUSING_LOAN_LIMITS_2026, housingLoanDeduction2026, retirementIncome2026, consumptionTax2026
   };

@@ -14,7 +14,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>給与・年収の手取り計算 2026｜月収・年収別早見表｜いまいくら</title>
-  <meta name="description" content="2026年の月給・賞与から手取り年収と月平均を計算。年収300万〜1,000万円の手取り早見表と、社会保険料・所得税・住民税の内訳も確認できます。">
+  <meta name="description" content="2026年の月給・賞与から手取り年収と月平均を計算。健康保険・介護保険・子ども・子育て支援金・雇用保険の適用時期を月別に反映し、税金との内訳を確認できます。">
   <meta property="og:title" content="給与・年収の手取り計算 2026｜いまいくら">
   <meta property="og:description" content="月給と賞与から、税金・社会保険料を差し引いた手取りを計算。">
   <meta property="og:type" content="website"><meta property="og:locale" content="ja_JP">
@@ -28,7 +28,7 @@
     "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
     "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
   }</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"給与明細と数百円〜数千円ずれるのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当、賞与の支給回数、住民税の前年所得、端数処理などが影響します。本ツールは協会けんぽ加入の会社員を想定した年間の概算です。"}},{"@type":"Question","name":"「月給」には交通費を含めますか？","acceptedAnswer":{"@type":"Answer","text":"社会保険の標準報酬月額には通勤手当も含まれるため、総支給額に含めてください。所得税では非課税限度額内の通勤手当は課税されませんが、本ツールは入力負担を減らすため総支給額で概算します。"}},{"@type":"Question","name":"2026年の「子ども・子育て支援金」も入っていますか？","acceptedAnswer":{"@type":"Answer","text":"はい。2026年4月分からの協会けんぽの支援金率0.23％を労使折半し、本人負担分を社会保険料に含めています。"}},{"@type":"Question","name":"年収500万円の手取りはいくらですか？","acceptedAnswer":{"@type":"Answer","text":"東京都、30歳、独身・扶養なし、協会けんぽ、賞与なしで計算すると、2026年の年間手取りは約394万円、月平均は約32万8,000円です。賞与の割合や前年所得、追加控除によって実際の金額は変わります。"}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"給与明細と数百円〜数千円ずれるのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当の課税・非課税、賞与の配分、住民税の前年所得、会社ごとの控除月と端数処理が影響します。本ツールは協会けんぽ加入者について2026年1月分から12月分までの保険料所属月を基準にした年間概算です。"}},{"@type":"Question","name":"「月給」には交通費を含めますか？","acceptedAnswer":{"@type":"Answer","text":"社会保険の標準報酬月額には通勤手当も含まれるため、総支給額に含めてください。所得税では非課税限度額内の通勤手当は課税されませんが、本ツールは入力負担を減らすため総支給額で概算します。"}},{"@type":"Question","name":"2026年の「子ども・子育て支援金」も入っていますか？","acceptedAnswer":{"@type":"Answer","text":"はい。給与は2026年4月分から支援金率0.23％を労使折半し、本人負担分を4月分から12月分まで反映します。年間賞与は6月と12月に均等支給される前提で、両方に支援金を反映します。"}},{"@type":"Question","name":"2026年中に40歳または65歳になる場合も正確ですか？","acceptedAnswer":{"@type":"Answer","text":"本ツールは入力した年齢区分が2026年を通じて続く前提で年間概算します。年の途中で介護保険の第2号被保険者になる、または外れる場合は月ごとの保険料が異なるため、給与明細をご確認ください。"}},{"@type":"Question","name":"年収500万円の手取りはいくらですか？","acceptedAnswer":{"@type":"Answer","text":"東京都、30歳、独身・扶養なし、協会けんぽ、賞与なし、前年も同じ年収として計算すると、2026年の年間手取りは約394万3,000円、月平均は約32万9,000円です。標準報酬月額、控除時期、前年所得、追加控除によって実際の金額は変わります。"}}]}</script>
 </head>
 <body>
   <header class="site-header">
@@ -63,7 +63,7 @@
             <div class="field">
               <label for="annualBonus">年間賞与</label>
               <div class="input-wrap"><input id="annualBonus" type="number" inputmode="numeric" min="0" max="20000000" step="10000" value="600000"><span class="unit">円</span></div>
-              <p class="help">年2回支給として社会保険料を概算</p>
+              <p class="help">6月・12月に2回、均等に支給される前提で概算</p>
             </div>
             <div class="field">
               <label for="prefecture">協会けんぽの支部</label>
@@ -73,7 +73,7 @@
             <div class="field">
               <label for="age">年齢</label>
               <div class="input-wrap"><input id="age" type="number" inputmode="numeric" min="18" max="69" value="30"><span class="unit">歳</span></div>
-              <p class="help">40〜64歳は介護保険料を加算</p>
+              <p class="help">入力年齢が2026年を通じて続く前提。40〜64歳は介護保険料を加算</p>
             </div>
             <div class="field">
               <label for="dependents">一般扶養親族</label>
@@ -121,7 +121,7 @@
             <div class="metric total"><span>手取り率</span><strong id="netRate">—</strong></div>
             <div class="bar" aria-hidden="true"><span class="bar-net" id="barNet"></span><span class="bar-social" id="barSocial"></span><span class="bar-tax" id="barTax"></span></div>
             <div class="legend"><span><i style="background:#16847c"></i>手取り</span><span><i style="background:#6ea4c9"></i>社会保険</span><span><i style="background:#d59b44"></i>税金</span></div>
-            <div class="notice">住民税は前年所得で決まります。この結果では入力した年収が前年も同じだったものとして概算しています。</div>
+            <div class="notice" id="resultNotice">社会保険は2026年1〜12月の保険料所属月で計算しています。健康・介護保険は3月分、子ども・子育て支援金は4月分、雇用保険は4月支給分から新しい料率を反映します。給与明細での控除月は勤務先により1か月ずれる場合があります。2026年中に40歳または65歳になる場合は、実際の介護保険料開始・終了月と差が出ます。</div>
           </div>
         </section>
       </div>
@@ -129,10 +129,27 @@
       <section class="content-section">
         <h2>計算に含まれるもの</h2>
         <div class="steps">
-          <div class="step"><span>01</span><b>社会保険料</b><p>健康保険、厚生年金、雇用保険、介護保険、子ども・子育て支援金</p></div>
+          <div class="step"><span>01</span><b>社会保険料</b><p>2026年中の適用月を分けて、健康保険、厚生年金、雇用保険、介護保険、子ども・子育て支援金を計算</p></div>
           <div class="step"><span>02</span><b>所得税</b><p>最低74万円の給与所得控除と、所得489万円以下で104万円となる基礎控除を反映</p></div>
-          <div class="step"><span>03</span><b>住民税</b><p>所得割10％、均等割と森林環境税の合計5,000円で概算</p></div>
+          <div class="step"><span>03</span><b>住民税</b><p>標準税率の所得割10％から調整控除を差し引き、均等割4,000円と森林環境税1,000円を加えて概算</p></div>
         </div>
+      </section>
+
+
+
+      <section class="content-section content-card">
+        <h2>2026年は社会保険料率の切替月に注意</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>対象期間</th><th>健康・介護保険</th><th>子ども・子育て支援金</th><th>雇用保険（本人）</th></tr></thead>
+            <tbody>
+              <tr><td>1〜2月分</td><td>2025年度の都道府県料率／介護1.59%</td><td>なし</td><td>0.55%</td></tr>
+              <tr><td>3月分</td><td>2026年度の都道府県料率／介護1.62%</td><td>なし</td><td>0.55%</td></tr>
+              <tr><td>4〜12月分</td><td>2026年度の都道府県料率／介護1.62%</td><td>0.23%（労使折半）</td><td>0.50%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">協会けんぽの一般被保険者を想定。健康保険・介護保険は保険料の所属月で区分し、賞与は支給日で判定します。勤務先が翌月控除を採用している場合、給与明細に反映される月は上表より1か月後になることがあります。</p>
       </section>
 
       <section class="content-section" aria-labelledby="annual-table-title">
@@ -141,25 +158,26 @@
           <table class="data-table">
             <thead><tr><th>額面年収</th><th>年間手取り</th><th>月平均</th><th>社会保険料</th><th>所得税</th><th>住民税</th><th>手取り率</th></tr></thead>
             <tbody>
-              <tr><td><strong>300万円</strong></td><td>239万7,424円</td><td>19万9,785円</td><td>45万7,728円</td><td>2万6,648円</td><td>11万8,200円</td><td>79.9%</td></tr>
-              <tr><td><strong>400万円</strong></td><td>316万5,721円</td><td>26万3,810円</td><td>59万8,952円</td><td>5万7,227円</td><td>17万8,100円</td><td>79.1%</td></tr>
-              <tr><td><strong>500万円</strong></td><td>393万9,567円</td><td>32万8,297円</td><td>72万3,148円</td><td>9万1,685円</td><td>24万5,600円</td><td>78.8%</td></tr>
-              <tr><td><strong>600万円</strong></td><td>465万9,428円</td><td>38万8,285円</td><td>88万1,400円</td><td>14万9,372円</td><td>30万9,800円</td><td>77.7%</td></tr>
-              <tr><td><strong>700万円</strong></td><td>530万6,168円</td><td>44万2,180円</td><td>103万9,652円</td><td>27万6,180円</td><td>37万8,000円</td><td>75.8%</td></tr>
-              <tr><td><strong>800万円</strong></td><td>594万5,101円</td><td>49万5,425円</td><td>116万4,964円</td><td>43万4,435円</td><td>45万5,500円</td><td>74.3%</td></tr>
-              <tr><td><strong>1,000万円</strong></td><td>727万1,705円</td><td>60万5,975円</td><td>126万5,684円</td><td>82万2,211円</td><td>64万400円</td><td>72.7%</td></tr>
+              <tr><td><strong>300万円</strong></td><td>240万390円</td><td>20万32円</td><td>45万7,362円</td><td>2万6,648円</td><td>11万5,600円</td><td>80.0%</td></tr>
+              <tr><td><strong>400万円</strong></td><td>316万8,788円</td><td>26万4,065円</td><td>59万8,485円</td><td>5万7,227円</td><td>17万5,500円</td><td>79.2%</td></tr>
+              <tr><td><strong>500万円</strong></td><td>394万2,572円</td><td>32万8,547円</td><td>72万2,592円</td><td>9万1,736円</td><td>24万3,100円</td><td>78.9%</td></tr>
+              <tr><td><strong>600万円</strong></td><td>466万2,501円</td><td>38万8,541円</td><td>88万725円</td><td>14万9,474円</td><td>30万7,300円</td><td>77.7%</td></tr>
+              <tr><td><strong>700万円</strong></td><td>530万9,277円</td><td>44万2,439円</td><td>103万8,839円</td><td>27万6,384円</td><td>37万5,500円</td><td>75.8%</td></tr>
+              <tr><td><strong>800万円</strong></td><td>594万8,541円</td><td>49万5,711円</td><td>116万4,024円</td><td>43万4,435円</td><td>45万3,000円</td><td>74.4%</td></tr>
+              <tr><td><strong>1,000万円</strong></td><td>727万5,025円</td><td>60万6,252円</td><td>126万4,560円</td><td>82万2,415円</td><td>63万8,000円</td><td>72.8%</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="table-note">東京都、30歳、独身・扶養なし、協会けんぽ、賞与なし、前年も同じ年収として概算。実際の手取りは勤務先・控除・賞与配分で変わります。</p>
+        <p class="table-note">東京都、30歳、独身・扶養なし、協会けんぽ、賞与なし、前年も同じ年収として概算。2026年1〜12月の保険料所属月と法定の端数処理を反映しています。実際の給与控除月、標準報酬月額、追加控除で変わります。</p>
       </section>
 
       <section class="content-section">
         <h2>よくある質問</h2>
-        <details class="faq"><summary>給与明細と数百円〜数千円ずれるのはなぜですか？</summary><p>実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当、賞与の支給回数、住民税の前年所得、端数処理などが影響します。本ツールは協会けんぽ加入の会社員を想定した年間の概算です。</p></details>
+        <details class="faq"><summary>給与明細と数百円〜数千円ずれるのはなぜですか？</summary><p>実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当の課税・非課税、賞与の配分、住民税の前年所得、会社ごとの控除月と端数処理が影響します。本ツールは協会けんぽ加入者について2026年1月分から12月分までの保険料所属月を基準にした年間概算です。</p></details>
         <details class="faq"><summary>「月給」には交通費を含めますか？</summary><p>社会保険の標準報酬月額には通勤手当も含まれるため、総支給額に含めてください。所得税では非課税限度額内の通勤手当は課税されませんが、本ツールは入力負担を減らすため総支給額で概算します。</p></details>
-        <details class="faq"><summary>2026年の「子ども・子育て支援金」も入っていますか？</summary><p>はい。2026年4月分からの協会けんぽの支援金率0.23％を労使折半し、本人負担分を社会保険料に含めています。</p></details>
-        <details class="faq"><summary>年収500万円の手取りはいくらですか？</summary><p>東京都、30歳、独身・扶養なし、協会けんぽ、賞与なしで計算すると、2026年の年間手取りは約394万円、月平均は約32万8,000円です。賞与の割合や前年所得、追加控除によって実際の金額は変わります。</p></details>
+        <details class="faq"><summary>2026年の「子ども・子育て支援金」も入っていますか？</summary><p>はい。給与は2026年4月分から支援金率0.23％を労使折半し、本人負担分を4月分から12月分まで反映します。年間賞与は6月と12月に均等支給される前提で、両方に支援金を反映します。</p></details>
+        <details class="faq"><summary>2026年中に40歳または65歳になる場合も正確ですか？</summary><p>本ツールは入力した年齢区分が2026年を通じて続く前提で年間概算します。年の途中で介護保険の第2号被保険者になる、または外れる場合は月ごとの保険料が異なるため、給与明細をご確認ください。</p></details>
+        <details class="faq"><summary>年収500万円の手取りはいくらですか？</summary><p>東京都、30歳、独身・扶養なし、協会けんぽ、賞与なし、前年も同じ年収として計算すると、2026年の年間手取りは約394万3,000円、月平均は約32万9,000円です。標準報酬月額、控除時期、前年所得、追加控除によって実際の金額は変わります。</p></details>
       </section>
 
       <section class="content-section">
@@ -174,12 +192,15 @@
       </section>
 
       <section class="content-section content-card sources">
-        <strong>参照した公的資料（2026年8月22日確認）</strong><br>
+        <strong>適用基準・公的資料（2026年9月1日確認）</strong><br>
+        計算結果の性質：年間概算 ／ 健康保険：協会けんぽ ／ 保険料の基準：2026年1〜12月の所属月<br>
         <a href="https://www.nta.go.jp/publication/pamph/gensen/2026kaisei.pdf" target="_blank" rel="noopener">国税庁「源泉所得税の改正のあらまし（令和8年4月）」</a> ／
         <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm" target="_blank" rel="noopener">国税庁 No.2260 所得税の税率</a> ／
-        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">協会けんぽ 令和8年度都道府県単位保険料率</a> ／
-        <a href="https://www.nenkin.go.jp/service/kounen/hokenryo/ryogaku/ryogakuhyo/index.html" target="_blank" rel="noopener">日本年金機構 厚生年金保険料額表</a> ／
-        <a href="https://www.mhlw.go.jp/content/001692566.pdf" target="_blank" rel="noopener">厚生労働省 令和8年度雇用保険料率</a>
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r07/" target="_blank" rel="noopener">協会けんぽ 令和7年度都道府県単位保険料率</a> ／
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/" target="_blank" rel="noopener">協会けんぽ 令和8年度都道府県単位保険料率</a> ／
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/003/" target="_blank" rel="noopener">協会けんぽ 子ども・子育て支援金率</a> ／
+        <a href="https://www.nenkin.go.jp/service/kounen/hokenryo/nofu/20121026.html" target="_blank" rel="noopener">日本年金機構「保険料の計算方法・端数処理」</a> ／
+        <a href="https://jsite.mhlw.go.jp/kanagawa-roudoukyoku/hourei_seido_tetsuzuki/roudou_hoken/hourei_seido/2024_00008.html" target="_blank" rel="noopener">厚生労働省系労働局「令和7・8年度雇用保険料率」</a>
       </section>
     </div>
   </main>
@@ -191,7 +212,7 @@
     const form = document.getElementById('salaryForm');
     const prefecture = document.getElementById('prefecture');
     Object.keys(tax.HEALTH_RATES_2026).forEach(name => {
-      const option = document.createElement('option'); option.value = name; option.textContent = name + '（' + tax.HEALTH_RATES_2026[name].toFixed(2) + '%）';
+      const option = document.createElement('option'); option.value = name; option.textContent = name;
       if (name === '東京都') option.selected = true; prefecture.appendChild(option);
     });
     const yen = n => Math.round(n).toLocaleString('ja-JP') + '円';
@@ -202,7 +223,7 @@
         monthlySalary:Number(document.getElementById('monthlySalary').value), annualBonus:Number(document.getElementById('annualBonus').value),
         prefecture:prefecture.value, age:Number(document.getElementById('age').value), dependents:Number(document.getElementById('dependents').value),
         specificDependents:Number(document.getElementById('specificDependents').value), elderDependents:Number(document.getElementById('elderDependents').value),
-        spouse:document.querySelector('input[name="spouse"]:checked').value === '1', bonusPayments:2
+        spouse:document.querySelector('input[name="spouse"]:checked').value === '1', bonusPayments:2, bonusMonths:[6,12]
       });
       document.getElementById('annualNet').textContent=yen(result.annualNet); document.getElementById('monthlyNet').textContent=yen(result.monthlyNet);
       document.getElementById('gross').textContent=yen(result.gross); document.getElementById('social').textContent='−'+yen(result.social.total);
