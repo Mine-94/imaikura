@@ -230,7 +230,8 @@
     else if (base <= 39999000) { rate = 0.40; deduction = 2796000; }
     else { rate = 0.45; deduction = 4796000; }
     const baseTax = Math.max(0, Math.floor(base * rate - deduction));
-    return { taxable: base, rate, baseTax, total: Math.floor(baseTax * 1.021) };
+    const reconstructionSpecialTax = Math.floor(baseTax * 21 / 1000);
+    return { taxable: base, rate, baseTax, total: baseTax + reconstructionSpecialTax };
   }
 
   function socialInsurance2026(options) {
@@ -434,24 +435,46 @@
     if (disability) deduction += 1000000;
 
     const excess = Math.max(0, retirementPay - deduction);
-    const halfTaxationApplies = !(isOfficer && years <= 5);
-    let taxableRetirementIncome = halfTaxationApplies ? Math.floor(excess / 2) : excess;
+    const isShortTerm = !isOfficer && years <= 5;
+    const isSpecifiedOfficer = isOfficer && years <= 5;
+    let taxationCategory = 'general';
+    let taxableRetirementIncome;
+    if (isSpecifiedOfficer) {
+      // 特定役員退職手当等：控除後の全額（1/2課税なし）
+      taxationCategory = 'specifiedOfficer';
+      taxableRetirementIncome = excess;
+    } else if (isShortTerm) {
+      // 短期退職手当等：控除後300万円までは1/2、300万円超部分は全額課税
+      taxationCategory = 'shortTerm';
+      taxableRetirementIncome = excess <= 3000000
+        ? Math.floor(excess / 2)
+        : 1500000 + (excess - 3000000);
+    } else {
+      taxableRetirementIncome = Math.floor(excess / 2);
+    }
     taxableRetirementIncome = Math.floor(taxableRetirementIncome / 1000) * 1000;
 
     const taxInfo = nationalIncomeTax(taxableRetirementIncome);
-    const incomeTax = taxInfo.total;
+    const assessedIncomeTax = taxInfo.total;
+    // 申告書未提出時は、支払額の20.42%を源泉徴収し、確定申告で本来税額と精算する。
+    const withheldIncomeTax = declarationSubmitted
+      ? assessedIncomeTax
+      : Math.floor(retirementPay * 2042 / 10000);
 
     const prefecturalTax = Math.floor(taxableRetirementIncome * 0.04 / 100) * 100;
     const municipalTax = Math.floor(taxableRetirementIncome * 0.06 / 100) * 100;
     const residentTax = prefecturalTax + municipalTax;
 
-    const net = retirementPay - incomeTax - residentTax;
+    const net = Math.max(0, retirementPay - withheldIncomeTax - residentTax);
+    const finalNetAfterSettlement = Math.max(0, retirementPay - assessedIncomeTax - residentTax);
+    const settlementDifference = withheldIncomeTax - assessedIncomeTax;
     const netRate = retirementPay > 0 ? net / retirementPay : 0;
 
     return {
-      retirementPay, years, deduction, taxableRetirementIncome,
-      incomeTax, prefecturalTax, municipalTax, residentTax,
-      net, netRate, declarationSubmitted
+      retirementPay, years, deduction, excess, taxationCategory, taxableRetirementIncome,
+      incomeTax: withheldIncomeTax, withheldIncomeTax, assessedIncomeTax, settlementDifference,
+      prefecturalTax, municipalTax, residentTax, net, finalNetAfterSettlement, netRate,
+      declarationSubmitted
     };
   }
 
