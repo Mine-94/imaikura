@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-8602848692420724">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>残業代計算 2026｜時間外・深夜・休日の割増賃金｜いまいくら</title>
+  <meta name="description" content="時給または月給から、法定内残業・法定時間外・月60時間超・深夜・法定休日の割増賃金を計算。労働基準法の最低割増率と公的資料に基づく無料シミュレーターです。">
+  <meta property="og:title" content="残業代計算 2026｜時間外・深夜・休日の割増賃金｜いまいくら">
+  <meta property="og:description" content="月給・時給と残業時間を入力して、労働基準法上の割増賃金の目安を確認。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://imaikura.com/overtime-pay/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"残業代・割増賃金計算 2026",
+    "url":"https://imaikura.com/overtime-pay/",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "inLanguage":"ja",
+    "isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+    "description":"時給または月給から、法定内残業・時間外・深夜・法定休日の割増賃金を計算します。"
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"法定内残業と法定時間外労働の違いは何ですか？","acceptedAnswer":{"@type":"Answer","text":"所定労働時間を超えていても、原則として1日8時間・週40時間の法定労働時間内であれば法定内残業です。法定時間外労働は法定労働時間を超えた部分で、25%以上の割増が必要です。"}},
+      {"@type":"Question","name":"月60時間を超える残業の割増率は何%ですか？","acceptedAnswer":{"@type":"Answer","text":"1か月60時間を超える法定時間外労働は50%以上です。深夜労働と重なる場合は合計75%以上になります。法定休日労働の時間は、原則として60時間の算定には含めません。"}},
+      {"@type":"Question","name":"法定休日に8時間を超えて働くと60%になりますか？","acceptedAnswer":{"@type":"Answer","text":"法定休日労働は35%以上で、8時間を超えても時間外割増25%は重複しません。午後10時から午前5時までの深夜労働と重なる部分は60%以上です。"}},
+      {"@type":"Question","name":"固定残業代があれば追加の残業代は不要ですか？","acceptedAnswer":{"@type":"Answer","text":"固定残業代として支払われた額が法定計算額を下回る場合、差額の支払いが必要です。固定残業代部分が明確に区分されているかなど、個別の契約内容も確認が必要です。"}}
+    ]
+  }</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../" aria-label="いまいくら トップ">
+        <span class="brand-mark">円</span><span>いまいくら <small>お金・税金・仕事の計算</small></span>
+      </a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="../">ツール一覧</a><a href="./" aria-current="page">残業代計算</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">労働基準法の最低割増率に対応</div>
+          <h1>残業代・割増賃金<br>計算シミュレーター</h1>
+          <p class="lead">時給または月給と時間区分を入力すると、法定内残業・法定時間外・月60時間超・深夜・法定休日の追加支給額を計算します。</p>
+        </div>
+        <div class="trust-badge">法令・公的資料を確認</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="overtimeForm">
+          <h2 class="panel-title">賃金と時間を入力</h2>
+
+          <div class="field">
+            <label>賃金の入力方法<span class="required">必須</span></label>
+            <div class="choice-row" role="radiogroup" aria-label="賃金の入力方法">
+              <span class="choice"><input type="radio" id="payHourly" name="payType" value="hourly" checked><label for="payHourly">時給から計算</label></span>
+              <span class="choice"><input type="radio" id="payMonthly" name="payType" value="monthly"><label for="payMonthly">月給から計算</label></span>
+            </div>
+          </div>
+
+          <div id="hourlyFields">
+            <div class="field">
+              <label for="hourlyWage">通常の1時間当たり賃金<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="hourlyWage" type="number" inputmode="numeric" min="0" max="1000000" step="1" value="1500"><span class="unit">円</span></div>
+              <p class="help">割増前の時給を入力してください。</p>
+            </div>
+          </div>
+
+          <div id="monthlyFields" hidden>
+            <div class="field-grid">
+              <div class="field">
+                <label for="monthlyWage">毎月の賃金総額<span class="required">必須</span></label>
+                <div class="input-wrap"><input id="monthlyWage" type="number" inputmode="numeric" min="0" max="100000000" step="1" value="300000"><span class="unit">円</span></div>
+                <p class="help">基本給と、算定基礎に含まれる毎月の手当の合計。</p>
+              </div>
+              <div class="field">
+                <label for="excludedWage">算定基礎から除外できる賃金</label>
+                <div class="input-wrap"><input id="excludedWage" type="number" inputmode="numeric" min="0" max="100000000" step="1" value="0"><span class="unit">円</span></div>
+                <p class="help">家族・通勤・別居・子女教育・住宅手当等。名称ではなく支給実態で判断されます。</p>
+              </div>
+              <div class="field">
+                <label for="monthlyHours">1年間における1か月平均所定労働時間<span class="required">必須</span></label>
+                <div class="input-wrap"><input id="monthlyHours" type="number" inputmode="decimal" min="1" max="300" step="0.1" value="160"><span class="unit">時間</span></div>
+                <p class="help">就業規則・労働契約をご確認ください。月ごとに異なる場合は年間平均を使います。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-block">
+            <h3 class="panel-title">時間区分</h3>
+            <p class="help">同じ時間を複数欄に重ねず、該当する組み合わせの欄へ1回だけ入力してください。</p>
+            <div class="field-grid">
+              <div class="field">
+                <label for="withinStatutory">法定内残業</label>
+                <div class="input-wrap"><input id="withinStatutory" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">所定時間超〜原則1日8時間・週40時間以内。1.00倍。</p>
+              </div>
+              <div class="field">
+                <label for="nightOnly">所定内の深夜割増のみ</label>
+                <div class="input-wrap"><input id="nightOnly" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">所定労働のうち22時〜翌5時。追加の0.25倍のみ。</p>
+              </div>
+              <div class="field">
+                <label for="overtime">法定時間外（60時間以内・深夜以外）</label>
+                <div class="input-wrap"><input id="overtime" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="10"><span class="unit">時間</span></div>
+                <p class="help">通常の法定時間外労働。1.25倍以上。</p>
+              </div>
+              <div class="field">
+                <label for="overtimeNight">法定時間外＋深夜（60時間以内）</label>
+                <div class="input-wrap"><input id="overtimeNight" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">法定時間外と22時〜翌5時が重なる時間。1.50倍以上。</p>
+              </div>
+              <div class="field">
+                <label for="over60">月60時間超の法定時間外（深夜以外）</label>
+                <div class="input-wrap"><input id="over60" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">1か月60時間を超えた部分。1.50倍以上。</p>
+              </div>
+              <div class="field">
+                <label for="over60Night">月60時間超の法定時間外＋深夜</label>
+                <div class="input-wrap"><input id="over60Night" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">60時間超と深夜が重なる時間。1.75倍以上。</p>
+              </div>
+              <div class="field">
+                <label for="legalHoliday">法定休日（深夜以外）</label>
+                <div class="input-wrap"><input id="legalHoliday" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">労基法上の法定休日に働いた時間。1.35倍以上。</p>
+              </div>
+              <div class="field">
+                <label for="legalHolidayNight">法定休日＋深夜</label>
+                <div class="input-wrap"><input id="legalHolidayNight" type="number" inputmode="decimal" min="0" max="300" step="0.25" value="0"><span class="unit">時間</span></div>
+                <p class="help">法定休日と22時〜翌5時が重なる時間。1.60倍以上。</p>
+              </div>
+            </div>
+          </div>
+
+          <button class="calculate" type="submit">残業代を計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head">
+            <small id="resultTitle">追加支給額の目安</small>
+            <div class="result-big" id="totalPay">—</div>
+            <div class="result-sub" id="resultSub">労働基準法上の最低割増率で計算</div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>計算に使う基礎時給</span><strong id="baseRate">—</strong></div>
+            <div class="metric"><span>入力した時間の合計</span><strong id="totalHours">—</strong></div>
+            <div class="metric"><span>通常賃金相当分</span><strong id="basePortion">—</strong></div>
+            <div class="metric"><span>割増分</span><strong id="premiumPortion">—</strong></div>
+            <div id="breakdown"></div>
+            <div class="notice" id="resultNotice">会社の就業規則・労働契約で法定より高い割増率が定められている場合は、その率が優先されます。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section content-card">
+        <h2>この計算で使う最低割増率</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>区分</th><th>支給倍率</th><th>割増部分</th></tr></thead>
+            <tbody>
+              <tr><td>法定内残業</td><td>1.00倍</td><td>0%</td></tr>
+              <tr><td>法定時間外（原則1日8時間・週40時間超）</td><td>1.25倍以上</td><td>25%以上</td></tr>
+              <tr><td>月60時間を超える法定時間外</td><td>1.50倍以上</td><td>50%以上</td></tr>
+              <tr><td>法定時間外＋深夜</td><td>1.50倍以上</td><td>50%以上</td></tr>
+              <tr><td>月60時間超の法定時間外＋深夜</td><td>1.75倍以上</td><td>75%以上</td></tr>
+              <tr><td>法定休日</td><td>1.35倍以上</td><td>35%以上</td></tr>
+              <tr><td>法定休日＋深夜</td><td>1.60倍以上</td><td>60%以上</td></tr>
+              <tr><td>所定労働時間内の深夜</td><td>追加0.25倍以上</td><td>25%以上</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">深夜は原則として午後10時から午前5時まで。法定休日労働に時間外割増25%は重複しません。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>計算の3ステップ</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>時給・月給を選ぶ</b><p>月給の場合は、算定基礎となる月給を1か月平均所定労働時間で割って基礎時給を求めます。</p></div>
+          <div class="step"><span>02</span><b>時間を分類する</b><p>法定内、通常の時間外、60時間超、深夜、法定休日の組み合わせごとに時間を入力します。</p></div>
+          <div class="step"><span>03</span><b>内訳を確認する</b><p>追加支給額、通常賃金相当分、割増分、区分別の金額を確認します。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>計算前に確認すること</h2>
+        <p class="plain-copy"><b>法定時間外</b>は、単に会社の定時を過ぎた時間ではありません。原則として1日8時間または週40時間を超えた部分です。所定労働時間が7時間の会社で8時間働いた場合、通常は最初の1時間が法定内残業、8時間を超えた部分が法定時間外になります。</p>
+        <p class="plain-copy"><b>法定休日</b>は、就業規則などで定めた労働基準法上の休日です。週休2日のうち、法定休日ではない休日の勤務は自動的に35%割増になるわけではなく、週40時間を超えるかなどにより判定します。</p>
+        <p class="plain-copy"><b>月60時間超</b>の算定には、法定休日労働の時間は原則含めません。法定外休日に働いた時間が法定時間外労働となる場合は含まれます。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>法定内残業と法定時間外労働の違いは何ですか？</summary><p>所定労働時間を超えていても、原則として1日8時間・週40時間の法定労働時間内であれば法定内残業です。法定時間外労働は法定労働時間を超えた部分で、25%以上の割増が必要です。</p></details>
+        <details class="faq"><summary>月60時間を超える残業の割増率は何%ですか？</summary><p>1か月60時間を超える法定時間外労働は50%以上です。深夜労働と重なる場合は合計75%以上になります。法定休日労働の時間は、原則として60時間の算定には含めません。</p></details>
+        <details class="faq"><summary>法定休日に8時間を超えて働くと60%になりますか？</summary><p>法定休日労働は35%以上で、8時間を超えても時間外割増25%は重複しません。午後10時から午前5時までの深夜労働と重なる部分は60%以上です。</p></details>
+        <details class="faq"><summary>月給のどの手当を計算に含めますか？</summary><p>原則として毎月支払われる賃金を含めます。除外できるのは家族手当、通勤手当、別居手当、子女教育手当、住宅手当、臨時に支払われた賃金、1か月を超える期間ごとに支払われる賃金です。ただし名称ではなく支給実態で判断され、一律支給の住宅手当などは除外できない場合があります。</p></details>
+        <details class="faq"><summary>固定残業代があれば追加の残業代は不要ですか？</summary><p>固定残業代として支払われた額が法定計算額を下回る場合、差額の支払いが必要です。固定残業代部分が明確に区分されているかなど、個別の契約内容も確認が必要です。</p></details>
+        <details class="faq"><summary>管理監督者にも深夜割増はありますか？</summary><p>労働基準法上の管理監督者は労働時間・休日の規制が一部適用除外となりますが、深夜割増は適用されます。肩書だけで管理監督者になるわけではなく、実態による判断が必要です。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を差し引いた年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../bonus-take-home/"><h2>ボーナス・賞与の手取り計算</h2><p>賞与の社会保険料と源泉所得税を差し引いた振込額を確認。</p><span class="card-link">賞与手取りを計算する</span></a>
+          <a class="tool-card" href="../income-wall/"><h2>年収の壁・扶養内計算</h2><p>税金と社会保険の条件を分けて確認。</p><span class="card-link">年収の壁を確認する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>適用基準・確認情報</strong><br>
+        適用法令：労働基準法第32条・第35条・第37条、労働基準法施行規則第19条〜第21条<br>
+        計算結果の性質：法定最低率による概算 ／ 地域差：なし ／ 最終確認日：2026年9月1日<br>
+        <a href="https://laws.e-gov.go.jp/law/322AC0000000049" target="_blank" rel="noopener">e-Gov法令検索「労働基準法」</a> ／
+        <a href="https://jsite.mhlw.go.jp/osaka-roudoukyoku/hourei_seido_tetsuzuki/roudoukijun_keiyaku/hourei_seido/jikan2/warimasi.html" target="_blank" rel="noopener">大阪労働局「割増賃金」</a> ／
+        <a href="https://www.check-roudou.mhlw.go.jp/study/roudousya_kajuroudou.html" target="_blank" rel="noopener">厚生労働省「過重労働の防止」</a>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>このツールの対象外・注意事項</h2>
+        <p class="plain-copy">変形労働時間制、フレックスタイム制、裁量労働制、事業場外みなし労働時間制、歩合給、固定残業代、代替休暇、欠勤控除、会社独自の高い割増率、労働時間の端数処理などは個別条件により結果が変わります。管理監督者等は適用関係が異なります。未払いの有無や請求額を確定するものではないため、給与明細・就業規則・労働契約を確認し、必要に応じて労働基準監督署や専門家へご相談ください。</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a>
+      <div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。個別の確定判断は勤務先・労働基準監督署等へご確認ください。</div></div>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('overtimeForm');
+    const yen = value => Math.round(value).toLocaleString('ja-JP') + '円';
+    const hoursText = value => (Math.round(value * 100) / 100).toLocaleString('ja-JP') + '時間';
+    const numberValue = (id, max) => {
+      const value = Number(document.getElementById(id).value);
+      if (!Number.isFinite(value)) return 0;
+      return Math.min(max, Math.max(0, value));
+    };
+
+    const categories = [
+      {id:'withinStatutory', label:'法定内残業', factor:1.00, premiumFactor:0},
+      {id:'nightOnly', label:'所定内の深夜割増のみ', factor:0.25, premiumFactor:0.25},
+      {id:'overtime', label:'法定時間外（60時間以内）', factor:1.25, premiumFactor:0.25},
+      {id:'overtimeNight', label:'法定時間外＋深夜（60時間以内）', factor:1.50, premiumFactor:0.50},
+      {id:'over60', label:'月60時間超の法定時間外', factor:1.50, premiumFactor:0.50},
+      {id:'over60Night', label:'月60時間超の法定時間外＋深夜', factor:1.75, premiumFactor:0.75},
+      {id:'legalHoliday', label:'法定休日', factor:1.35, premiumFactor:0.35},
+      {id:'legalHolidayNight', label:'法定休日＋深夜', factor:1.60, premiumFactor:0.60}
+    ];
+
+    function setPayMode() {
+      const payType = document.querySelector('input[name="payType"]:checked').value;
+      document.getElementById('hourlyFields').hidden = payType !== 'hourly';
+      document.getElementById('monthlyFields').hidden = payType !== 'monthly';
+    }
+
+    function calculate(event) {
+      if (event) event.preventDefault();
+      if (event && event.type === 'submit' && typeof gtag === 'function') gtag('event','overtime_pay_calculate');
+
+      setPayMode();
+      const payType = document.querySelector('input[name="payType"]:checked').value;
+      let baseRate = 0;
+      let valid = true;
+      let invalidMessage = '';
+
+      if (payType === 'hourly') {
+        baseRate = numberValue('hourlyWage', 1000000);
+        if (baseRate <= 0) {
+          valid = false;
+          invalidMessage = '通常の1時間当たり賃金を入力してください。';
+        }
+      } else {
+        const monthlyWage = numberValue('monthlyWage', 100000000);
+        const excludedWage = numberValue('excludedWage', 100000000);
+        const monthlyHours = numberValue('monthlyHours', 300);
+        if (monthlyHours <= 0) {
+          valid = false;
+          invalidMessage = '1か月平均所定労働時間を入力してください。';
+        } else if (excludedWage > monthlyWage) {
+          valid = false;
+          invalidMessage = '除外できる賃金は毎月の賃金総額以下で入力してください。';
+        } else {
+          baseRate = (monthlyWage - excludedWage) / monthlyHours;
+          if (baseRate <= 0) {
+            valid = false;
+            invalidMessage = '算定基礎となる月給を確認してください。';
+          }
+        }
+      }
+
+      const rows = categories.map(category => {
+        const hours = numberValue(category.id, 300);
+        return {
+          ...category,
+          hours,
+          amount: baseRate * category.factor * hours,
+          premium: baseRate * category.premiumFactor * hours,
+          baseEquivalent: category.id === 'nightOnly' ? 0 : baseRate * hours
+        };
+      });
+
+      const totalHours = rows.reduce((sum,row) => sum + row.hours, 0);
+      const total = rows.reduce((sum,row) => sum + row.amount, 0);
+      const premium = rows.reduce((sum,row) => sum + row.premium, 0);
+      const basePortion = rows.reduce((sum,row) => sum + row.baseEquivalent, 0);
+
+      document.getElementById('baseRate').textContent = valid ? yen(baseRate) : '—';
+      document.getElementById('totalHours').textContent = hoursText(totalHours);
+      document.getElementById('basePortion').textContent = valid ? yen(basePortion) : '—';
+      document.getElementById('premiumPortion').textContent = valid ? yen(premium) : '—';
+      document.getElementById('totalPay').textContent = valid ? yen(total) : '—';
+      document.getElementById('resultSub').textContent = valid
+        ? (payType === 'hourly' ? '入力した時給' : '月給から換算した基礎時給') + ' × 法定最低倍率'
+        : invalidMessage;
+
+      const breakdown = document.getElementById('breakdown');
+      breakdown.innerHTML = '';
+      rows.filter(row => row.hours > 0).forEach(row => {
+        const line = document.createElement('div');
+        line.className = 'metric submetric';
+        const label = document.createElement('span');
+        label.textContent = row.label + '（' + row.hours + '時間 × ' + row.factor.toFixed(2) + '）';
+        const value = document.createElement('strong');
+        value.textContent = valid ? yen(row.amount) : '—';
+        line.append(label,value);
+        breakdown.appendChild(line);
+      });
+
+      if (!rows.some(row => row.hours > 0)) {
+        const line = document.createElement('div');
+        line.className = 'metric submetric';
+        const label = document.createElement('span');
+        label.textContent = '時間を入力すると区分別の金額が表示されます';
+        line.appendChild(label);
+        breakdown.appendChild(line);
+      }
+
+      document.getElementById('resultNotice').textContent = valid
+        ? '会社の就業規則・労働契約で法定より高い割増率が定められている場合は、その率が優先されます。'
+        : invalidMessage;
+    }
+
+    form.addEventListener('submit', calculate);
+    form.addEventListener('input', calculate);
+    form.addEventListener('change', calculate);
+    calculate();
+  </script>
+</body>
+</html>
