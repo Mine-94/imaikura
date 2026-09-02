@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-8602848692420724">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>社会保険料計算 2026｜月給から健康保険・厚生年金を計算｜いまいくら</title>
+  <meta name="description" content="2026年4月以降の月給から、協会けんぽの健康保険・介護保険・子ども子育て支援金、厚生年金、雇用保険の本人負担額を計算。47都道府県の料率に対応。">
+  <meta property="og:title" content="社会保険料計算 2026｜月給から本人負担額を計算｜いまいくら">
+  <meta property="og:description" content="月給・都道府県・年齢・業種から、給与天引きされる社会保険料の内訳を確認。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <link rel="canonical" href="https://imaikura.com/social-insurance/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    [hidden]{display:none!important}
+    .rate-note{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 9px;border-radius:999px;background:var(--wash);color:var(--muted);font-size:11px;font-weight:700}
+    .result-context{margin:14px 0 0;padding:12px 14px;border-radius:9px;background:var(--wash);color:var(--muted);font-size:11px;line-height:1.65}
+    .scope-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+    .scope-item{border:1px solid var(--line);border-radius:9px;padding:12px 14px;background:#fff}
+    .scope-item b{display:block;color:var(--navy);font-size:12px;margin-bottom:3px}
+    .scope-item span{display:block;color:var(--muted);font-size:11px;line-height:1.55}
+    @media(max-width:620px){.scope-list{grid-template-columns:1fr}}
+  </style>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"社会保険料計算 2026",
+    "url":"https://imaikura.com/social-insurance/",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"Any",
+    "inLanguage":"ja",
+    "isAccessibleForFree":true,
+    "dateModified":"2026-09-02",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+    "description":"2026年4月以降の協会けんぽ加入者を対象に、月給から社会保険料の本人負担額を計算します。"
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"社会保険料は月給に料率をそのまま掛ければ計算できますか？","acceptedAnswer":{"@type":"Answer","text":"健康保険と厚生年金は、原則として実際の月給ではなく標準報酬月額に保険料率を掛けて計算します。雇用保険は、その月に支払われる対象賃金を基に計算します。"}},
+      {"@type":"Question","name":"通勤手当は社会保険料の計算に含まれますか？","acceptedAnswer":{"@type":"Answer","text":"健康保険・厚生年金の報酬には、原則として通勤手当も含まれます。雇用保険でも通勤手当は原則として賃金に含まれます。"}},
+      {"@type":"Question","name":"2026年の子ども・子育て支援金はいくらですか？","acceptedAnswer":{"@type":"Answer","text":"協会けんぽでは2026年4月分から支援金率0.23％が加わり、事業主と被保険者が折半します。この計算機では本人負担分を表示します。"}},
+      {"@type":"Question","name":"給与明細と計算結果が違うのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"加入している健康保険組合、会社が決定した標準報酬月額、資格取得月、保険料を控除する月、端数処理の特約などによって差が生じます。この計算機は協会けんぽ加入者の目安です。"}}
+    ]
+  }</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../" aria-label="いまいくら トップ">
+        <span class="brand-mark">円</span><span>いまいくら <small>お金・税金・仕事の計算</small></span>
+      </a>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="../">ツール一覧</a><a href="./" aria-current="page">社会保険料</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">令和8年4月以降・協会けんぽ対応</div>
+          <h1>社会保険料の<br>月額計算</h1>
+          <p class="lead">月給、勤務先が加入する協会けんぽ支部、年齢、業種を入力すると、給与から差し引かれる健康保険・厚生年金・雇用保険などの本人負担額を計算します。</p>
+        </div>
+        <div class="trust-badge">47都道府県の料率に対応</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="socialForm">
+          <h2 class="panel-title">給与の条件を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label for="monthlySalary">月給（総支給）<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="monthlySalary" type="number" inputmode="numeric" min="0" max="5000000" step="1000" value="300000"><span class="unit">円</span></div>
+              <p class="help">基本給、残業代、通勤手当など、保険料の対象となる報酬・賃金の合計</p>
+            </div>
+            <div class="field">
+              <label for="prefecture">協会けんぽの支部<span class="required">必須</span></label>
+              <select id="prefecture" aria-describedby="prefectureHelp"></select>
+              <p class="help" id="prefectureHelp">居住地ではなく、勤務先が加入している支部を選びます</p>
+            </div>
+            <div class="field">
+              <label for="age">年齢<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="age" type="number" inputmode="numeric" min="18" max="69" step="1" value="30"><span class="unit">歳</span></div>
+              <p class="help">40〜64歳は介護保険料が加わります。70歳以上はこの計算の対象外です</p>
+            </div>
+            <div class="field">
+              <label for="industry">雇用保険の事業区分</label>
+              <select id="industry">
+                <option value="5">一般の事業（本人 5/1,000）</option>
+                <option value="6">農林水産・清酒製造（本人 6/1,000）</option>
+                <option value="6">建設の事業（本人 6/1,000）</option>
+              </select>
+              <p class="help">2026年4月1日から2027年3月31日までの労働者負担率</p>
+            </div>
+          </div>
+
+          <details class="details-block">
+            <summary>通知書の標準報酬月額を直接使う</summary>
+            <div class="field-grid">
+              <div class="field">
+                <label for="healthStandardOverride">健康保険の標準報酬月額</label>
+                <div class="input-wrap"><input id="healthStandardOverride" type="number" inputmode="numeric" min="58000" max="1390000" step="1000" placeholder="未入力なら月給から推定"><span class="unit">円</span></div>
+                <p class="help">資格取得時決定・算定基礎届・随時改定の通知書に記載された額</p>
+              </div>
+              <div class="field">
+                <label for="pensionStandardOverride">厚生年金の標準報酬月額</label>
+                <div class="input-wrap"><input id="pensionStandardOverride" type="number" inputmode="numeric" min="88000" max="650000" step="1000" placeholder="未入力なら月給から推定"><span class="unit">円</span></div>
+                <p class="help">厚生年金の上限は65万円です</p>
+              </div>
+            </div>
+          </details>
+
+          <button class="calculate" type="submit">社会保険料を計算する</button>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head">
+            <small id="resultTitle">給与から差し引かれる社会保険料（月額概算）</small>
+            <div class="result-big" id="monthlyTotal">—</div>
+            <div class="result-sub">総支給に対する割合 <strong id="deductionRate">—</strong></div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>健康保険<span id="careLabel"></span></span><strong id="healthCare">—</strong></div>
+            <div class="metric"><span>子ども・子育て支援金</span><strong id="childSupport">—</strong></div>
+            <div class="metric"><span>厚生年金</span><strong id="pension">—</strong></div>
+            <div class="metric"><span>雇用保険</span><strong id="employment">—</strong></div>
+            <div class="metric total"><span>同じ条件で12か月換算</span><strong id="annualized">—</strong></div>
+            <div class="result-context">
+              <div>健康保険の標準報酬月額：<strong id="healthStandard">—</strong></div>
+              <div>厚生年金の標準報酬月額：<strong id="pensionStandard">—</strong></div>
+              <div class="rate-note" id="appliedRates">—</div>
+            </div>
+            <div class="notice">2026年4月以降の料率で計算しています。「12か月換算」は同じ料率と給与が続くと仮定した参考値で、2026年1〜3月の実績額ではありません。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section">
+        <h2>この計算に含まれるもの</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>健康保険・介護保険・支援金</b><p>協会けんぽの都道府県別料率を使用。40〜64歳は介護保険料を加えます。</p></div>
+          <div class="step"><span>02</span><b>厚生年金</b><p>標準報酬月額に18.3％を掛け、事業主と本人で折半した本人負担分を計算します。</p></div>
+          <div class="step"><span>03</span><b>雇用保険</b><p>月給に業種別の労働者負担率を掛けます。一般の事業は5/1,000です。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>2026年4月以降に使う料率</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>項目</th><th>全体の料率</th><th>本人負担</th><th>計算の基礎</th></tr></thead>
+            <tbody>
+              <tr><td><strong>健康保険</strong></td><td>都道府県ごとに9.21〜10.55％</td><td>原則1/2</td><td>健康保険の標準報酬月額</td></tr>
+              <tr><td><strong>介護保険</strong></td><td>1.62％</td><td>原則1/2</td><td>40〜64歳の標準報酬月額</td></tr>
+              <tr><td><strong>子ども・子育て支援金</strong></td><td>0.23％</td><td>原則1/2</td><td>健康保険の標準報酬月額</td></tr>
+              <tr><td><strong>厚生年金</strong></td><td>18.3％</td><td>原則1/2</td><td>厚生年金の標準報酬月額</td></tr>
+              <tr><td><strong>雇用保険</strong></td><td>事業区分により13.5〜16.5/1,000</td><td>5または6/1,000</td><td>その月の対象賃金</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">健康保険・介護保険は2026年3月分から、子ども・子育て支援金は2026年4月分から適用。雇用保険は2026年4月1日から2027年3月31日までの料率です。</p>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>標準報酬月額とは</h2>
+        <p class="plain-copy">健康保険と厚生年金は、毎月の給与そのものではなく、給与を等級に当てはめた<strong>標準報酬月額</strong>を基に計算します。原則として4〜6月の報酬を基に決めた金額が、その年の9月から翌年8月まで使われます。固定的賃金が大きく変わった場合や入社時などは、別の決定方法が使われます。</p>
+        <div class="scope-list">
+          <div class="scope-item"><b>自動推定</b><span>入力した月給を2026年度の等級表に当てはめます。</span></div>
+          <div class="scope-item"><b>通知書の額を優先</b><span>標準報酬月額が分かる場合は、詳細欄へ直接入力すると差が小さくなります。</span></div>
+          <div class="scope-item"><b>協会けんぽが対象</b><span>健康保険組合・共済組合は料率が異なるため対象外です。</span></div>
+          <div class="scope-item"><b>給与天引きの端数処理</b><span>本人負担分の50銭以下を切り捨て、50銭を超える場合は1円に切り上げます。</span></div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>社会保険料は月給に料率をそのまま掛ければ計算できますか？</summary><p>健康保険と厚生年金は、原則として実際の月給ではなく標準報酬月額に保険料率を掛けて計算します。雇用保険は、その月に支払われる対象賃金を基に計算します。</p></details>
+        <details class="faq"><summary>通勤手当は社会保険料の計算に含まれますか？</summary><p>健康保険・厚生年金の報酬には、原則として通勤手当も含まれます。雇用保険でも通勤手当は原則として賃金に含まれます。所得税で非課税となる通勤手当でも、社会保険では扱いが異なります。</p></details>
+        <details class="faq"><summary>2026年の子ども・子育て支援金はいくらですか？</summary><p>協会けんぽでは2026年4月分から支援金率0.23％が加わり、事業主と被保険者が折半します。この計算機では本人負担分を表示します。</p></details>
+        <details class="faq"><summary>給与明細と計算結果が違うのはなぜですか？</summary><p>加入している健康保険組合、会社が決定した標準報酬月額、資格取得月、保険料を控除する月、端数処理の特約などによって差が生じます。この計算機は協会けんぽ加入者の目安です。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を差し引いた年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../bonus-take-home/"><h2>ボーナスの手取り計算</h2><p>賞与にかかる社会保険料と源泉所得税を計算。</p><span class="card-link">賞与手取りを計算する</span></a>
+          <a class="tool-card" href="../income-wall/"><h2>年収の壁・扶養内計算</h2><p>勤務先の社会保険加入と健康保険の扶養を分けて判定。</p><span class="card-link">年収の壁を確認する</span></a>
+          <a class="tool-card" href="../overtime-pay/"><h2>残業代・割増賃金計算</h2><p>時間外、深夜、休日労働の追加支給額を計算。</p><span class="card-link">残業代を計算する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>適用範囲・確認日</strong><br>
+        対象：2026年4月以降、協会けんぽ加入、70歳未満の一般被保険者 ／ 結果の性質：月額概算 ／ 最終確認：2026年9月2日<br><br>
+        <strong>参照した公的資料</strong><br>
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/" target="_blank" rel="noopener">全国健康保険協会「令和8年度 都道府県単位保険料率」</a> ／
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/premium_prefectures/r08/" target="_blank" rel="noopener">全国健康保険協会「令和8年度 保険料額表」</a> ／
+        <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/003/index.html" target="_blank" rel="noopener">全国健康保険協会「子ども・子育て支援金率」</a> ／
+        <a href="https://www.nenkin.go.jp/service/kounen/hokenryo/ryogaku/ryogakuhyo/20200825.html" target="_blank" rel="noopener">日本年金機構「令和8年度 厚生年金保険料額表」</a> ／
+        <a href="https://www.nenkin.go.jp/service/kounen/hokenryo/nofu/20121026.html" target="_blank" rel="noopener">日本年金機構「保険料の計算方法・端数処理」</a> ／
+        <a href="https://jsite.mhlw.go.jp/yamagata-roudoukyoku/koyouhoken-20260316.html" target="_blank" rel="noopener">厚生労働省 山形労働局「令和8年度 雇用保険料率」</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a>
+      <div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は給与明細、標準報酬月額の通知書、加入先の案内をご確認ください。</div></div>
+    </div>
+  </footer>
+
+  <script src="../assets/tax-engine.js"></script>
+  <script>
+    (() => {
+      const tax = window.ImaikuraTax;
+      const form = document.getElementById('socialForm');
+      const prefecture = document.getElementById('prefecture');
+      const yen = value => Math.round(value).toLocaleString('ja-JP') + '円';
+      const numberValue = id => Number(document.getElementById(id).value) || 0;
+
+      Object.keys(tax.HEALTH_RATES_2026).forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name + '（' + tax.HEALTH_RATES_2026[name].toFixed(2) + '%）';
+        if (name === '東京都') option.selected = true;
+        prefecture.appendChild(option);
+      });
+
+      function roundPayrollShare(base, rateHundredthPercent, splitInHalf) {
+        const numerator = Math.round(base) * Math.round(rateHundredthPercent);
+        const denominator = splitInHalf ? 20000 : 10000;
+        const whole = Math.floor(numerator / denominator);
+        const remainder = numerator % denominator;
+        return remainder > denominator / 2 ? whole + 1 : whole;
+      }
+
+      function roundEmploymentShare(wage, perMille) {
+        const numerator = Math.round(wage) * Math.round(perMille);
+        const denominator = 1000;
+        const whole = Math.floor(numerator / denominator);
+        const remainder = numerator % denominator;
+        return remainder > denominator / 2 ? whole + 1 : whole;
+      }
+
+      function calculate(event) {
+        if (event) event.preventDefault();
+        if (event && event.type === 'submit' && typeof gtag === 'function') gtag('event', 'social_insurance_calculate');
+
+        const monthlySalary = Math.max(0, numberValue('monthlySalary'));
+        const age = Math.min(69, Math.max(18, numberValue('age') || 30));
+        const branch = prefecture.value || '東京都';
+        const employmentPerMille = numberValue('industry') || 5;
+        const estimate = tax.socialInsurance2026({
+          monthlySalary,
+          annualBonus: 0,
+          age,
+          prefecture: branch,
+          bonusPayments: 1
+        });
+
+        const healthOverride = numberValue('healthStandardOverride');
+        const pensionOverride = numberValue('pensionStandardOverride');
+        const healthStandard = healthOverride > 0
+          ? Math.min(1390000, Math.max(58000, healthOverride))
+          : (monthlySalary > 0 ? estimate.healthStandard : 0);
+        const pensionStandard = pensionOverride > 0
+          ? Math.min(650000, Math.max(88000, pensionOverride))
+          : (monthlySalary > 0 ? estimate.pensionStandard : 0);
+
+        const healthRate = tax.HEALTH_RATES_2026[branch];
+        const careRate = age >= 40 && age <= 64 ? 1.62 : 0;
+        const healthCare = roundPayrollShare(healthStandard, (healthRate + careRate) * 100, true);
+        const childSupport = roundPayrollShare(healthStandard, 23, true);
+        const pension = roundPayrollShare(pensionStandard, 1830, true);
+        const employment = roundEmploymentShare(monthlySalary, employmentPerMille);
+        const total = healthCare + childSupport + pension + employment;
+        const rate = monthlySalary > 0 ? total / monthlySalary * 100 : 0;
+
+        document.getElementById('monthlyTotal').textContent = yen(total);
+        document.getElementById('deductionRate').textContent = rate.toFixed(2) + '%';
+        document.getElementById('healthCare').textContent = yen(healthCare);
+        document.getElementById('careLabel').textContent = careRate ? '・介護保険' : '';
+        document.getElementById('childSupport').textContent = yen(childSupport);
+        document.getElementById('pension').textContent = yen(pension);
+        document.getElementById('employment').textContent = yen(employment);
+        document.getElementById('annualized').textContent = yen(total * 12);
+        document.getElementById('healthStandard').textContent = yen(healthStandard) + (healthOverride ? '（入力値）' : '（推定）');
+        document.getElementById('pensionStandard').textContent = yen(pensionStandard) + (pensionOverride ? '（入力値）' : '（推定）');
+        document.getElementById('appliedRates').textContent =
+          '健康 ' + healthRate.toFixed(2) + '%' +
+          (careRate ? ' ＋ 介護 1.62%' : '') +
+          ' ／ 支援金 0.23% ／ 厚生年金 18.3% ／ 雇用 ' + (employmentPerMille / 10).toFixed(1) + '%';
+      }
+
+      form.addEventListener('submit', calculate);
+      form.addEventListener('input', calculate);
+      form.addEventListener('change', calculate);
+      calculate();
+    })();
+  </script>
+</body>
+</html>
