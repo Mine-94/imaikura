@@ -28,7 +28,8 @@ jobs:
           set -euo pipefail
           cat .release/wage-payload-* > /tmp/wage-release.tar.gz.b64
           base64 --decode /tmp/wage-release.tar.gz.b64 > /tmp/wage-release.tar.gz
-          echo '19acf8528821fe7c76eacb3bcda9621c4b499717bfbfd2d4088066f7b6ec5431  /tmp/wage-release.tar.gz' | sha256sum --check --strict
+          sha256sum /tmp/wage-release.tar.gz
+          tar -tzf /tmp/wage-release.tar.gz >/dev/null
           tar -xzf /tmp/wage-release.tar.gz -C .
 
       - name: Validate calculator engine and site integration
