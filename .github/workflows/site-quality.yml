@@ -1,0 +1,167 @@
+name: Site quality gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.js'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'ads.txt'
+      - '.github/workflows/site-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: imaikura-site-quality
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JavaScript syntax and calculator boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in assets/*.js; do node --check "$file"; done
+          node <<'JS'
+          const assert = require('assert');
+
+          const work = require('./assets/work-time-engine.js');
+          assert.strictEqual(work.requiredBreakMinutes(360), 0);
+          assert.strictEqual(work.requiredBreakMinutes(361), 45);
+          assert.strictEqual(work.requiredBreakMinutes(480), 45);
+          assert.strictEqual(work.requiredBreakMinutes(481), 60);
+          let w = work.calculateWorkTime({startTime:'22:00', endTime:'07:00', nextDay:true, breakMinutes:60});
+          assert.strictEqual(w.actualWorkMinutes, 480);
+          assert.strictEqual(w.minimumBreakMinutes, 45);
+
+          const wage = require('./assets/wage-converter-engine.js');
+          let c = wage.calculateWageConversion({mode:'monthly', amount:240000, dailyHours:8, annualWorkDays:250, annualBonus:0, minimumWage:0});
+          assert.strictEqual(c.annualScheduledHours, 2000);
+          assert.strictEqual(c.hourlyEquivalent, 1440);
+          assert.strictEqual(c.annualBase, 2880000);
+
+          const wall = require('./assets/income-wall-engine.js');
+          let r = wall.calculateIncomeWall({annualSalary:1360000, healthAnnualIncome:1299999, monthlyScheduledWage:87999, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true});
+          assert.strictEqual(r.taxDependentEligible, true);
+          assert.strictEqual(r.personalIncomeTaxFree, true);
+          assert.strictEqual(r.healthDependent, true);
+          assert.strictEqual(r.employeeSocialEligible, false);
+          r = wall.calculateIncomeWall({annualSalary:1360001, healthAnnualIncome:1500000, monthlyScheduledWage:88000, weeklyHours:20, companyEmployees:51, age:20, dependentRelation:'other', employmentOverTwoMonths:true});
+          assert.strictEqual(r.taxDependentEligible, false);
+          assert.strictEqual(r.dependentLimit, 1500000);
+          assert.strictEqual(r.healthDependent, false);
+          assert.strictEqual(r.employeeSocialEligible, true);
+          r = wall.calculateIncomeWall({annualSalary:1200000, healthAnnualIncome:1200000, monthlyScheduledWage:70000, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true, plannedWageRequirementRemoval:true});
+          assert.strictEqual(r.employeeSocialBasis, 'short-time-planned');
+          console.log('calculator boundary tests: PASS');
+          JS
+
+      - name: Validate AdSense trust, metadata, sitemap and internal navigation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse, unquote
+          import html.parser
+          import json
+          import re
+          import xml.etree.ElementTree as ET
+
+          root = Path('.')
+          required_pages = [
+              'index.html',
+              'about/index.html',
+              'contact/index.html',
+              'privacy/index.html',
+              'terms/index.html',
+              'updates/index.html',
+              'site-map/index.html',
+              'income-wall/index.html',
+              'salary-deductions-guide/index.html',
+              'standard-remuneration-guide/index.html',
+              'bonus-take-home-guide/index.html',
+              'overtime-pay-guide/index.html',
+              'resident-tax-guide/index.html',
+              'furusato-nozei-guide/index.html',
+              'year-end-adjustment-guide/index.html',
+          ]
+          for rel in required_pages:
+              assert (root / rel).is_file(), f'missing required page: {rel}'
+
+          assert Path('ads.txt').read_text(encoding='utf-8').strip() == 'google.com, pub-8602848692420724, DIRECT, f08c47fec0942fa0'
+          robots = Path('robots.txt').read_text(encoding='utf-8')
+          assert 'Allow: /' in robots and 'https://imaikura.com/sitemap.xml' in robots
+
+          ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          tree = ET.parse('sitemap.xml')
+          urls = [e.text.strip() for e in tree.findall('s:url/s:loc', ns)]
+          assert len(urls) == len(set(urls)), 'duplicate sitemap URL'
+          assert len(urls) >= 29, len(urls)
+
+          def path_for_url(url):
+              path = unquote(urlparse(url).path)
+              if path in ('', '/'):
+                  return Path('index.html')
+              return Path(path.lstrip('/')) / 'index.html'
+
+          for url in urls:
+              assert url.startswith('https://imaikura.com/'), url
+              assert path_for_url(url).is_file(), f'sitemap target missing: {url} -> {path_for_url(url)}'
+
+          class LinkParser(html.parser.HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.links = []
+              def handle_starttag(self, tag, attrs):
+                  if tag == 'a':
+                      href = dict(attrs).get('href')
+                      if href:
+                          self.links.append(href)
+
+          critical = [Path(p) for p in required_pages]
+          for path in critical:
+              text = path.read_text(encoding='utf-8')
+              assert re.search(r'<html[^>]+lang=["\']ja["\']', text, re.I), path
+              assert text.lower().count('<h1') == 1, f'H1 count: {path}'
+              assert re.search(r'<title>[^<]{8,}</title>', text, re.I), f'title: {path}'
+              assert re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\'][^"\']{40,}', text, re.I), f'description: {path}'
+              assert re.search(r'<link[^>]+rel=["\']canonical["\']', text, re.I), f'canonical: {path}'
+              assert '<footer' in text.lower(), f'footer: {path}'
+              for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.I | re.S):
+                  json.loads(block)
+              ids = re.findall(r'\sid=["\']([^"\']+)["\']', text, re.I)
+              assert len(ids) == len(set(ids)), f'duplicate HTML id: {path}'
+
+              parser = LinkParser(); parser.feed(text)
+              base = path.parent
+              for href in parser.links:
+                  if href.startswith(('#', 'http://', 'https://', 'mailto:', 'tel:', 'javascript:')):
+                      continue
+                  clean = href.split('#', 1)[0].split('?', 1)[0]
+                  if not clean:
+                      continue
+                  target = (base / clean).resolve()
+                  repo = root.resolve()
+                  assert str(target).startswith(str(repo)), f'outside repo link: {path} {href}'
+                  if clean.endswith('/'):
+                      target = target / 'index.html'
+                  assert target.exists(), f'broken internal link: {path} -> {href}'
+
+          home = Path('index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=') == 15
+          assert len(re.findall(r'>GUIDE \d{2}<', home)) == 7
+          for link in ('about/', 'contact/', 'updates/', 'site-map/', 'privacy/', 'terms/'):
+              assert f'href="{link}"' in home
+          assert '-test' not in home.lower()
+          assert 'localhost' not in ''.join(p.read_text(encoding='utf-8') for p in critical).lower()
+          print('site quality audit: PASS')
+          PY
