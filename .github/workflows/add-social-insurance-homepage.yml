@@ -1,0 +1,73 @@
+name: One-off social insurance homepage integration
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-social-insurance-homepage.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Integrate calculator into homepage and sitemap
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          index_path = Path('index.html')
+          sitemap_path = Path('sitemap.xml')
+          index = index_path.read_text(encoding='utf-8')
+          sitemap = sitemap_path.read_text(encoding='utf-8')
+
+          if 'href="social-insurance/"' not in index:
+              for old in range(12, 1, -1):
+                  index = index.replace(f'TOOL {old:02d}', f'TOOL {old + 1:02d}')
+
+              salary_card = '''<a class="tool-card" href="salary-take-home/" data-search="給与 給料 月給 年収 手取り 額面 社会保険 所得税 住民税 salary take home">
+          <div class="tool-card-top"><span class="tool-no">TOOL 01</span><span class="status">2026年対応</span></div>
+          <h2>給与・年収の手取り計算</h2>
+          <p>月給と賞与から、社会保険料・所得税・住民税を差し引いた年収と月平均の手取りを計算します。</p>
+          <span class="card-link">手取りを計算する</span>
+          </a>
+          '''
+              social_card = '''<a class="tool-card" href="social-insurance/" data-search="社会保険料 健康保険 介護保険 子ども子育て支援金 厚生年金 雇用保険 標準報酬月額 月給">
+          <div class="tool-card-top"><span class="tool-no">TOOL 02</span><span class="status">令和8年4月以降</span></div>
+          <h2>社会保険料の月額計算</h2>
+          <p>月給・都道府県・年齢・業種から、健康保険・厚生年金・雇用保険などの本人負担額を計算します。</p>
+          <span class="card-link">社会保険料を計算する</span>
+          </a>
+          '''
+              if salary_card not in index:
+                  raise SystemExit('Salary card anchor not found; refusing unsafe replacement')
+              index = index.replace(salary_card, salary_card + social_card, 1)
+
+          index = index.replace('給与・年収の手取り、残業代、住民税、年末調整、ふるさと納税、住宅ローン控除などを無料で計算。', '給与・年収の手取り、社会保険料、残業代、住民税、年末調整、ふるさと納税、住宅ローン控除などを無料で計算。')
+          index = index.replace('給料、賞与、残業、扶養、退職金を確認', '給料、社会保険、賞与、残業、扶養、退職金を確認')
+          index = index.replace('12件の計算ツールを表示中', '13件の計算ツールを表示中')
+          index = index.replace('法令・制度の最終確認：2026年9月1日', '法令・制度の最終確認：2026年9月2日')
+          index = index.replace('現在 12ツール公開中', '現在 13ツール公開中')
+          index_path.write_text(index, encoding='utf-8')
+
+          sitemap = sitemap.replace('<url><loc>https://imaikura.com/</loc><lastmod>2026-09-01</lastmod></url>', '<url><loc>https://imaikura.com/</loc><lastmod>2026-09-02</lastmod></url>')
+          social_entry = '  <url><loc>https://imaikura.com/social-insurance/</loc><lastmod>2026-09-02</lastmod></url>\n'
+          if 'https://imaikura.com/social-insurance/' not in sitemap:
+              anchor = '  <url><loc>https://imaikura.com/salary-take-home/</loc><lastmod>2026-09-01</lastmod></url>\n'
+              if anchor not in sitemap:
+                  raise SystemExit('Sitemap salary anchor not found; refusing unsafe replacement')
+              sitemap = sitemap.replace(anchor, anchor + social_entry, 1)
+          sitemap_path.write_text(sitemap, encoding='utf-8')
+          PY
+
+          rm -f .github/workflows/add-social-insurance-homepage.yml
+          git config user.name "imaikura-maintenance-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html sitemap.xml .github/workflows/add-social-insurance-homepage.yml
+          git commit -m "[social-insurance] Link calculator from homepage and sitemap"
+          git push
