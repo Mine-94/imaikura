@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-8602848692420724">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>勤務時間計算 2026｜実働・休憩時間を分単位で確認｜いまいくら</title>
+  <meta name="description" content="始業・終業時刻と休憩時間から、実労働時間、法定最低休憩時間、不足時間、1日8時間超の参考値を分単位で計算。夜勤・翌日終了にも対応します。">
+  <meta property="og:title" content="勤務時間計算 2026｜実働・休憩時間を確認｜いまいくら">
+  <meta property="og:description" content="始業・終業・休憩から実働時間を計算し、労働基準法第34条の最低休憩時間と照合します。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://imaikura.com/work-time/">
+  <link rel="canonical" href="https://imaikura.com/work-time/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    [hidden]{display:none!important}
+    .result-error{border:1px solid #f0c7c2;background:#fff1ef;color:#8d2f27;border-radius:10px;padding:13px 15px;font-size:12px;line-height:1.7;margin-top:18px}
+  </style>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"勤務時間・休憩時間計算 2026",
+    "url":"https://imaikura.com/work-time/",
+    "applicationCategory":"BusinessApplication",
+    "operatingSystem":"Any",
+    "inLanguage":"ja",
+    "isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+    "description":"始業・終業時刻と休憩時間から実労働時間を計算し、法定最低休憩時間と照合する無料ツールです。"
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"ホーム","item":"https://imaikura.com/"},
+      {"@type":"ListItem","position":2,"name":"勤務時間・休憩時間計算","item":"https://imaikura.com/work-time/"}
+    ]
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"6時間ちょうど働く場合、法律上の休憩は必要ですか？","acceptedAnswer":{"@type":"Answer","text":"労働基準法第34条の最低基準は、労働時間が6時間を超える場合に45分以上です。6時間ちょうどはこの最低基準の対象外ですが、就業規則や労働契約で休憩が定められている場合はその内容に従います。"}},
+      {"@type":"Question","name":"8時間ちょうど働く場合の最低休憩時間は何分ですか？","acceptedAnswer":{"@type":"Answer","text":"実労働時間が8時間ちょうどの場合は45分以上です。8時間を超えた場合は60分以上になります。"}},
+      {"@type":"Question","name":"客待ちや電話対応が必要な時間は休憩になりますか？","acceptedAnswer":{"@type":"Answer","text":"使用者の指揮命令下にあり、必要に応じて対応しなければならない時間は労働時間と判断されることがあります。本ツールは入力された休憩時間が自由利用できる休憩かどうかまでは判定しません。"}},
+      {"@type":"Question","name":"この結果で残業代も確定できますか？","acceptedAnswer":{"@type":"Answer","text":"確定できません。週の労働時間、変形労働時間制、フレックスタイム制、法定休日、賃金項目などにより判断が変わるため、残業代は別の条件確認が必要です。"}}
+    ]
+  }</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../" aria-label="いまいくら トップ"><span class="brand-mark">円</span><span>いまいくら <small>お金・税金・仕事の計算</small></span></a>
+      <nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">勤務時間計算</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">労働基準法第32条・第34条の基本基準</div>
+          <h1>勤務時間・休憩時間を<br>分単位で計算</h1>
+          <p class="lead">始業時刻、終業時刻、休憩時間から実労働時間を計算し、法定最低休憩時間を満たしているか確認します。夜勤など翌日に終了する勤務にも対応しています。</p>
+        </div>
+        <div class="trust-badge">分単位・翌日終了対応</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="workTimeForm" novalidate>
+          <h2 class="panel-title">勤務時刻を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label for="startTime">始業時刻<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="startTime" type="time" value="09:00" required></div>
+            </div>
+            <div class="field">
+              <label for="endTime">終業時刻<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="endTime" type="time" value="18:00" required></div>
+            </div>
+            <div class="field">
+              <label>終業日<span class="required">必須</span></label>
+              <div class="choice-row" role="radiogroup" aria-label="終業日">
+                <span class="choice"><input type="radio" id="sameDay" name="endDay" value="same" checked><label for="sameDay">当日</label></span>
+                <span class="choice"><input type="radio" id="nextDay" name="endDay" value="next"><label for="nextDay">翌日</label></span>
+              </div>
+              <p class="help">夜勤など、日付をまたぐ場合は「翌日」を選択</p>
+            </div>
+            <div class="field">
+              <label for="breakMinutes">休憩時間の合計<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="breakMinutes" type="number" inputmode="numeric" min="0" max="1440" step="1" value="60"><span class="unit">分</span></div>
+              <p class="help">勤務中に自由に利用できた休憩時間の合計を入力</p>
+            </div>
+          </div>
+          <button class="calculate" type="submit">勤務時間を計算する</button>
+          <div class="result-error" id="resultError" role="alert" hidden></div>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head" id="resultHead">
+            <small id="resultTitle">実労働時間</small>
+            <div class="result-big" id="actualWork">—</div>
+            <div class="result-sub" id="resultSub">入力条件に基づく時間計算</div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>始業から終業まで</span><strong id="elapsed">—</strong></div>
+            <div class="metric"><span>入力した休憩時間</span><strong id="enteredBreak">—</strong></div>
+            <div class="metric"><span>法定最低休憩時間</span><strong id="minimumBreak">—</strong></div>
+            <div class="metric total"><span>不足している休憩時間</span><strong id="breakShortfall">—</strong></div>
+            <div class="metric"><span>1日8時間超の参考値</span><strong id="dailyExcess">—</strong></div>
+            <div class="notice" id="resultNotice">入力内容を確認すると結果が表示されます。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section">
+        <h2>計算の3ステップ</h2>
+        <div class="steps">
+          <div class="step"><span>01</span><b>勤務時間帯を確認</b><p>始業から終業までの時間を分単位で計算します。日付をまたぐ勤務は「翌日」を選びます。</p></div>
+          <div class="step"><span>02</span><b>休憩時間を差し引く</b><p>勤務時間帯から入力した休憩時間を引き、実労働時間を求めます。</p></div>
+          <div class="step"><span>03</span><b>最低休憩時間と照合</b><p>実労働時間が6時間超なら45分、8時間超なら60分という最低基準と比較します。</p></div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="break-rule-title">
+        <h2 id="break-rule-title">法定最低休憩時間の早見表</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>実労働時間</th><th>労働基準法上の最低休憩時間</th><th>境界の考え方</th></tr></thead>
+            <tbody>
+              <tr><td><strong>6時間以下</strong></td><td>0分</td><td>6時間ちょうどは「6時間を超える」に該当しない</td></tr>
+              <tr><td><strong>6時間超〜8時間以下</strong></td><td>45分以上</td><td>8時間ちょうどは45分以上</td></tr>
+              <tr><td><strong>8時間超</strong></td><td>60分以上</td><td>8時間1分から60分以上</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">就業規則、労働契約、労働協約がより長い休憩時間を定めている場合は、その定めも確認してください。</p>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>「休憩」として入力できる時間</h2>
+        <p class="plain-copy">法律上の休憩は、原則として労働時間の途中に与えられ、労働者が自由に利用できる時間である必要があります。客が来たら対応する、電話が鳴ったら出る、業務指示を待つなど、使用者の指揮命令下にある待機時間は、単に作業がなかっただけでは休憩と扱われないことがあります。本ツールは入力された時間の性質までは判定しません。</p>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>1日8時間超の表示について</h2>
+        <p class="plain-copy">結果欄の「1日8時間超の参考値」は、実労働時間から8時間を引いた単純な参考値です。法定時間外労働や割増賃金を確定するものではありません。週40時間、特例措置対象事業場、変形労働時間制、フレックスタイム制、裁量労働制、事業場外みなし労働時間制、法定休日、管理監督者等の条件によって法的な扱いが異なります。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>6時間ちょうど働く場合、法律上の休憩は必要ですか？</summary><p>労働基準法第34条の最低基準は、労働時間が6時間を超える場合に45分以上です。そのため6時間ちょうどは、この条文上の最低休憩時間の対象外です。ただし、勤務先の就業規則や労働契約に休憩が定められている場合は、その内容も確認してください。</p></details>
+        <details class="faq"><summary>8時間ちょうど働く場合は45分と60分のどちらですか？</summary><p>実労働時間が8時間ちょうどなら45分以上です。60分以上が必要になるのは、実労働時間が8時間を超えた場合です。</p></details>
+        <details class="faq"><summary>休憩を15分ずつ分けても計算できますか？</summary><p>このツールには休憩時間の合計を入力できます。ただし、法律上は労働時間の途中に与えること、原則として一斉に与えること、自由に利用させることなどの要件があります。分割方法が適切かどうかは就業規則や実際の運用も含めて確認が必要です。</p></details>
+        <details class="faq"><summary>客待ちや電話対応が必要な時間は休憩ですか？</summary><p>必要に応じて業務対応をしなければならず、使用者の指揮命令下にある場合は労働時間と判断されることがあります。完全に労働から離れて自由に利用できない時間は、休憩として入力しないでください。</p></details>
+        <details class="faq"><summary>この結果から残業代を計算できますか？</summary><p>このページだけでは確定できません。残業代は法定時間外、深夜、法定休日、月60時間超、賃金に含める手当などを分けて計算する必要があります。関連ツールの「残業代・割増賃金計算」をご利用ください。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../overtime-pay/"><h2>残業代・割増賃金計算</h2><p>時給・月給から時間外、深夜、法定休日などの追加支給額を確認。</p><span class="card-link">残業代を計算する</span></a>
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>社会保険料・所得税・住民税を差し引いた年間手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../income-wall/"><h2>年収の壁・扶養内計算</h2><p>税金と社会保険の条件を分けて確認。</p><span class="card-link">年収の壁を確認する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>適用基準・確認情報</strong><br>
+        適用法令：労働基準法第32条・第34条<br>
+        計算結果の性質：入力時刻の時間計算および法定最低休憩基準との照合 ／ 地域差：なし ／ 最終確認日：2026年9月2日<br>
+        <a href="https://laws.e-gov.go.jp/law/322AC0000000049" target="_blank" rel="noopener">e-Gov法令検索「労働基準法」</a> ／
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/roudouzikan/index.html" target="_blank" rel="noopener">厚生労働省「労働時間・休日」</a> ／
+        <a href="https://www.mhlw.go.jp/bunya/roudoukijun/faq_kijyunhou_13.html" target="_blank" rel="noopener">厚生労働省「休憩時間は法律で決まっていますか」</a>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>このツールの対象外・注意事項</h2>
+        <p class="plain-copy">このツールは入力した1勤務の時間を計算するもので、勤怠記録、給与明細、残業代請求額、法令違反の有無を確定するものではありません。休憩が実際に自由利用できたか、業務上の待機時間が含まれるか、週単位・変形労働時間制で時間外労働に該当するかは個別確認が必要です。</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a>
+      <div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は入力条件に基づく確認用です。個別判断は勤務先・労働基準監督署等へご確認ください。</div></div>
+    </div>
+  </footer>
+
+  <script src="../assets/work-time-engine.js"></script>
+  <script>
+    (() => {
+      const engine = window.ImaikuraWork;
+      const form = document.getElementById('workTimeForm');
+      const errorBox = document.getElementById('resultError');
+      const resultHead = document.getElementById('resultHead');
+      const formatMinutes = value => {
+        const minutes = Math.max(0, Math.round(Number(value) || 0));
+        return Math.floor(minutes / 60).toLocaleString('ja-JP') + '時間' + String(minutes % 60).padStart(2, '0') + '分';
+      };
+
+      function setValue(id, value) {
+        document.getElementById(id).textContent = value;
+      }
+
+      function clearResult(message) {
+        ['actualWork','elapsed','enteredBreak','minimumBreak','breakShortfall','dailyExcess'].forEach(id => setValue(id, '—'));
+        setValue('resultSub', '入力内容を確認してください');
+        setValue('resultNotice', message);
+        resultHead.classList.remove('is-even');
+        resultHead.classList.add('is-additional');
+      }
+
+      function calculate(event) {
+        if (event) event.preventDefault();
+        if (event && event.type === 'submit' && typeof gtag === 'function') gtag('event', 'work_time_calculate');
+        errorBox.hidden = true;
+        try {
+          const result = engine.calculateWorkTime({
+            startTime: document.getElementById('startTime').value,
+            endTime: document.getElementById('endTime').value,
+            nextDay: document.querySelector('input[name="endDay"]:checked').value === 'next',
+            breakMinutes: Number(document.getElementById('breakMinutes').value)
+          });
+
+          setValue('actualWork', formatMinutes(result.actualWorkMinutes));
+          setValue('elapsed', formatMinutes(result.elapsedMinutes));
+          setValue('enteredBreak', formatMinutes(result.breakMinutes));
+          setValue('minimumBreak', formatMinutes(result.minimumBreakMinutes));
+          setValue('breakShortfall', formatMinutes(result.breakShortfallMinutes));
+          setValue('dailyExcess', formatMinutes(result.dailyOverEightHoursMinutes));
+          setValue('resultSub', result.nextDay ? '翌日終了として計算' : '当日終了として計算');
+
+          resultHead.classList.remove('is-additional','is-even');
+          if (result.breakShortfallMinutes > 0) {
+            resultHead.classList.add('is-additional');
+            setValue('resultNotice', '入力された休憩時間は、法定最低基準まであと' + formatMinutes(result.breakShortfallMinutes) + '不足しています。休憩が実際に自由利用できた時間かどうかも確認してください。');
+          } else if (result.minimumBreakMinutes === 0) {
+            resultHead.classList.add('is-even');
+            setValue('resultNotice', '実労働時間は6時間以下のため、労働基準法第34条上の最低休憩時間はありません。勤務先の就業規則に別の定めがある場合は、その内容も確認してください。');
+          } else {
+            setValue('resultNotice', '入力された休憩時間は、労働基準法第34条の最低基準を満たしています。休憩の途中付与・自由利用などの要件は別途確認が必要です。');
+          }
+        } catch (error) {
+          const message = error instanceof Error ? error.message : '入力内容を確認してください。';
+          errorBox.textContent = message;
+          errorBox.hidden = false;
+          clearResult(message);
+        }
+      }
+
+      form.addEventListener('submit', calculate);
+      form.addEventListener('input', calculate);
+      form.addEventListener('change', calculate);
+      calculate();
+    })();
+  </script>
+</body>
+</html>
