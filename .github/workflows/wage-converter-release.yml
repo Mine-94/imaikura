@@ -84,24 +84,24 @@ jobs:
 
           let r = wage.calculateWageConversion({mode:'monthly', amount:240000, dailyHours:8, annualWorkDays:250, annualBonus:0, minimumWage:0});
           assert.strictEqual(r.annualScheduledHours, 2000);
-          assert.strictEqual(r.hourlyWage, 1440);
-          assert.strictEqual(r.annualBaseWage, 2880000);
+          assert.strictEqual(r.hourlyEquivalent, 1440);
+          assert.strictEqual(r.annualBase, 2880000);
 
           r = wage.calculateWageConversion({mode:'hourly', amount:1500, dailyHours:8, annualWorkDays:250, annualBonus:400000, minimumWage:1226});
-          assert.strictEqual(r.dailyWage, 12000);
-          assert.strictEqual(r.monthlyWage, 250000);
-          assert.strictEqual(r.annualBaseWage, 3000000);
-          assert.strictEqual(r.annualTotalWage, 3400000);
-          assert.strictEqual(r.minimumWageComparison.meetsMinimumWage, true);
+          assert.strictEqual(r.dailyEquivalent, 12000);
+          assert.strictEqual(r.monthlyEquivalent, 250000);
+          assert.strictEqual(r.annualBase, 3000000);
+          assert.strictEqual(r.totalAnnual, 3400000);
+          assert.strictEqual(r.minimumWageComparison.meetsOrExceeds, true);
 
           r = wage.calculateWageConversion({mode:'annual', amount:3600000, dailyHours:7, annualWorkDays:250, annualBonus:600000, minimumWage:1800});
           assert.strictEqual(r.annualScheduledHours, 1750);
-          assert.strictEqual(r.hourlyWage, 3000000 / 1750);
-          assert.strictEqual(r.minimumWageComparison.meetsMinimumWage, false);
+          assert.strictEqual(r.hourlyEquivalent, 3000000 / 1750);
+          assert.strictEqual(r.minimumWageComparison.meetsOrExceeds, false);
 
           r = wage.calculateWageConversion({mode:'monthly', amount:300000, dailyHours:7, annualWorkDays:250, annualHoursOverride:1700, annualBonus:0});
           assert.strictEqual(r.annualScheduledHours, 1700);
-          assert.strictEqual(r.usedAnnualHoursOverride, true);
+          assert.strictEqual(r.annualHoursSource, 'override');
 
           assert.throws(() => wage.calculateWageConversion({mode:'annual', amount:300000, annualBonus:400000, dailyHours:8, annualWorkDays:250}), /賞与/);
           assert.throws(() => wage.calculateWageConversion({mode:'monthly', amount:0, dailyHours:8, annualWorkDays:250}), /賃金額/);
