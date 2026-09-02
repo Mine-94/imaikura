@@ -15,7 +15,7 @@ gtag('config', 'G-CSRJVE9RYK');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>いまいくら｜2026年 日本の税金・手取り・仕事のお金計算</title>
-<meta name="description" content="給与・年収の手取り、社会保険料、残業代、住民税、年末調整、ふるさと納税、住宅ローン控除などを無料で計算。日本の法令と公的資料を優先し、適用年・計算根拠・更新日を明記します。">
+<meta name="description" content="給与・年収の手取り、社会保険料、残業代、勤務時間、住民税、年末調整、ふるさと納税、住宅ローン控除などを無料で計算。日本の法令と公的資料を優先し、適用年・計算根拠・更新日を明記します。">
 <meta property="og:title" content="いまいくら｜2026年 日本の税金・手取り・仕事のお金計算">
 <meta property="og:description" content="日本のお金を、根拠の見える計算で。">
 <meta property="og:type" content="website">
@@ -81,16 +81,16 @@ gtag('config', 'G-CSRJVE9RYK');
 </div>
 <div class="search-input-wrap">
 <label class="visually-hidden" for="toolSearch">計算ツールを検索</label>
-<input id="toolSearch" type="search" inputmode="search" autocomplete="off" placeholder="例：手取り、住民税、残業代、住宅ローン">
+<input id="toolSearch" type="search" inputmode="search" autocomplete="off" placeholder="例：手取り、社会保険料、残業代、勤務時間">
 <button class="search-clear" id="clearSearch" type="button" hidden>クリア</button>
 </div>
-<p class="search-results" id="searchStatus" aria-live="polite">13件の計算ツールを表示中</p>
+<p class="search-results" id="searchStatus" aria-live="polite">14件の計算ツールを表示中</p>
 </section>
 
 <section id="salary-tools" aria-labelledby="salary-title">
 <div class="section-head">
 <h2 id="salary-title">給与・手取り・働き方</h2>
-<p>給料、社会保険、賞与、残業、扶養、退職金を確認</p>
+<p>給料、社会保険、賞与、残業、勤務時間、扶養、退職金を確認</p>
 </div>
 <div class="tool-grid">
 <a class="tool-card" href="salary-take-home/" data-search="給与 給料 月給 年収 手取り 額面 社会保険 所得税 住民税 salary take home">
@@ -123,14 +123,20 @@ gtag('config', 'G-CSRJVE9RYK');
 <p>時給・月給から、法定内残業、時間外、月60時間超、深夜、法定休日の追加支給額を計算します。</p>
 <span class="card-link">残業代を計算する</span>
 </a>
+<a class="tool-card" href="work-time/" data-search="勤務時間 労働時間 実労働時間 休憩 休憩時間 始業 終業 夜勤 翌日 タイムカード">
+<div class="tool-card-top"><span class="tool-no">TOOL 06</span><span class="status">休憩基準対応</span></div>
+<h2>勤務時間・休憩時間計算</h2>
+<p>始業・終業時刻と休憩時間から実労働時間を計算し、法定最低休憩時間と不足時間を確認します。</p>
+<span class="card-link">勤務時間を計算する</span>
+</a>
 <a class="tool-card" href="income-wall/" data-search="年収の壁 扶養 106万 110万 123万 130万 178万 社会保険 パート アルバイト">
-<div class="tool-card-top"><span class="tool-no">TOOL 06</span><span class="status">2026年10月改正予定</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 07</span><span class="status">2026年10月改正予定</span></div>
 <h2>年収の壁・扶養内計算</h2>
 <p>110万・123万・130万・178万円の次の壁まであといくらか、税金と社会保険を分けて判定します。</p>
 <span class="card-link">年収の壁を確認する</span>
 </a>
 <a class="tool-card" href="retirement-income/" data-search="退職金 退職所得 手取り 勤続年数">
-<div class="tool-card-top"><span class="tool-no">TOOL 07</span><span class="status">2026年分対応</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 08</span><span class="status">2026年分対応</span></div>
 <h2>退職金の手取り計算</h2>
 <p>退職金額と勤続年数から、退職所得控除後の所得税・住民税を差し引いた手取りを計算します。</p>
 <span class="card-link">退職金を計算する</span>
@@ -145,37 +151,37 @@ gtag('config', 'G-CSRJVE9RYK');
 </div>
 <div class="tool-grid">
 <a class="tool-card" href="resident-tax/" data-search="住民税 市民税 県民税 都民税 特別区民税 年額 月額">
-<div class="tool-card-top"><span class="tool-no">TOOL 08</span><span class="status">令和8年度対応</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 09</span><span class="status">令和8年度対応</span></div>
 <h2>住民税の年額・月額計算</h2>
 <p>前年の年収と控除から、2026年度の住民税年額、6月の天引き、7月以降の月額を計算します。</p>
 <span class="card-link">住民税を計算する</span>
 </a>
 <a class="tool-card" href="resident-tax-exemption/" data-search="住民税非課税 非課税世帯 判定 所得割 均等割">
-<div class="tool-card-top"><span class="tool-no">TOOL 09</span><span class="status">令和8年度基準</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 10</span><span class="status">令和8年度基準</span></div>
 <h2>住民税非課税判定</h2>
 <p>年収と家族構成から、住民税が非課税になるかを入力と同時に判定します。</p>
 <span class="card-link">非課税かどうかを判定する</span>
 </a>
 <a class="tool-card" href="medical-expense-deduction/" data-search="医療費控除 還付 確定申告 セルフメディケーション">
-<div class="tool-card-top"><span class="tool-no">TOOL 10</span><span class="status">確定申告対応</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 11</span><span class="status">確定申告対応</span></div>
 <h2>医療費控除の還付計算</h2>
 <p>年間の医療費と年収から、所得税の還付・住民税の軽減額の目安を計算します。</p>
 <span class="card-link">還付額を計算する</span>
 </a>
 <a class="tool-card" href="housing-loan-deduction/" data-search="住宅ローン控除 住宅借入金等特別控除 住宅購入">
-<div class="tool-card-top"><span class="tool-no">TOOL 11</span><span class="status">2026年改正対応</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 12</span><span class="status">2026年改正対応</span></div>
 <h2>住宅ローン控除の計算</h2>
 <p>住宅区分と年末ローン残高から、所得税・翌年度住民税の軽減額を計算します。</p>
 <span class="card-link">控除額を計算する</span>
 </a>
 <a class="tool-card" href="furusato-nozei/" data-search="ふるさと納税 寄附金控除 上限額 2000円">
-<div class="tool-card-top"><span class="tool-no">TOOL 12</span><span class="status">計算式更新</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 13</span><span class="status">計算式更新</span></div>
 <h2>ふるさと納税 上限額</h2>
 <p>年収・家族構成・社会保険料から、自己負担2,000円で寄附できる上限額の目安を計算します。</p>
 <span class="card-link">上限額を計算する</span>
 </a>
 <a class="tool-card" href="consumption-tax/" data-search="消費税 税込 税抜 10% 8% インボイス">
-<div class="tool-card-top"><span class="tool-no">TOOL 13</span><span class="status">標準10%・軽減8%</span></div>
+<div class="tool-card-top"><span class="tool-no">TOOL 14</span><span class="status">標準10%・軽減8%</span></div>
 <h2>消費税計算機</h2>
 <p>金額と税率から、税込み価格・税抜き価格・消費税額を入力と同時に計算します。</p>
 <span class="card-link">消費税を計算する</span>
@@ -194,7 +200,7 @@ gtag('config', 'G-CSRJVE9RYK');
 
 <div class="update-strip">
 <span>法令・制度の最終確認：2026年9月2日</span>
-<span>現在 13ツール公開中</span>
+<span>現在 14ツール公開中</span>
 </div>
 </div>
 </main>
