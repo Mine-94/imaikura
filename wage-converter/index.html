@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8602848692420724" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-8602848692420724">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CSRJVE9RYK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CSRJVE9RYK');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>時給・日給・月給・年収換算｜最低賃金の比較にも対応｜いまいくら</title>
+  <meta name="description" content="時給・日給・月給・年収を相互換算。1日の所定労働時間と年間所定労働日数から、時間額・月額・年額を計算し、入力した最低賃金額との比較目安も確認できます。">
+  <meta property="og:title" content="時給・日給・月給・年収換算｜いまいくら">
+  <meta property="og:description" content="所定労働時間から時給・日給・月給・年収を相互換算。最低賃金の比較式にも対応。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://imaikura.com/wage-converter/">
+  <link rel="canonical" href="https://imaikura.com/wage-converter/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    [hidden]{display:none!important}
+    .result-error{border:1px solid #f0c7c2;background:#fff1ef;color:#8d2f27;border-radius:10px;padding:13px 15px;font-size:12px;line-height:1.7;margin-top:18px}
+    .comparison-box{border:1px solid var(--line);border-radius:10px;background:var(--wash);padding:14px 16px;margin-top:18px;font-size:12px;line-height:1.7;color:var(--muted)}
+    .comparison-box strong{display:block;color:var(--navy);font-size:14px;margin-bottom:3px}
+    .comparison-box.is-ok{border-color:#b8d8d2;background:var(--aqua-wash);color:#096c66}
+    .comparison-box.is-low{border-color:#f0c7c2;background:#fff1ef;color:#8d2f27}
+  </style>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"時給・日給・月給・年収換算",
+    "url":"https://imaikura.com/wage-converter/",
+    "applicationCategory":"BusinessApplication",
+    "operatingSystem":"Any",
+    "inLanguage":"ja",
+    "isAccessibleForFree":true,
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+    "description":"所定労働時間を使って時給・日給・月給・年収を相互換算し、任意入力した最低賃金額との比較目安を表示する無料ツールです。"
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    "itemListElement":[
+      {"@type":"ListItem","position":1,"name":"ホーム","item":"https://imaikura.com/"},
+      {"@type":"ListItem","position":2,"name":"時給・月給・年収換算","item":"https://imaikura.com/wage-converter/"}
+    ]
+  }</script>
+  <script type="application/ld+json">{
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"月給を時給に換算する計算式は？","acceptedAnswer":{"@type":"Answer","text":"月給制の時間額は、最低賃金との比較では『最低賃金の対象となる月給×12か月÷年間総所定労働時間』で換算します。このツールも同じ考え方で計算します。"}},
+      {"@type":"Question","name":"賞与は時給換算に含めますか？","acceptedAnswer":{"@type":"Answer","text":"年収総額の表示には賞与を含められますが、時間額・日額・月額の基本換算からは分けています。最低賃金との比較では、1か月を超える期間ごとに支払われる賞与は対象賃金に含めません。"}},
+      {"@type":"Question","name":"通勤手当や残業代を含めて入力しますか？","acceptedAnswer":{"@type":"Answer","text":"単純な収入換算だけなら目的に応じて入力できますが、最低賃金との比較に使う場合は、時間外・休日・深夜の割増賃金、精皆勤手当、通勤手当、家族手当など、対象外の賃金を除いてください。"}},
+      {"@type":"Question","name":"この結果だけで最低賃金違反か判断できますか？","acceptedAnswer":{"@type":"Answer","text":"判断できません。適用される地域別・特定最低賃金、賃金項目、年間所定労働時間、歩合給などの条件によって変わるため、この結果は比較の目安です。"}}
+    ]
+  }</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../" aria-label="いまいくら トップ"><span class="brand-mark">円</span><span>いまいくら <small>お金・税金・仕事の計算</small></span></a>
+      <nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">賃金換算</a></nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="kicker">時給・日給・月給・年収を相互換算</div>
+          <h1>働く時間に合わせて、<br>賃金を換算。</h1>
+          <p class="lead">賃金の支払い単位と所定労働時間を入力すると、時給・日給・月給・年収を同じ条件で比較できます。最低賃金額を入力した場合は、厚生労働省の換算方法に沿った比較目安も表示します。</p>
+        </div>
+        <div class="trust-badge">税引前・所定労働時間ベース</div>
+      </div>
+    </section>
+
+    <div class="container main">
+      <div class="calculator-shell">
+        <form class="panel form-panel" id="wageForm" novalidate>
+          <h2 class="panel-title">賃金と働き方を入力</h2>
+          <div class="field-grid">
+            <div class="field">
+              <label>換算元<span class="required">必須</span></label>
+              <div class="choice-row" role="radiogroup" aria-label="換算元の賃金単位">
+                <span class="choice"><input type="radio" id="modeHourly" name="mode" value="hourly"><label for="modeHourly">時給</label></span>
+                <span class="choice"><input type="radio" id="modeDaily" name="mode" value="daily"><label for="modeDaily">日給</label></span>
+                <span class="choice"><input type="radio" id="modeMonthly" name="mode" value="monthly" checked><label for="modeMonthly">月給</label></span>
+                <span class="choice"><input type="radio" id="modeAnnual" name="mode" value="annual"><label for="modeAnnual">年収</label></span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="amount"><span id="amountLabel">月給</span><span class="required">必須</span></label>
+              <div class="input-wrap"><input id="amount" type="number" inputmode="numeric" min="1" max="1000000000" step="1" value="240000"><span class="unit">円</span></div>
+              <p class="help" id="amountHelp">税金・社会保険料を引く前の月額。最低賃金と比較する場合は対象外の手当を除いて入力</p>
+            </div>
+            <div class="field">
+              <label for="dailyHours">1日の所定労働時間<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="dailyHours" type="number" inputmode="decimal" min="0.01" max="24" step="0.01" value="8"><span class="unit">時間</span></div>
+              <p class="help">休憩を除き、労働契約上働くことになっている時間</p>
+            </div>
+            <div class="field">
+              <label for="annualWorkDays">年間所定労働日数<span class="required">必須</span></label>
+              <div class="input-wrap"><input id="annualWorkDays" type="number" inputmode="decimal" min="1" max="366" step="0.1" value="250"><span class="unit">日</span></div>
+              <p class="help">就業規則・労働条件通知書などで確認。残業日数ではなく、あらかじめ定められた勤務日数</p>
+            </div>
+            <div class="field">
+              <label for="annualBonus">年間賞与</label>
+              <div class="input-wrap"><input id="annualBonus" type="number" inputmode="numeric" min="0" max="1000000000" step="1" value="0"><span class="unit">円</span></div>
+              <p class="help" id="bonusHelp">月給とは別に支給される年間賞与。年収総額だけに加算し、時給換算には含めません</p>
+            </div>
+            <div class="field">
+              <label for="annualHoursOverride">年間所定労働時間（直接入力・任意）</label>
+              <div class="input-wrap"><input id="annualHoursOverride" type="number" inputmode="decimal" min="0" max="8784" step="0.01" placeholder="会社の年間時間が分かる場合"><span class="unit">時間</span></div>
+              <p class="help">入力した場合は「1日の時間×年間日数」より優先。勤務時間が日によって異なる人に便利です</p>
+            </div>
+            <div class="field">
+              <label for="minimumWage">比較する最低賃金（任意）</label>
+              <div class="input-wrap"><input id="minimumWage" type="number" inputmode="numeric" min="0" max="1000000" step="1" placeholder="例：1226"><span class="unit">円/時</span></div>
+              <p class="help">働く事業場の都道府県と業種に適用される最新額を公式サイトで確認して入力</p>
+            </div>
+          </div>
+          <button class="calculate" type="submit">賃金を換算する</button>
+          <div class="result-error" id="resultError" role="alert" hidden></div>
+        </form>
+
+        <section class="panel result-panel" aria-live="polite" aria-labelledby="resultTitle">
+          <div class="result-head" id="resultHead">
+            <small id="resultTitle">時給換算額</small>
+            <div class="result-big" id="hourlyEquivalent">—</div>
+            <div class="result-sub" id="resultSub">年間所定労働時間から換算</div>
+          </div>
+          <div class="result-body">
+            <div class="metric"><span>日給換算</span><strong id="dailyEquivalent">—</strong></div>
+            <div class="metric"><span>月給換算</span><strong id="monthlyEquivalent">—</strong></div>
+            <div class="metric"><span>年間基本賃金</span><strong id="annualBase">—</strong></div>
+            <div class="metric total"><span>賞与を含む年収総額</span><strong id="totalAnnual">—</strong></div>
+            <div class="metric"><span>年間所定労働時間</span><strong id="annualHours">—</strong></div>
+            <div class="metric"><span>1か月平均所定労働時間</span><strong id="monthlyHours">—</strong></div>
+            <div class="comparison-box" id="minimumComparison"><strong>最低賃金との比較</strong><span id="comparisonText">最低賃金額を入力すると比較できます。</span></div>
+            <div class="notice">表示額は税引前です。残業・深夜・休日の割増賃金、税金、社会保険料は含みません。</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="content-section" aria-labelledby="formula-title">
+        <h2 id="formula-title">換算に使う計算式</h2>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>換算元</th><th>時給換算</th><th>月給換算</th><th>年額換算</th></tr></thead>
+            <tbody>
+              <tr><td><strong>時給</strong></td><td>入力した時給</td><td>時給×年間所定労働時間÷12</td><td>時給×年間所定労働時間</td></tr>
+              <tr><td><strong>日給</strong></td><td>日給÷1日の所定労働時間</td><td>日給×年間所定労働日数÷12</td><td>日給×年間所定労働日数</td></tr>
+              <tr><td><strong>月給</strong></td><td>月給×12÷年間所定労働時間</td><td>入力した月給</td><td>月給×12</td></tr>
+              <tr><td><strong>年収</strong></td><td>（年収−賞与）÷年間所定労働時間</td><td>（年収−賞与）÷12</td><td>入力した年収</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">年間所定労働時間＝1日の所定労働時間×年間所定労働日数。会社が年間所定労働時間を定めている場合は、直接入力した時間を優先します。結果は円未満を保持して計算し、画面では用途に応じて小数または1円単位で表示します。</p>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>最低賃金との比較に使う場合</h2>
+        <p class="plain-copy">厚生労働省は、月給制の場合の比較方法を「月給÷1か月平均所定労働時間」、または同じ意味の「月給×12か月÷年間総所定労働時間」と案内しています。ただし、入力する月給からは、臨時に支払われる賃金、賞与、時間外・休日・深夜の割増部分、精皆勤手当、通勤手当、家族手当などを除く必要があります。地域別最低賃金と特定（産業別）最低賃金の両方が適用される場合は、高い方を確認してください。</p>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>年間所定労働日数・時間が分からないとき</h2>
+        <p class="plain-copy">雇用契約書、労働条件通知書、就業規則、会社の年間カレンダーで確認するのが確実です。年間所定労働時間が分かる場合は、直接入力欄を使うと勤務時間が日によって異なる場合も扱えます。「年間休日」だけが分かる場合、暦日数から年間休日を引いた日数が大まかな目安になりますが、入社・退職の途中年、会社独自の休業日、勤務シフトなどで異なります。実際の出勤日数や残業日数ではなく、あらかじめ勤務することになっている日数・時間を入力してください。</p>
+      </section>
+
+      <section class="content-section">
+        <h2>よくある質問</h2>
+        <details class="faq"><summary>月給を時給に換算する計算式は？</summary><p>最低賃金との比較では「最低賃金の対象となる月給×12か月÷年間総所定労働時間」です。年間総所定労働時間は、1日の所定労働時間と年間所定労働日数を掛けて求めます。</p></details>
+        <details class="faq"><summary>賞与は時給換算に含めますか？</summary><p>このツールでは年収総額には加算しますが、時間額・日額・月額の基本換算からは分けます。最低賃金との比較では、1か月を超える期間ごとに支払われる賞与は対象賃金に含まれません。</p></details>
+        <details class="faq"><summary>通勤手当や残業代を含めて入力しますか？</summary><p>単純な収入比較だけなら目的に応じて入力できます。ただし最低賃金との比較に使う場合は、時間外・休日・深夜の割増賃金、精皆勤手当、通勤手当、家族手当などを除いてください。</p></details>
+        <details class="faq"><summary>年収を入力するとき、賞与はどう扱いますか？</summary><p>年収欄には賞与を含む税引前年収を入力し、その内訳である年間賞与を別欄にも入力してください。時給・月給換算は年収から賞与を引いた基本賃金部分で計算します。</p></details>
+        <details class="faq"><summary>この結果だけで最低賃金違反か判断できますか？</summary><p>判断できません。適用される地域別・特定最低賃金、対象となる賃金項目、勤務制度、歩合給などの確認が必要です。このツールは入力条件による比較の目安です。</p></details>
+      </section>
+
+      <section class="content-section">
+        <div class="section-head"><h2>関連する計算ツール</h2></div>
+        <div class="tool-grid compact-grid">
+          <a class="tool-card" href="../salary-take-home/"><h2>給与・年収の手取り計算</h2><p>額面給与から税金・社会保険料を差し引いた手取りを確認。</p><span class="card-link">手取りを計算する</span></a>
+          <a class="tool-card" href="../work-time/"><h2>勤務時間・休憩時間計算</h2><p>始業・終業・休憩から実労働時間を確認。</p><span class="card-link">勤務時間を計算する</span></a>
+          <a class="tool-card" href="../overtime-pay/"><h2>残業代・割増賃金計算</h2><p>時間外、深夜、法定休日の追加支給額を確認。</p><span class="card-link">残業代を計算する</span></a>
+          <a class="tool-card" href="../social-insurance/"><h2>社会保険料の月額計算</h2><p>給与から差し引かれる健康保険・厚生年金等を確認。</p><span class="card-link">社会保険料を計算する</span></a>
+        </div>
+      </section>
+
+      <section class="content-section content-card sources">
+        <strong>適用基準・確認情報</strong><br>
+        計算方法：入力した賃金額・1日の所定労働時間・年間所定労働日数による算術換算<br>
+        計算結果の性質：税引前の換算額および最低賃金との比較目安 ／ 地域差：最低賃金額にあり（本ツールには固定値を内蔵せず利用者が入力） ／ 最終確認日：2026年9月2日<br>
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/chingin/newpage_43899.html" target="_blank" rel="noopener">厚生労働省「最低賃金額以上かどうかを確認する方法」</a> ／
+        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/roudoukijun/chingin/newpage_43898.html" target="_blank" rel="noopener">厚生労働省「最低賃金の対象となる賃金」</a> ／
+        <a href="https://saiteichingin.mhlw.go.jp/check/index.html" target="_blank" rel="noopener">厚生労働省「あなたの賃金を比較チェック」</a>
+      </section>
+
+      <section class="content-section content-card">
+        <h2>このツールの対象外・注意事項</h2>
+        <p class="plain-copy">歩合給・出来高払制、日給と月給の組み合わせ、固定残業代、変形労働時間制、欠勤控除、複数の賃金区分を合算するケースは個別計算が必要です。最低賃金額は都道府県・業種・発効日で変わるため、最新の公式額を入力してください。結果は法令違反の有無や未払い額を確定するものではありません。</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a>
+      <div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>換算結果は入力条件に基づく目安です。最低賃金の確定判断は労働局・労働基準監督署等へご確認ください。</div></div>
+    </div>
+  </footer>
+
+  <script src="../assets/wage-converter-engine.js"></script>
+  <script>
+    (() => {
+      const engine = window.ImaikuraWage;
+      const form = document.getElementById('wageForm');
+      const errorBox = document.getElementById('resultError');
+      const resultHead = document.getElementById('resultHead');
+      const comparisonBox = document.getElementById('minimumComparison');
+      const yen = value => Math.round(value).toLocaleString('ja-JP') + '円';
+      const hourlyYen = value => Number(value).toLocaleString('ja-JP', {minimumFractionDigits:2, maximumFractionDigits:2}) + '円/時';
+      const hours = value => Number(value).toLocaleString('ja-JP', {minimumFractionDigits:0, maximumFractionDigits:2}) + '時間';
+      const modeLabels = {
+        hourly: {label:'時給', help:'1時間あたりの税引前賃金を入力'},
+        daily: {label:'日給', help:'1日あたりの税引前賃金を入力'},
+        monthly: {label:'月給', help:'税金・社会保険料を引く前の月額。最低賃金と比較する場合は対象外の手当を除いて入力'},
+        annual: {label:'年収（賞与を含む）', help:'税金・社会保険料を引く前の年収総額。年間賞与を下欄にも入力'}
+      };
+
+      function setText(id, value) {
+        document.getElementById(id).textContent = value;
+      }
+
+      function updateModeHelp() {
+        const mode = document.querySelector('input[name="mode"]:checked').value;
+        setText('amountLabel', modeLabels[mode].label);
+        setText('amountHelp', modeLabels[mode].help);
+        setText('bonusHelp', mode === 'annual'
+          ? '入力した年収に含まれる年間賞与額。時給・月給換算では年収から差し引きます'
+          : '換算元の賃金とは別に支給される年間賞与。年収総額だけに加算します');
+      }
+
+      function clearResult(message) {
+        ['hourlyEquivalent','dailyEquivalent','monthlyEquivalent','annualBase','totalAnnual','annualHours','monthlyHours'].forEach(id => setText(id, '—'));
+        setText('resultSub', '入力内容を確認してください');
+        setText('comparisonText', message);
+        resultHead.classList.remove('is-refund','is-even');
+        resultHead.classList.add('is-additional');
+        comparisonBox.classList.remove('is-ok');
+        comparisonBox.classList.add('is-low');
+      }
+
+      function calculate(event) {
+        if (event) event.preventDefault();
+        if (event && event.type === 'submit' && typeof gtag === 'function') gtag('event', 'wage_converter_calculate');
+        updateModeHelp();
+        errorBox.hidden = true;
+
+        try {
+          const result = engine.calculateWageConversion({
+            mode: document.querySelector('input[name="mode"]:checked').value,
+            amount: Number(document.getElementById('amount').value),
+            dailyHours: Number(document.getElementById('dailyHours').value),
+            annualWorkDays: Number(document.getElementById('annualWorkDays').value),
+            annualBonus: Number(document.getElementById('annualBonus').value || 0),
+            annualHoursOverride: Number(document.getElementById('annualHoursOverride').value || 0),
+            minimumWage: Number(document.getElementById('minimumWage').value || 0)
+          });
+
+          setText('hourlyEquivalent', hourlyYen(result.hourlyEquivalent));
+          setText('dailyEquivalent', yen(result.dailyEquivalent));
+          setText('monthlyEquivalent', yen(result.monthlyEquivalent));
+          setText('annualBase', yen(result.annualBase));
+          setText('totalAnnual', yen(result.totalAnnual));
+          setText('annualHours', hours(result.annualScheduledHours));
+          setText('monthlyHours', hours(result.monthlyAverageScheduledHours));
+          setText('resultSub', result.annualHoursSource === 'override'
+            ? '直接入力した年間' + hours(result.annualScheduledHours) + 'で換算'
+            : '1日' + result.dailyHours.toLocaleString('ja-JP') + '時間・年間' + result.annualWorkDays.toLocaleString('ja-JP') + '日で換算');
+
+          resultHead.classList.remove('is-additional','is-refund','is-even');
+          comparisonBox.classList.remove('is-ok','is-low');
+          const comparison = result.minimumWageComparison;
+          if (!comparison.entered) {
+            setText('comparisonText', '適用される最低賃金額を入力すると、時給換算額との差を表示します。');
+          } else if (comparison.meetsOrExceeds) {
+            resultHead.classList.add('is-refund');
+            comparisonBox.classList.add('is-ok');
+            setText('comparisonText', '入力した最低賃金額 ' + yen(comparison.minimumWage) + '/時を、' + hourlyYen(comparison.differencePerHour) + '上回る換算結果です。対象賃金と適用額が正しいかも確認してください。');
+          } else {
+            resultHead.classList.add('is-additional');
+            comparisonBox.classList.add('is-low');
+            setText('comparisonText', '入力した最低賃金額 ' + yen(comparison.minimumWage) + '/時を、' + hourlyYen(Math.abs(comparison.differencePerHour)) + '下回る換算結果です。賃金項目・所定労働時間・適用される最低賃金を確認してください。');
+          }
+        } catch (error) {
+          const message = error instanceof Error ? error.message : '入力内容を確認してください。';
+          errorBox.textContent = message;
+          errorBox.hidden = false;
+          clearResult(message);
+        }
+      }
+
+      form.addEventListener('submit', calculate);
+      form.addEventListener('input', calculate);
+      form.addEventListener('change', calculate);
+      updateModeHelp();
+      calculate();
+    })();
+  </script>
+</body>
+</html>
