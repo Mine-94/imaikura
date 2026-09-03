@@ -61,6 +61,58 @@ jobs:
           assert.strictEqual(r.employeeSocialEligible, true);
           r = wall.calculateIncomeWall({annualSalary:1200000, healthAnnualIncome:1200000, monthlyScheduledWage:70000, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true, plannedWageRequirementRemoval:true});
           assert.strictEqual(r.employeeSocialBasis, 'short-time-planned');
+
+          const housing = require('./assets/housing-loan-engine.js');
+          let h = housing.calculateHousingLoanDeduction2026({
+            annualSalary:6000000,
+            otherIncome:0,
+            loanYearEndBalance:30000000,
+            acquisitionCost:35000000,
+            floorArea:70,
+            loanTermYears:35,
+            housingCategory:'shoene',
+            childOrYoungCouple:false,
+            principalResidence:true,
+            movedWithinSixMonths:true,
+            residentAtYearEnd:true,
+            residentialHalfOrMore:true,
+            age:35,
+            prefecture:'東京都'
+          });
+          assert.strictEqual(h.eligible, true);
+          assert.strictEqual(h.borrowLimit, 20000000);
+          assert.strictEqual(h.qualifyingBalance, 20000000);
+          assert.strictEqual(h.statutoryCredit, 140000);
+          h = housing.calculateHousingLoanDeduction2026({
+            annualSalary:30000000,
+            loanYearEndBalance:30000000,
+            acquisitionCost:30000000,
+            floorArea:70,
+            loanTermYears:35,
+            housingCategory:'chotan'
+          });
+          assert.strictEqual(h.eligible, false);
+          assert.ok(h.eligibilityReasons.some(reason => reason.includes('2,000万円')));
+          h = housing.calculateHousingLoanDeduction2026({
+            annualSalary:8000000,
+            loanYearEndBalance:30000000,
+            acquisitionCost:30000000,
+            floorArea:45,
+            loanTermYears:35,
+            housingCategory:'chotan',
+            childOrYoungCouple:true
+          });
+          assert.strictEqual(h.floorAreaRequired, 50);
+          assert.strictEqual(h.eligible, false);
+          h = housing.calculateHousingLoanDeduction2026({
+            annualSalary:8000000,
+            loanYearEndBalance:30000000,
+            acquisitionCost:25000000,
+            floorArea:60,
+            loanTermYears:35,
+            housingCategory:'zeh'
+          });
+          assert.strictEqual(h.qualifyingBalance, 25000000);
           console.log('calculator boundary tests: PASS');
           JS
 
@@ -86,6 +138,7 @@ jobs:
               'updates/index.html',
               'site-map/index.html',
               'income-wall/index.html',
+              'housing-loan-deduction/index.html',
               'salary-deductions-guide/index.html',
               'standard-remuneration-guide/index.html',
               'bonus-take-home-guide/index.html',
@@ -93,9 +146,20 @@ jobs:
               'resident-tax-guide/index.html',
               'furusato-nozei-guide/index.html',
               'year-end-adjustment-guide/index.html',
+              'housing-loan-deduction-guide/index.html',
           ]
           for rel in required_pages:
               assert (root / rel).is_file(), f'missing required page: {rel}'
+
+          required_assets = [
+              'assets/tax-engine.js',
+              'assets/work-time-engine.js',
+              'assets/wage-converter-engine.js',
+              'assets/income-wall-engine.js',
+              'assets/housing-loan-engine.js',
+          ]
+          for rel in required_assets:
+              assert (root / rel).is_file(), f'missing required asset: {rel}'
 
           assert Path('ads.txt').read_text(encoding='utf-8').strip() == 'google.com, pub-8602848692420724, DIRECT, f08c47fec0942fa0'
           robots = Path('robots.txt').read_text(encoding='utf-8')
@@ -105,7 +169,7 @@ jobs:
           tree = ET.parse('sitemap.xml')
           urls = [e.text.strip() for e in tree.findall('s:url/s:loc', ns)]
           assert len(urls) == len(set(urls)), 'duplicate sitemap URL'
-          assert len(urls) >= 29, len(urls)
+          assert len(urls) >= 30, len(urls)
 
           def path_for_url(url):
               path = unquote(urlparse(url).path)
@@ -158,9 +222,10 @@ jobs:
 
           home = Path('index.html').read_text(encoding='utf-8')
           assert home.count('data-search=') == 15
-          assert len(re.findall(r'>GUIDE \d{2}<', home)) == 7
+          assert len(re.findall(r'>GUIDE \d{2}<', home)) == 8
           for link in ('about/', 'contact/', 'updates/', 'site-map/', 'privacy/', 'terms/'):
               assert f'href="{link}"' in home
+          assert 'housing-loan-deduction-guide/' in home
           assert '-test' not in home.lower()
           assert 'localhost' not in ''.join(p.read_text(encoding='utf-8') for p in critical).lower()
           print('site quality audit: PASS')
