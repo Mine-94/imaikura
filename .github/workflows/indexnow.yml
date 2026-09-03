@@ -1,0 +1,61 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.js'
+      - '**/*.css'
+      - 'feed.xml'
+      - 'sitemap.xml'
+      - 'ba7c0e7a8a2f93a3430f16e6994a8c7f.txt'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: imaikura-indexnow
+  cancel-in-progress: true
+
+jobs:
+  notify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Notify participating search engines
+        shell: bash
+        run: |
+          set -u
+          python3 - <<'PY2' > /tmp/indexnow.json
+          from pathlib import Path
+          import json, subprocess
+          site='https://imaikura.com'
+          key='ba7c0e7a8a2f93a3430f16e6994a8c7f'
+          try:
+              changed=subprocess.check_output(['git','diff','--name-only','HEAD^','HEAD'],text=True).splitlines()
+          except Exception:
+              changed=[]
+          sitewide=any(p in ('sitemap.xml','feed.xml','assets/site.css','assets/share.js','assets/og-default.png') for p in changed)
+          if sitewide or not changed:
+              import xml.etree.ElementTree as ET
+              ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+              urls=[e.text.strip() for e in ET.parse('sitemap.xml').findall('s:url/s:loc',ns)]
+          else:
+              urls=[]
+              for path in changed:
+                  if path == 'index.html': urls.append(site + '/')
+                  elif path.endswith('/index.html'): urls.append(site + '/' + path[:-10])
+              urls=sorted(set(urls))
+          urls=urls[:10000]
+          print(json.dumps({'host':'imaikura.com','key':key,'keyLocation':site+'/'+key+'.txt','urlList':urls},ensure_ascii=False))
+          PY2
+          for i in $(seq 1 12); do
+            if curl -fsS "https://imaikura.com/ba7c0e7a8a2f93a3430f16e6994a8c7f.txt" | grep -q 'ba7c0e7a8a2f93a3430f16e6994a8c7f'; then break; fi
+            sleep 10
+          done
+          code=$(curl -sS -o /tmp/indexnow-response.txt -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' --data-binary @/tmp/indexnow.json https://api.indexnow.org/indexnow || true)
+          if [ "$code" = "200" ] || [ "$code" = "202" ]; then echo "IndexNow accepted ($code)"; else echo "IndexNow notification deferred ($code); site deployment remains valid."; fi
