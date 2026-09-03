@@ -140,3 +140,11 @@ details.faq p{padding:0 16px 16px;color:var(--muted);font-size:13px;margin:0}
   .form-panel{padding:20px}.result-big{font-size:30px}.section-head{align-items:start;flex-direction:column;gap:4px}.footer-inner{flex-direction:column}
   .mobile-only{display:block}
 }
+
+
+/* organic-discovery-share */
+.share-box{max-width:1120px;margin:34px auto;padding:24px;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);box-shadow:0 1px 2px rgba(20,47,73,.03)}
+.share-box h2{margin:0 0 6px;color:var(--navy);font-size:19px}.share-box p{margin:0;color:var(--muted);font-size:12px;line-height:1.75}
+.share-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.share-button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:8px 14px;border:1px solid var(--line-strong);border-radius:9px;background:#fff;color:var(--blue-dark);font-size:12px;font-weight:800;cursor:pointer;text-decoration:none}.share-button:hover{border-color:var(--blue);background:#edf6fd}.share-button.primary{background:var(--blue);border-color:var(--blue);color:#fff}.share-button.primary:hover{background:var(--blue-dark)}
+.share-status{min-height:1.6em;margin-top:8px!important;color:#096c66!important;font-weight:700}.feed-link{display:inline-flex;align-items:center;margin-top:12px;font-size:12px;font-weight:800;color:var(--blue-dark)}
+@media(max-width:620px){.share-box{margin:24px 16px;padding:19px}.share-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.share-button{width:100%}}

@@ -30,6 +30,14 @@
     "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
   }</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"軽減税率（8%）の対象は何ですか？","acceptedAnswer":{"@type":"Answer","text":"酒類・外食を除く飲食料品（食品表示法に規定する食品）と、週2回以上発行される新聞の定期購読契約が対象です。店内飲食（外食）やお酒は標準税率10%が適用されます。"}},{"@type":"Question","name":"端数処理はどの方法が正しいですか？","acceptedAnswer":{"@type":"Answer","text":"法令で特定の方法が強制されているわけではなく、事業者が請求書ごとに切り捨て・四捨五入・切り上げのいずれかを選び、統一して適用します。実務では切り捨てが使われることが多いです。"}},{"@type":"Question","name":"計算結果はインボイス（適格請求書）の税額と必ず一致しますか？","acceptedAnswer":{"@type":"Answer","text":"インボイス制度では1枚の請求書につき税率ごとに端数処理を1回だけ行うルールがあるため、商品ごとに個別計算するこのツールの結果を合算した金額と、まとめて発行される請求書の税額が数円ずれることがあります。目安としてご利用ください。"}},{"@type":"Question","name":"消費税率は今後変わりますか？","acceptedAnswer":{"@type":"Answer","text":"2026年8月時点で標準税率10%・軽減税率8%が適用されています。税率が改正された場合は、このページの内容も更新する予定です。"}}]}</script>
+<link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
+<meta property="og:site_name" content="いまいくら">
+<meta property="og:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
 </head>
 <body>
   <header class="site-header">
@@ -148,7 +156,9 @@
         <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6102.htm" target="_blank" rel="noopener">国税庁 タックスアンサー No.6102「消費税の軽減税率制度」</a>
       </section>
     </div>
-  </main>
+  
+<section class="content-section share-box" data-share-box aria-labelledby="share-title"><h2 id="share-title">このページを共有</h2><p>あとで見返すための保存や、同じ制度を調べている人への共有にご利用ください。</p><div class="share-actions"><button class="share-button primary" type="button" data-share="native">共有する</button><a class="share-button" href="#" target="_blank" rel="noopener" data-share="x">Xで共有</a><a class="share-button" href="#" target="_blank" rel="noopener" data-share="line">LINEで共有</a><button class="share-button" type="button" data-share="copy">URLをコピー</button></div><p class="share-status" data-share-status aria-live="polite"></p><a class="feed-link" href="../feed.xml">RSSで新しいガイドを受け取る</a></section>
+</main>
 
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は税務署の案内をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
@@ -192,5 +202,6 @@
     form.addEventListener('change',calculate);
     calculate();
   </script>
+<script src="../assets/share.js" defer></script>
 </body>
 </html>

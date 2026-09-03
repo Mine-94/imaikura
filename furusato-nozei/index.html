@@ -29,6 +29,14 @@
     "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
   }</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"年収500万円・独身なら上限はいくらですか？","acceptedAnswer":{"@type":"Answer","text":"東京都の協会けんぽ、30歳、給与以外の所得や追加控除なしで2026年改正を反映すると、5万8,000円前後が目安です。従来の早見表にある6万1,000円とは異なる場合があります。実際の社会保険料や控除によって変わるため、源泉徴収票があれば詳細設定に「社会保険料等の金額」を入力してください。"}},{"@type":"Question","name":"年収にはボーナスを含めますか？","acceptedAnswer":{"@type":"Answer","text":"はい。1月から12月までの税引前給与と賞与の合計、または源泉徴収票の「支払金額」を入力してください。"}},{"@type":"Question","name":"上限を超えて寄付するとどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"上限を超えた部分は全額控除されず、自己負担が2,000円より増えます。不確定な控除がある場合は、表示額を使い切らず余裕を残してください。"}}]}</script>
+<link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
+<meta property="og:site_name" content="いまいくら">
+<meta property="og:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
 </head>
 <body>
   <header class="site-header">
@@ -181,7 +189,9 @@
         <a href="https://www.kyoukaikenpo.or.jp/about/business/insurance_rate/rate_prefectures/r08/index.html" target="_blank" rel="noopener">協会けんぽ 令和8年度保険料率</a>
       </section>
     </div>
-  </main>
+  
+<section class="content-section share-box" data-share-box aria-labelledby="share-title"><h2 id="share-title">このページを共有</h2><p>あとで見返すための保存や、同じ制度を調べている人への共有にご利用ください。</p><div class="share-actions"><button class="share-button primary" type="button" data-share="native">共有する</button><a class="share-button" href="#" target="_blank" rel="noopener" data-share="x">Xで共有</a><a class="share-button" href="#" target="_blank" rel="noopener" data-share="line">LINEで共有</a><button class="share-button" type="button" data-share="copy">URLをコピー</button></div><p class="share-status" data-share-status aria-live="polite"></p><a class="feed-link" href="../feed.xml">RSSで新しいガイドを受け取る</a></section>
+</main>
 
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は税務署・自治体の案内をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
@@ -204,5 +214,6 @@
     }
           form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
+<script src="../assets/share.js" defer></script>
 </body>
 </html>

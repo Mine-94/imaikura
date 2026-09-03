@@ -20,6 +20,14 @@
   <link rel="stylesheet" href="../assets/site.css">
   <style>.update-list{display:grid;gap:16px}.update-entry{border-left:3px solid var(--blue);padding:2px 0 2px 18px}.update-entry time{display:block;font-size:12px;font-weight:800;color:var(--blue-dark);margin-bottom:6px}.update-entry h2{font-size:18px;margin:0 0 7px;color:var(--navy)}.update-entry p{margin:0;color:var(--muted);font-size:14px;line-height:1.85}.update-entry ul{margin-bottom:0}</style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"更新履歴・訂正情報","url":"https://imaikura.com/updates/","inLanguage":"ja","about":{"@type":"WebSite","name":"いまいくら","url":"https://imaikura.com/"}}</script>
+<link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
+<meta property="og:site_name" content="いまいくら">
+<meta property="og:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
 </head>
 <body>
   <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>お金・税金・仕事の計算</small></span></a><nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="../site-map/">サイトマップ</a><a href="./" aria-current="page">更新履歴</a></nav></div></header>
@@ -28,7 +36,7 @@
     <div class="container main legal-shell">
       <section class="content-card"><h2>更新履歴を公開する理由</h2><p>税金、社会保険、労働法の制度は、同じ「2026年対応」でも所得年、課税年度、保険年度、施行月が異なります。変更内容と確認日を公開し、以前の表示と現在の表示が異なる理由を確認できるようにしています。</p><p>軽微な誤字、見た目だけの変更、内部コード整理は省略し、計算結果・利用条件・判断に影響する更新を中心に掲載します。</p></section>
 
-      <section class="content-card"><div class="update-list">
+      <section class="content-card"><div class="update-list"><article class="update-entry"><time datetime="2026-09-03">2026年9月3日</time><h2>検索エンジン通知と共有機能を追加</h2><p>更新URLをIndexNowへ通知する仕組み、RSSフィード、X・LINE・端末共有・URLコピー、SNS用プレビュー画像を追加しました。検索エンジンと利用者の双方が新しいガイドを見つけやすい構成へ改善しています。</p></article>
         <article class="update-entry"><time datetime="2026-09-03">2026年9月3日</time><h2>住宅ローン控除計算を適用条件込みで再設計</h2><p>2026年入居の新築住宅等について、年末残高だけでなく、取得対価、合計所得、床面積、返済期間、居住要件を確認する計算へ変更しました。法定控除可能額と実際に所得税・住民税から使える額を分け、住宅ローン控除の独立ガイドも追加しました。</p></article>
         <article class="update-entry"><time datetime="2026-09-03">2026年9月3日</time><h2>制度解説ガイドを5本追加</h2><p>給与から手取りが決まる仕組み、標準報酬月額、残業代の割増率、住民税の課税時期、賞与手取りの計算方法について、公的資料と計算ツールを結ぶ独立ガイドを追加しました。各記事に執筆・編集主体、最終確認日、公式参照先、訂正窓口を表示しています。</p></article>
         <article class="update-entry"><time datetime="2026-09-02">2026年9月2日</time><h2>年収の壁計算を制度別に全面訂正</h2><p>2026年分の税法上の扶養給与収入目安を136万円以下へ更新し、健康保険の130万円未満、19〜22歳親族の150万円未満、60歳以上・障害者の180万円未満を分離しました。住民税の非課税基準を全国一律の壁として扱う表示を廃止し、短時間労働者の現行条件と2026年10月の撤廃予定を別々に表示するよう変更しました。</p></article>
@@ -41,7 +49,9 @@
 
       <section class="content-card"><h2>更新時の確認範囲</h2><p>制度変更時は、計算エンジンだけでなく、入力項目、説明文、FAQ、構造化データ、タイトル、適用日、関連ガイド、サイトマップへの影響を確認します。公式資料で施行が確定していない内容は「予定」「仮定」と明記し、現行制度の結果と混同させません。</p></section>
     </div>
-  </main>
+  
+<section class="content-card" data-feed-promo><h2>RSSで更新を受け取る</h2><p>新しい制度ガイドや重要な訂正を、フィードリーダーから確認できます。</p><p><a class="card-link" href="../feed.xml">いまいくらのRSSフィードを開く</a></p></section>
+</main>
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算基準</a><a href="../contact/">お問い合わせ</a><a href="../site-map/">サイトマップ</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>日本のお金・税金・仕事の無料計算ツール</div></div></div></footer>
 </body>
 </html>

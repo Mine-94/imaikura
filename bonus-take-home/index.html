@@ -29,6 +29,14 @@
     "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
   }</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"ボーナス60万円の手取りはいくらですか？","acceptedAnswer":{"@type":"Answer","text":"2026年6月支給、東京都、30歳、前月給与30万円、扶養0人、協会けんぽの場合は490,956円が目安です。前月給与、扶養人数、支給月、加入する健康保険で金額は変わります。"}},{"@type":"Question","name":"2026年はボーナスの支給月で社会保険料率が変わりますか？","acceptedAnswer":{"@type":"Answer","text":"はい。協会けんぽの賞与は、1〜2月支給分に2025年度の健康・介護保険料率、3月以降支給分に2026年度料率が適用されます。子ども・子育て支援金0.23％と雇用保険の本人負担0.50％は4月以降支給分に反映します。"}},{"@type":"Question","name":"ボーナスから住民税が引かれないのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"給与からの住民税は、前年所得を基に決められた年税額を通常12回に分けて徴収します。そのため賞与明細から住民税が直接控除されないのが一般的です。ただし賞与は所得に含まれるため、翌年度の住民税額には影響します。"}},{"@type":"Question","name":"前月給与の10倍を超えるボーナスも計算できますか？","acceptedAnswer":{"@type":"Answer","text":"社会保険料控除後の賞与が前月給与の社会保険料控除後の金額の10倍を超える場合などは、通常の賞与算出率表ではなく月額表を使う例外計算になります。本ツールは通常表による参考額と注意を表示するため、確定額は勤務先の計算をご確認ください。"}}]}</script>
+<link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
+<meta property="og:site_name" content="いまいくら">
+<meta property="og:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
 </head>
 <body>
   <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a><nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">ボーナス手取り</a></nav></div></header>
@@ -130,7 +138,9 @@
         <a href="https://jsite.mhlw.go.jp/kanagawa-roudoukyoku/hourei_seido_tetsuzuki/roudou_hoken/hourei_seido/2024_00008.html" target="_blank" rel="noopener">厚生労働省系労働局「令和7・8年度雇用保険料率」</a>
       </section>
     </div>
-  </main>
+  
+<section class="content-section share-box" data-share-box aria-labelledby="share-title"><h2 id="share-title">このページを共有</h2><p>あとで見返すための保存や、同じ制度を調べている人への共有にご利用ください。</p><div class="share-actions"><button class="share-button primary" type="button" data-share="native">共有する</button><a class="share-button" href="#" target="_blank" rel="noopener" data-share="x">Xで共有</a><a class="share-button" href="#" target="_blank" rel="noopener" data-share="line">LINEで共有</a><button class="share-button" type="button" data-share="copy">URLをコピー</button></div><p class="share-status" data-share-status aria-live="polite"></p><a class="feed-link" href="../feed.xml">RSSで新しいガイドを受け取る</a></section>
+</main>
 
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先の賞与明細をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
@@ -153,5 +163,6 @@
     }
           form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
+<script src="../assets/share.js" defer></script>
 </body>
 </html>

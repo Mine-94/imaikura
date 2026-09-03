@@ -29,6 +29,14 @@
     "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
   }</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"「退職所得の受給に関する申告書」を提出しないとどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"退職金額面の20.42%が一律で源泉徴収されます。本来の税額との差額は確定申告で精算します。支払時の手取りが大きく減ることがあるため、退職手当等の支払を受ける時までに勤務先へ提出するのが原則です。"}},{"@type":"Question","name":"iDeCoの一時金と退職金を両方受け取る場合はどうなりますか？","acceptedAnswer":{"@type":"Answer","text":"同一年またはiDeCoとの受取時期が近い場合、退職所得控除額の計算が調整されることがあります。2026年（令和8年）1月1日以降の受取分からは、この調整対象期間が5年から10年に延長されました。詳細は勤務先やiDeCoの運営管理機関にご確認ください。"}},{"@type":"Question","name":"退職金には住民税がかかりますか？","acceptedAnswer":{"@type":"Answer","text":"はい。退職所得の受給に関する申告書の提出有無にかかわらず、退職金支払時に勤務先が住民税（道府県民税4%・市区町村民税6%）を特別徴収します。所得税と異なり、申告書未提出でも税率は変わりません。"}},{"@type":"Question","name":"医療費控除やふるさと納税と一緒に申告できますか？","acceptedAnswer":{"@type":"Answer","text":"退職所得も含めて確定申告書を提出できます。医療費控除や寄附金控除の適用を受ける場合は、確定申告書に退職所得の金額を記載する必要があります。"}}]}</script>
+<link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
+<meta property="og:site_name" content="いまいくら">
+<meta property="og:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
 </head>
 <body>
   <header class="site-header"><div class="header-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら <small>税金・手取り計算</small></span></a><nav class="nav" aria-label="メインナビゲーション"><a href="../">ツール一覧</a><a href="./" aria-current="page">退職金手取り</a></nav></div></header>
@@ -135,7 +143,9 @@
 
       <section class="content-section content-card sources"><strong>参照した公的資料（2026年9月1日確認）</strong><br><a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1420.htm" target="_blank" rel="noopener">国税庁タックスアンサー「No.1420 退職金を受け取ったとき（退職所得）」</a> ／ <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2740.htm" target="_blank" rel="noopener">国税庁「No.2740 短期退職手当等」</a> ／ <a href="https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/annai/1648_37.htm" target="_blank" rel="noopener">国税庁「退職所得の受給に関する申告」</a> ／ <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732_besshi.htm" target="_blank" rel="noopener">国税庁「退職所得の源泉徴収税額の速算表」</a></section>
     </div>
-  </main>
+  
+<section class="content-section share-box" data-share-box aria-labelledby="share-title"><h2 id="share-title">このページを共有</h2><p>あとで見返すための保存や、同じ制度を調べている人への共有にご利用ください。</p><div class="share-actions"><button class="share-button primary" type="button" data-share="native">共有する</button><a class="share-button" href="#" target="_blank" rel="noopener" data-share="x">Xで共有</a><a class="share-button" href="#" target="_blank" rel="noopener" data-share="line">LINEで共有</a><button class="share-button" type="button" data-share="copy">URLをコピー</button></div><p class="share-status" data-share-status aria-live="polite"></p><a class="feed-link" href="../feed.xml">RSSで新しいガイドを受け取る</a></section>
+</main>
 
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先・税務署の案内をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
@@ -177,5 +187,6 @@
     }
           form.addEventListener('submit',calculate);form.addEventListener('input',calculate);form.addEventListener('change',calculate);calculate();
   </script>
+<script src="../assets/share.js" defer></script>
 </body>
 </html>
