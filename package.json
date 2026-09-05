@@ -1,0 +1,11 @@
+{
+  "name": "imaikura-quality-checks",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test:visual": "playwright test tests/visual-smoke.spec.js --reporter=line"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.0"
+  }
+}
