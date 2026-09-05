@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<title id="title">いまいくら</title><desc id="desc">円の文字を使った、いまいくらのロゴ</desc>
+<rect width="512" height="512" rx="112" fill="#14334b"/>
+<circle cx="256" cy="256" r="174" fill="#ffffff"/>
+<text x="256" y="326" text-anchor="middle" font-family="Noto Sans JP, Hiragino Kaku Gothic ProN, Yu Gothic, sans-serif" font-size="218" font-weight="800" fill="#14334b">円</text>
+</svg>
