@@ -1,0 +1,65 @@
+name: Publish AdSense content and SEO upgrade
+
+on:
+  push:
+    branches: [adsense/quality-seo-20260905]
+    paths: [.github/workflows/adsense-content-release.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore verified builder
+        run: |
+          set -euo pipefail
+          cat .release/adsense-builder-00 .release/adsense-builder-01 > /tmp/builder.b64
+          base64 --decode /tmp/builder.b64 > /tmp/builder.py.gz
+          echo '77511ee6c60a25fefa8dde9a46168209132a756e4d637138f4392b26a09a1ae5  /tmp/builder.py.gz' | sha256sum --check --strict
+          gunzip -c /tmp/builder.py.gz > /tmp/builder.py
+          python3 /tmp/builder.py
+      - name: Validate generated site
+        run: |
+          set -euo pipefail
+          for f in assets/*.js; do node --check "$f"; done
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import json,re,xml.etree.ElementTree as ET
+          root=Path('.')
+          ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[x.text.strip() for x in ET.parse('sitemap.xml').findall('s:url/s:loc',ns)]
+          assert len(urls)==38 and len(urls)==len(set(urls))
+          for url in urls:
+              p=urlparse(url).path
+              f=root/'index.html' if p=='/' else root/p.lstrip('/')/'index.html'
+              assert f.is_file(),(url,f)
+              t=f.read_text(encoding='utf-8')
+              assert t.lower().count('<h1')==1
+              assert 'noindex' not in t.lower()
+              assert '<footer' in t.lower()
+              for b in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',t,re.I|re.S): json.loads(b)
+          home=(root/'index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=')==15
+          assert '現在 15ツール・14ガイド公開中' in home
+          assert (root/'guides/index.html').is_file() and (root/'help/index.html').is_file()
+          assert len(ET.parse('feed.xml').getroot().findall('./channel/item'))==14
+          for s in ['about','contact','privacy','terms']:
+              assert (root/s/'index.html').is_file()
+          print('AdSense SEO release validation: PASS')
+          PY
+      - name: Commit verified release
+        run: |
+          set -euo pipefail
+          git config user.name imaikura-maintenance-bot
+          git config user.email actions@users.noreply.github.com
+          git rm .github/workflows/adsense-content-release.yml .release/adsense-builder-00 .release/adsense-builder-01
+          git add -A
+          git commit -m 'Strengthen AdSense content, policies and SEO'
+          git push origin HEAD:adsense/quality-seo-20260905
