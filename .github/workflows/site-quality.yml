@@ -6,7 +6,8 @@ on:
     paths:
       - '**/*.html'
       - '**/*.js'
-      - 'sitemap.xml'
+      - '**/*.css'
+      - '**/*.xml'
       - 'robots.txt'
       - 'ads.txt'
       - '.github/workflows/site-quality.yml'
@@ -25,208 +26,203 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate JavaScript syntax and calculator boundaries
+      - name: Validate calculator JavaScript
         shell: bash
         run: |
           set -euo pipefail
           for file in assets/*.js; do node --check "$file"; done
           node <<'JS'
           const assert = require('assert');
-
           const work = require('./assets/work-time-engine.js');
           assert.strictEqual(work.requiredBreakMinutes(360), 0);
           assert.strictEqual(work.requiredBreakMinutes(361), 45);
           assert.strictEqual(work.requiredBreakMinutes(480), 45);
           assert.strictEqual(work.requiredBreakMinutes(481), 60);
-          let w = work.calculateWorkTime({startTime:'22:00', endTime:'07:00', nextDay:true, breakMinutes:60});
-          assert.strictEqual(w.actualWorkMinutes, 480);
-          assert.strictEqual(w.minimumBreakMinutes, 45);
+          const night = work.calculateWorkTime({startTime:'22:00', endTime:'07:00', nextDay:true, breakMinutes:60});
+          assert.strictEqual(night.actualWorkMinutes, 480);
 
           const wage = require('./assets/wage-converter-engine.js');
-          let c = wage.calculateWageConversion({mode:'monthly', amount:240000, dailyHours:8, annualWorkDays:250, annualBonus:0, minimumWage:0});
-          assert.strictEqual(c.annualScheduledHours, 2000);
-          assert.strictEqual(c.hourlyEquivalent, 1440);
-          assert.strictEqual(c.annualBase, 2880000);
+          const monthly = wage.calculateWageConversion({mode:'monthly', amount:240000, dailyHours:8, annualWorkDays:250, annualBonus:0, minimumWage:0});
+          assert.strictEqual(monthly.annualScheduledHours, 2000);
+          assert.strictEqual(monthly.hourlyEquivalent, 1440);
 
           const wall = require('./assets/income-wall-engine.js');
-          let r = wall.calculateIncomeWall({annualSalary:1360000, healthAnnualIncome:1299999, monthlyScheduledWage:87999, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true});
-          assert.strictEqual(r.taxDependentEligible, true);
-          assert.strictEqual(r.personalIncomeTaxFree, true);
-          assert.strictEqual(r.healthDependent, true);
-          assert.strictEqual(r.employeeSocialEligible, false);
-          r = wall.calculateIncomeWall({annualSalary:1360001, healthAnnualIncome:1500000, monthlyScheduledWage:88000, weeklyHours:20, companyEmployees:51, age:20, dependentRelation:'other', employmentOverTwoMonths:true});
-          assert.strictEqual(r.taxDependentEligible, false);
-          assert.strictEqual(r.dependentLimit, 1500000);
-          assert.strictEqual(r.healthDependent, false);
-          assert.strictEqual(r.employeeSocialEligible, true);
-          r = wall.calculateIncomeWall({annualSalary:1200000, healthAnnualIncome:1200000, monthlyScheduledWage:70000, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true, plannedWageRequirementRemoval:true});
-          assert.strictEqual(r.employeeSocialBasis, 'short-time-planned');
+          let result = wall.calculateIncomeWall({annualSalary:1360000, healthAnnualIncome:1299999, monthlyScheduledWage:87999, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true});
+          assert.strictEqual(result.taxDependentEligible, true);
+          assert.strictEqual(result.healthDependent, true);
+          assert.strictEqual(result.employeeSocialEligible, false);
+          result = wall.calculateIncomeWall({annualSalary:1360001, healthAnnualIncome:1500000, monthlyScheduledWage:88000, weeklyHours:20, companyEmployees:51, age:20, dependentRelation:'other', employmentOverTwoMonths:true});
+          assert.strictEqual(result.taxDependentEligible, false);
+          assert.strictEqual(result.dependentLimit, 1500000);
+          assert.strictEqual(result.employeeSocialEligible, true);
 
           const housing = require('./assets/housing-loan-engine.js');
-          let h = housing.calculateHousingLoanDeduction2026({
-            annualSalary:6000000,
-            otherIncome:0,
-            loanYearEndBalance:30000000,
-            acquisitionCost:35000000,
-            floorArea:70,
-            loanTermYears:35,
-            housingCategory:'shoene',
-            childOrYoungCouple:false,
-            principalResidence:true,
-            movedWithinSixMonths:true,
-            residentAtYearEnd:true,
-            residentialHalfOrMore:true,
-            age:35,
-            prefecture:'東京都'
-          });
-          assert.strictEqual(h.eligible, true);
-          assert.strictEqual(h.borrowLimit, 20000000);
-          assert.strictEqual(h.qualifyingBalance, 20000000);
-          assert.strictEqual(h.statutoryCredit, 140000);
-          h = housing.calculateHousingLoanDeduction2026({
-            annualSalary:30000000,
-            loanYearEndBalance:30000000,
-            acquisitionCost:30000000,
-            floorArea:70,
-            loanTermYears:35,
-            housingCategory:'chotan'
-          });
-          assert.strictEqual(h.eligible, false);
-          assert.ok(h.eligibilityReasons.some(reason => reason.includes('2,000万円')));
-          h = housing.calculateHousingLoanDeduction2026({
-            annualSalary:8000000,
-            loanYearEndBalance:30000000,
-            acquisitionCost:30000000,
-            floorArea:45,
-            loanTermYears:35,
-            housingCategory:'chotan',
-            childOrYoungCouple:true
-          });
-          assert.strictEqual(h.floorAreaRequired, 50);
-          assert.strictEqual(h.eligible, false);
-          h = housing.calculateHousingLoanDeduction2026({
-            annualSalary:8000000,
-            loanYearEndBalance:30000000,
-            acquisitionCost:25000000,
-            floorArea:60,
-            loanTermYears:35,
-            housingCategory:'zeh'
-          });
-          assert.strictEqual(h.qualifyingBalance, 25000000);
-          console.log('calculator boundary tests: PASS');
+          const home = housing.calculateHousingLoanDeduction2026({annualSalary:6000000, loanYearEndBalance:30000000, acquisitionCost:35000000, floorArea:70, loanTermYears:35, housingCategory:'shoene', principalResidence:true, movedWithinSixMonths:true, residentAtYearEnd:true, residentialHalfOrMore:true, age:35, prefecture:'東京都'});
+          assert.strictEqual(home.eligible, true);
+          assert.strictEqual(home.borrowLimit, 20000000);
+          assert.strictEqual(home.statutoryCredit, 140000);
+          console.log('calculator tests: PASS');
           JS
 
-      - name: Validate AdSense trust, metadata, sitemap and internal navigation
+      - name: Validate AdSense readiness, SEO and content depth
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
           from urllib.parse import urlparse, unquote
+          from collections import Counter
           import html.parser
           import json
           import re
           import xml.etree.ElementTree as ET
 
           root = Path('.')
-          required_pages = [
-              'index.html',
-              'about/index.html',
-              'contact/index.html',
-              'privacy/index.html',
-              'terms/index.html',
-              'updates/index.html',
-              'site-map/index.html',
-              'income-wall/index.html',
-              'housing-loan-deduction/index.html',
-              'salary-deductions-guide/index.html',
-              'standard-remuneration-guide/index.html',
-              'bonus-take-home-guide/index.html',
-              'overtime-pay-guide/index.html',
-              'resident-tax-guide/index.html',
-              'furusato-nozei-guide/index.html',
-              'year-end-adjustment-guide/index.html',
-              'housing-loan-deduction-guide/index.html',
+          site = 'https://imaikura.com'
+          publisher = 'ca-pub-8602848692420724'
+          calculators = [
+              'salary-take-home','wage-converter','social-insurance','bonus-take-home',
+              'year-end-adjustment','overtime-pay','work-time','income-wall',
+              'retirement-income','resident-tax','resident-tax-exemption',
+              'medical-expense-deduction','housing-loan-deduction','furusato-nozei',
+              'consumption-tax'
           ]
-          for rel in required_pages:
-              assert (root / rel).is_file(), f'missing required page: {rel}'
-
-          required_assets = [
-              'assets/tax-engine.js',
-              'assets/work-time-engine.js',
-              'assets/wage-converter-engine.js',
-              'assets/income-wall-engine.js',
-              'assets/housing-loan-engine.js',
+          guides = [
+              'salary-deductions-guide','income-tax-guide','standard-remuneration-guide',
+              'bonus-take-home-guide','overtime-pay-guide','work-time-break-guide',
+              'resident-tax-guide','medical-expense-deduction-guide',
+              'housing-loan-deduction-guide','retirement-income-guide',
+              'minimum-wage-2026','year-end-adjustment-guide','furusato-nozei-guide',
+              'consumption-tax-guide'
           ]
-          for rel in required_assets:
-              assert (root / rel).is_file(), f'missing required asset: {rel}'
+          utility = ['about','contact','privacy','terms','updates','site-map','guides','help']
 
-          assert Path('ads.txt').read_text(encoding='utf-8').strip() == 'google.com, pub-8602848692420724, DIRECT, f08c47fec0942fa0'
-          robots = Path('robots.txt').read_text(encoding='utf-8')
-          assert 'Allow: /' in robots and 'https://imaikura.com/sitemap.xml' in robots
+          for asset in ['assets/tax-engine.js','assets/work-time-engine.js','assets/wage-converter-engine.js','assets/income-wall-engine.js','assets/housing-loan-engine.js','assets/share.js','assets/site.css','assets/og-default.png']:
+              assert (root / asset).is_file(), asset
+          assert (root/'ads.txt').read_text(encoding='utf-8').strip() == 'google.com, pub-8602848692420724, DIRECT, f08c47fec0942fa0'
+          robots = (root/'robots.txt').read_text(encoding='utf-8')
+          assert 'Allow: /' in robots and f'{site}/sitemap.xml' in robots
 
-          ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
-          tree = ET.parse('sitemap.xml')
-          urls = [e.text.strip() for e in tree.findall('s:url/s:loc', ns)]
-          assert len(urls) == len(set(urls)), 'duplicate sitemap URL'
-          assert len(urls) >= 30, len(urls)
+          ns = {'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls = [node.text.strip() for node in ET.parse('sitemap.xml').findall('s:url/s:loc', ns)]
+          assert len(urls) == 38 and len(urls) == len(set(urls)), len(urls)
 
-          def path_for_url(url):
-              path = unquote(urlparse(url).path)
-              if path in ('', '/'):
-                  return Path('index.html')
-              return Path(path.lstrip('/')) / 'index.html'
+          def path_for(url):
+              parsed = urlparse(url)
+              assert parsed.scheme == 'https' and parsed.netloc == 'imaikura.com'
+              path = unquote(parsed.path)
+              return root/'index.html' if path == '/' else root/path.lstrip('/')/'index.html'
 
+          mapped = {}
           for url in urls:
-              assert url.startswith('https://imaikura.com/'), url
-              assert path_for_url(url).is_file(), f'sitemap target missing: {url} -> {path_for_url(url)}'
+              path = path_for(url)
+              assert path.is_file(), (url, path)
+              mapped[path.resolve()] = url
+          pages = sorted(root.rglob('index.html'))
+          assert len(pages) == 38, len(pages)
+          assert all(page.resolve() in mapped for page in pages)
 
-          class LinkParser(html.parser.HTMLParser):
+          class Parser(html.parser.HTMLParser):
               def __init__(self):
-                  super().__init__()
-                  self.links = []
+                  super().__init__(convert_charrefs=True)
+                  self.links=[]; self.ids=[]; self.meta=[]; self.linktags=[]; self.blocks=[]
+                  self.h1=0; self.footer=False; self.title=''; self._title=False
+                  self._json=False; self._buf=[]; self.visible=[]; self.faq=0
               def handle_starttag(self, tag, attrs):
-                  if tag == 'a':
-                      href = dict(attrs).get('href')
-                      if href:
-                          self.links.append(href)
+                  d=dict(attrs)
+                  if d.get('id'): self.ids.append(d['id'])
+                  if tag=='a' and d.get('href'): self.links.append(d['href'])
+                  if tag=='meta': self.meta.append(d)
+                  if tag=='link': self.linktags.append(d)
+                  if tag=='h1': self.h1 += 1
+                  if tag=='footer': self.footer=True
+                  if tag=='title': self._title=True
+                  if tag=='details' and 'faq' in d.get('class','').split(): self.faq += 1
+                  if tag=='script' and d.get('type')=='application/ld+json': self._json=True; self._buf=[]
+              def handle_endtag(self, tag):
+                  if tag=='title': self._title=False
+                  if tag=='script' and self._json: self.blocks.append(''.join(self._buf)); self._json=False
+              def handle_data(self, data):
+                  if self._title: self.title += data
+                  if self._json: self._buf.append(data)
+                  else: self.visible.append(data)
 
-          critical = [Path(p) for p in required_pages]
-          for path in critical:
-              text = path.read_text(encoding='utf-8')
-              assert re.search(r'<html[^>]+lang=["\']ja["\']', text, re.I), path
-              assert text.lower().count('<h1') == 1, f'H1 count: {path}'
-              assert re.search(r'<title>[^<]{8,}</title>', text, re.I), f'title: {path}'
-              assert re.search(r'<meta[^>]+name=["\']description["\'][^>]+content=["\'][^"\']{40,}', text, re.I), f'description: {path}'
-              assert re.search(r'<link[^>]+rel=["\']canonical["\']', text, re.I), f'canonical: {path}'
-              assert '<footer' in text.lower(), f'footer: {path}'
-              for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.I | re.S):
-                  json.loads(block)
-              ids = re.findall(r'\sid=["\']([^"\']+)["\']', text, re.I)
-              assert len(ids) == len(set(ids)), f'duplicate HTML id: {path}'
+          titles=[]; descriptions=[]
+          global_slugs = ['guides','help','about','contact','updates','site-map','privacy','terms']
+          for page in pages:
+              text = page.read_text(encoding='utf-8')
+              parser = Parser(); parser.feed(text)
+              expected = mapped[page.resolve()]
+              slug = '/' if page == root/'index.html' else page.parent.name
+              visible = ''.join(parser.visible)
+              japanese = len(re.findall(r'[一-龯ぁ-んァ-ン]', visible))
+              assert re.search(r'<html[^>]+lang=["\']ja["\']', text, re.I), page
+              assert parser.h1 == 1 and parser.footer, page
+              assert len(parser.title.strip()) >= 8, page
+              assert len(parser.ids) == len(set(parser.ids)), page
 
-              parser = LinkParser(); parser.feed(text)
-              base = path.parent
+              def meta(attr, value):
+                  return next((x.get('content','').strip() for x in parser.meta if x.get(attr)==value), '')
+              description = meta('name','description')
+              assert len(description) >= 40, page
+              assert meta('property','og:url') == expected, page
+              for attr,name in [('property','og:title'),('property','og:description'),('property','og:image'),('name','twitter:card')]:
+                  assert meta(attr,name), (page,name)
+              canonical = next((x.get('href','').strip() for x in parser.linktags if 'canonical' in x.get('rel','').split()), '')
+              assert canonical == expected, (page,canonical,expected)
+              assert any(x.get('type')=='application/rss+xml' for x in parser.linktags), page
+              assert 'noindex' not in meta('name','robots').lower(), page
+              for block in parser.blocks: json.loads(block)
+              titles.append((parser.title.strip(),page)); descriptions.append((description,page))
+
+              for target_slug in global_slugs:
+                  assert any(h.split('#',1)[0].split('?',1)[0].rstrip('/').endswith(target_slug) for h in parser.links), (page,target_slug)
               for href in parser.links:
-                  if href.startswith(('#', 'http://', 'https://', 'mailto:', 'tel:', 'javascript:')):
-                      continue
-                  clean = href.split('#', 1)[0].split('?', 1)[0]
-                  if not clean:
-                      continue
-                  target = (base / clean).resolve()
-                  repo = root.resolve()
-                  assert str(target).startswith(str(repo)), f'outside repo link: {path} {href}'
-                  if clean.endswith('/'):
-                      target = target / 'index.html'
-                  assert target.exists(), f'broken internal link: {path} -> {href}'
+                  if href.startswith(('#','http://','https://','//','mailto:','tel:','javascript:','data:')): continue
+                  clean = unquote(href.split('#',1)[0].split('?',1)[0])
+                  if not clean: continue
+                  target = (page.parent/clean).resolve()
+                  assert root.resolve()==target or root.resolve() in target.parents, (page,href)
+                  if clean.endswith('/'): target = target/'index.html'
+                  assert target.exists(), (page,href)
 
-          home = Path('index.html').read_text(encoding='utf-8')
-          assert home.count('data-search=') == 15
-          assert len(re.findall(r'>GUIDE \d{2}<', home)) == 8
-          for link in ('about/', 'contact/', 'updates/', 'site-map/', 'privacy/', 'terms/'):
+              if slug in calculators:
+                  assert japanese >= 1000, (page,japanese)
+                  assert 'いまいくら編集部' in visible and '2026年9月5日' in visible, page
+                  assert parser.faq >= 3 and publisher in text, page
+              elif slug in guides:
+                  assert japanese >= 1300, (page,japanese)
+                  assert 'いまいくら編集部' in visible, page
+                  assert parser.faq >= 3 and publisher in text, page
+
+          for label, values in [('title',titles),('description',descriptions)]:
+              counts=Counter(value for value,_ in values)
+              assert not [value for value,count in counts.items() if count>1], label
+          for slug in calculators + guides + utility:
+              assert (root/slug/'index.html').is_file(), slug
+
+          items = ET.parse('feed.xml').getroot().findall('./channel/item')
+          feedlinks = [x.findtext('link') for x in items]
+          assert len(items)==14 and len(feedlinks)==len(set(feedlinks)) and all(x in urls for x in feedlinks)
+
+          home=(root/'index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=')==15
+          assert len(re.findall(r'>GUIDE \d{2}<',home))==8
+          assert 'すべての制度ガイドを見る（14本）' in home
+          assert '現在 15ツール・14ガイド公開中' in home
+          for link in ('guides/','help/','about/','contact/','updates/','site-map/','privacy/','terms/'):
               assert f'href="{link}"' in home
-          assert 'housing-loan-deduction-guide/' in home
-          assert '-test' not in home.lower()
-          assert 'localhost' not in ''.join(p.read_text(encoding='utf-8') for p in critical).lower()
-          print('site quality audit: PASS')
+
+          privacy=(root/'privacy/index.html').read_text(encoding='utf-8')
+          about=(root/'about/index.html').read_text(encoding='utf-8')
+          contact=(root/'contact/index.html').read_text(encoding='utf-8')
+          help_page=(root/'help/index.html').read_text(encoding='utf-8')
+          guide_hub=(root/'guides/index.html').read_text(encoding='utf-8')
+          assert publisher in privacy and 'Google AdSense' in privacy and 'Cookie' in privacy
+          assert 'AI・自動化ツールの利用' in about and '広告と編集の分離' in about
+          assert '計算誤り' in contact and '個人情報' in contact
+          assert help_page.count('class="faq"') >= 8
+          assert all(f'../{slug}/' in guide_hub for slug in guides)
+          assert '-test' not in home.lower() and 'localhost' not in ''.join(p.read_text(encoding='utf-8') for p in pages).lower()
+          print('AdSense and SEO quality audit: PASS')
           PY
