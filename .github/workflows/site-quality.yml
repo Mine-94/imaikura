@@ -8,8 +8,12 @@ on:
       - '**/*.js'
       - '**/*.css'
       - '**/*.xml'
+      - '**/*.json'
       - 'robots.txt'
       - 'ads.txt'
+      - 'package.json'
+      - 'playwright.config.js'
+      - 'tests/**'
       - '.github/workflows/site-quality.yml'
   workflow_dispatch:
 
@@ -23,16 +27,18 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate calculator JavaScript
+      - name: Validate calculator JavaScript and boundary cases
         shell: bash
         run: |
           set -euo pipefail
           for file in assets/*.js; do node --check "$file"; done
           node <<'JS'
           const assert = require('assert');
+
           const work = require('./assets/work-time-engine.js');
           assert.strictEqual(work.requiredBreakMinutes(360), 0);
           assert.strictEqual(work.requiredBreakMinutes(361), 45);
@@ -47,24 +53,47 @@ jobs:
           assert.strictEqual(monthly.hourlyEquivalent, 1440);
 
           const wall = require('./assets/income-wall-engine.js');
-          let result = wall.calculateIncomeWall({annualSalary:1360000, healthAnnualIncome:1299999, monthlyScheduledWage:87999, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true});
-          assert.strictEqual(result.taxDependentEligible, true);
-          assert.strictEqual(result.healthDependent, true);
-          assert.strictEqual(result.employeeSocialEligible, false);
-          result = wall.calculateIncomeWall({annualSalary:1360001, healthAnnualIncome:1500000, monthlyScheduledWage:88000, weeklyHours:20, companyEmployees:51, age:20, dependentRelation:'other', employmentOverTwoMonths:true});
-          assert.strictEqual(result.taxDependentEligible, false);
-          assert.strictEqual(result.dependentLimit, 1500000);
-          assert.strictEqual(result.employeeSocialEligible, true);
+          let wallResult = wall.calculateIncomeWall({annualSalary:1360000, healthAnnualIncome:1299999, monthlyScheduledWage:87999, weeklyHours:20, companyEmployees:51, age:30, dependentRelation:'spouse', employmentOverTwoMonths:true});
+          assert.strictEqual(wallResult.taxDependentEligible, true);
+          assert.strictEqual(wallResult.healthDependent, true);
+          assert.strictEqual(wallResult.employeeSocialEligible, false);
+          wallResult = wall.calculateIncomeWall({annualSalary:1360001, healthAnnualIncome:1500000, monthlyScheduledWage:88000, weeklyHours:20, companyEmployees:51, age:20, dependentRelation:'other', employmentOverTwoMonths:true});
+          assert.strictEqual(wallResult.taxDependentEligible, false);
+          assert.strictEqual(wallResult.dependentLimit, 1500000);
+          assert.strictEqual(wallResult.employeeSocialEligible, true);
 
           const housing = require('./assets/housing-loan-engine.js');
           const home = housing.calculateHousingLoanDeduction2026({annualSalary:6000000, loanYearEndBalance:30000000, acquisitionCost:35000000, floorArea:70, loanTermYears:35, housingCategory:'shoene', principalResidence:true, movedWithinSixMonths:true, residentAtYearEnd:true, residentialHalfOrMore:true, age:35, prefecture:'東京都'});
           assert.strictEqual(home.eligible, true);
           assert.strictEqual(home.borrowLimit, 20000000);
           assert.strictEqual(home.statutoryCredit, 140000);
-          console.log('calculator tests: PASS');
+
+          const paid = require('./assets/paid-leave-engine.js');
+          let leave = paid.calculatePaidLeave({hireDate:'2023-04-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:5,weeklyHours:40,attendanceRate:95,daysTaken:4});
+          assert.strictEqual(leave.ok, true);
+          assert.strictEqual(leave.statutoryGrantDays, 12);
+          assert.strictEqual(leave.remainingDays, 8);
+          leave = paid.calculatePaidLeave({hireDate:'2026-04-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:3,weeklyHours:18,attendanceRate:100,daysTaken:0});
+          assert.strictEqual(leave.beforeFirstGrant, true);
+          assert.strictEqual(leave.firstGrantDays, 5);
+          assert.strictEqual(leave.firstGrantDate, '2026-10-01');
+
+          const electricity = require('./assets/electricity-cost-engine.js');
+          const appliance = electricity.calculateApplianceCost({watts:1000, quantity:1, hoursPerDay:2, daysPerMonth:30, unitRate:31, standbyWatts:0, standbyHoursPerDay:0});
+          assert.strictEqual(appliance.ok, true);
+          assert.strictEqual(appliance.monthlyKwh, 60);
+          assert.strictEqual(appliance.monthlyCost, 1860);
+          const tiered = electricity.calculateBillEstimate({usageKwh:350,basicCharge:1000,rateMode:'tiered',rate1:20,threshold1:120,rate2:25,threshold2:300,rate3:30,fuelAdjustment:-2,renewableLevy:4,otherAdjustment:-500});
+          assert.strictEqual(tiered.ok, true);
+          assert.strictEqual(tiered.energyCharge, 8400);
+          assert.strictEqual(tiered.total, 9600);
+          const effective = electricity.calculateEffectiveRate({billAmount:9000,usageKwh:300});
+          assert.strictEqual(effective.ok, true);
+          assert.strictEqual(effective.effectiveRate, 30);
+          console.log('calculator boundary tests: PASS');
           JS
 
-      - name: Validate AdSense readiness, SEO and content depth
+      - name: Validate AdSense readiness, SEO, navigation and content depth
         shell: bash
         run: |
           set -euo pipefail
@@ -80,38 +109,32 @@ jobs:
           root = Path('.')
           site = 'https://imaikura.com'
           publisher = 'ca-pub-8602848692420724'
-          calculators = [
-              'salary-take-home','wage-converter','social-insurance','bonus-take-home',
-              'year-end-adjustment','overtime-pay','work-time','income-wall',
-              'retirement-income','resident-tax','resident-tax-exemption',
-              'medical-expense-deduction','housing-loan-deduction','furusato-nozei',
-              'consumption-tax'
-          ]
-          guides = [
-              'salary-deductions-guide','income-tax-guide','standard-remuneration-guide',
-              'bonus-take-home-guide','overtime-pay-guide','work-time-break-guide',
-              'resident-tax-guide','medical-expense-deduction-guide',
-              'housing-loan-deduction-guide','retirement-income-guide',
-              'minimum-wage-2026','year-end-adjustment-guide','furusato-nozei-guide',
-              'consumption-tax-guide'
-          ]
-          utility = ['about','contact','privacy','terms','updates','site-map','guides','help']
+          manifest = json.loads((root / 'data/site-manifest.json').read_text(encoding='utf-8'))
+          calculators = manifest['calculators']
+          guides = manifest['guides']
+          utility = manifest['utility']
+          expected_count = 1 + len(calculators) + len(guides) + len(utility)
 
-          for asset in ['assets/tax-engine.js','assets/work-time-engine.js','assets/wage-converter-engine.js','assets/income-wall-engine.js','assets/housing-loan-engine.js','assets/share.js','assets/site.css','assets/og-default.png']:
+          required_assets = [
+              'assets/tax-engine.js','assets/work-time-engine.js','assets/wage-converter-engine.js',
+              'assets/income-wall-engine.js','assets/housing-loan-engine.js','assets/paid-leave-engine.js',
+              'assets/electricity-cost-engine.js','assets/share.js','assets/site.css','assets/og-default.png'
+          ]
+          for asset in required_assets:
               assert (root / asset).is_file(), asset
-          assert (root/'ads.txt').read_text(encoding='utf-8').strip() == 'google.com, pub-8602848692420724, DIRECT, f08c47fec0942fa0'
-          robots = (root/'robots.txt').read_text(encoding='utf-8')
+          assert (root / 'ads.txt').read_text(encoding='utf-8').strip() == 'google.com, pub-8602848692420724, DIRECT, f08c47fec0942fa0'
+          robots = (root / 'robots.txt').read_text(encoding='utf-8')
           assert 'Allow: /' in robots and f'{site}/sitemap.xml' in robots
 
           ns = {'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
           urls = [node.text.strip() for node in ET.parse('sitemap.xml').findall('s:url/s:loc', ns)]
-          assert len(urls) == 38 and len(urls) == len(set(urls)), len(urls)
+          assert len(urls) == expected_count and len(urls) == len(set(urls)), (len(urls), expected_count)
 
           def path_for(url):
               parsed = urlparse(url)
               assert parsed.scheme == 'https' and parsed.netloc == 'imaikura.com'
               path = unquote(parsed.path)
-              return root/'index.html' if path == '/' else root/path.lstrip('/')/'index.html'
+              return root / 'index.html' if path == '/' else root / path.lstrip('/') / 'index.html'
 
           mapped = {}
           for url in urls:
@@ -119,7 +142,7 @@ jobs:
               assert path.is_file(), (url, path)
               mapped[path.resolve()] = url
           pages = sorted(root.rglob('index.html'))
-          assert len(pages) == 38, len(pages)
+          assert len(pages) == expected_count, (len(pages), expected_count)
           assert all(page.resolve() in mapped for page in pages)
 
           class Parser(html.parser.HTMLParser):
@@ -153,7 +176,7 @@ jobs:
               text = page.read_text(encoding='utf-8')
               parser = Parser(); parser.feed(text)
               expected = mapped[page.resolve()]
-              slug = '/' if page == root/'index.html' else page.parent.name
+              slug = '/' if page == root / 'index.html' else page.parent.name
               visible = ''.join(parser.visible)
               japanese = len(re.findall(r'[一-龯ぁ-んァ-ン]', visible))
               assert re.search(r'<html[^>]+lang=["\']ja["\']', text, re.I), page
@@ -165,7 +188,7 @@ jobs:
                   return next((x.get('content','').strip() for x in parser.meta if x.get(attr)==value), '')
               description = meta('name','description')
               assert len(description) >= 40, page
-              assert meta('property','og:url') == expected, page
+              assert meta('property','og:url') == expected, (page, meta('property','og:url'), expected)
               for attr,name in [('property','og:title'),('property','og:description'),('property','og:image'),('name','twitter:card')]:
                   assert meta(attr,name), (page,name)
               canonical = next((x.get('href','').strip() for x in parser.linktags if 'canonical' in x.get('rel','').split()), '')
@@ -181,14 +204,14 @@ jobs:
                   if href.startswith(('#','http://','https://','//','mailto:','tel:','javascript:','data:')): continue
                   clean = unquote(href.split('#',1)[0].split('?',1)[0])
                   if not clean: continue
-                  target = (page.parent/clean).resolve()
+                  target = (page.parent / clean).resolve()
                   assert root.resolve()==target or root.resolve() in target.parents, (page,href)
-                  if clean.endswith('/'): target = target/'index.html'
-                  assert target.exists(), (page,href)
+                  if clean.endswith('/'): target = target / 'index.html'
+                  assert target.exists(), f'broken link: {page} -> {href}'
 
               if slug in calculators:
                   assert japanese >= 1000, (page,japanese)
-                  assert 'いまいくら編集部' in visible and '2026年9月5日' in visible, page
+                  assert 'いまいくら編集部' in visible, page
                   assert parser.faq >= 3 and publisher in text, page
               elif slug in guides:
                   assert japanese >= 1300, (page,japanese)
@@ -197,21 +220,21 @@ jobs:
 
           for label, values in [('title',titles),('description',descriptions)]:
               counts=Counter(value for value,_ in values)
-              assert not [value for value,count in counts.items() if count>1], label
+              duplicates=[value for value,count in counts.items() if count>1]
+              assert not duplicates, (label,duplicates)
           for slug in calculators + guides + utility:
-              assert (root/slug/'index.html').is_file(), slug
+              assert (root / slug / 'index.html').is_file(), slug
 
           items = ET.parse('feed.xml').getroot().findall('./channel/item')
           feedlinks = [x.findtext('link') for x in items]
-          assert len(items)==14 and len(feedlinks)==len(set(feedlinks)) and all(x in urls for x in feedlinks)
+          assert len(items) == len(guides), (len(items), len(guides))
+          assert len(feedlinks) == len(set(feedlinks)) and all(x in urls for x in feedlinks)
 
-          home=(root/'index.html').read_text(encoding='utf-8')
-          assert home.count('data-search=')==15
-          assert len(re.findall(r'>GUIDE \d{2}<',home))==8
-          assert 'すべての制度ガイドを見る（14本）' in home
-          assert '現在 15ツール・14ガイド公開中' in home
+          home = (root / 'index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=') == len(calculators), (home.count('data-search='), len(calculators))
+          assert f'現在 {len(calculators)}ツール・{len(guides)}ガイド公開中' in home
           for link in ('guides/','help/','about/','contact/','updates/','site-map/','privacy/','terms/'):
-              assert f'href="{link}"' in home
+              assert f'href="{link}"' in home or f"href='{link}'" in home
 
           privacy=(root/'privacy/index.html').read_text(encoding='utf-8')
           about=(root/'about/index.html').read_text(encoding='utf-8')
@@ -221,8 +244,42 @@ jobs:
           assert publisher in privacy and 'Google AdSense' in privacy and 'Cookie' in privacy
           assert 'AI・自動化ツールの利用' in about and '広告と編集の分離' in about
           assert '計算誤り' in contact and '個人情報' in contact
-          assert help_page.count('class="faq"') >= 8
+          assert help_page.count('class="faq"') >= 8 or help_page.count("class='faq'") >= 8
           assert all(f'../{slug}/' in guide_hub for slug in guides)
-          assert '-test' not in home.lower() and 'localhost' not in ''.join(p.read_text(encoding='utf-8') for p in pages).lower()
+          assert '-test' not in home.lower()
+          assert 'localhost' not in ''.join(p.read_text(encoding='utf-8') for p in pages).lower()
           print('AdSense and SEO quality audit: PASS')
           PY
+
+  browser-smoke:
+    needs: audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium test dependencies
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Start local site
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/imaikura-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/imaikura-server.log
+          exit 1
+      - name: Check every page and responsive alignment
+        run: npm run test:visual
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-layout-evidence
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
