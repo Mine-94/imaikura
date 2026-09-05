@@ -1,0 +1,72 @@
+name: Publish paid leave service without workflow changes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ensure-paid-leave-content.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build paid leave pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin release/unemployment-quality-20260905
+          git show origin/release/unemployment-quality-20260905:.release/paid-leave-builder.py > /tmp/paid-leave-builder.py
+          git show origin/release/unemployment-quality-20260905:.release/paid-leave-hotfix.py > /tmp/paid-leave-hotfix.py
+          python3 -m pip install --disable-pip-version-check beautifulsoup4
+          python3 -m py_compile /tmp/paid-leave-builder.py /tmp/paid-leave-hotfix.py
+          python3 /tmp/paid-leave-builder.py
+          python3 /tmp/paid-leave-hotfix.py
+          if ! grep -q 'responsive-geometry-guard-v1' assets/site.css; then
+            printf '%s\n' '' '/* responsive-geometry-guard-v1 */' '@media (max-width: 760px) {' '  .header-inner { flex-direction: column; flex-wrap: nowrap; }' '  .hero-inner { grid-template-columns: minmax(0, 1fr); }' '  .tool-grid, .tips-grid, .comparison-grid, .result-grid { grid-template-columns: minmax(0, 1fr); }' '}' >> assets/site.css
+          fi
+          git checkout -- .github/workflows/site-quality.yml
+
+      - name: Validate calculations and responsive layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in assets/*.js; do node --check "$file"; done
+          node <<'JS'
+          const assert = require('assert');
+          const paid = require('./assets/paid-leave-engine.js');
+          let r = paid.calculatePaidLeave({hireDate:'2023-04-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:5,weeklyHours:40,attendanceRate:95,daysTaken:4});
+          assert.strictEqual(r.statutoryGrantDays,12);
+          assert.strictEqual(r.remainingDays,8);
+          assert.strictEqual(r.mandatoryFiveRemaining,1);
+          r = paid.calculatePaidLeave({hireDate:'2026-04-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:3,weeklyHours:18,attendanceRate:100,daysTaken:0});
+          assert.strictEqual(r.beforeFirstGrant,true);
+          assert.strictEqual(r.firstGrantDays,5);
+          assert.strictEqual(r.firstGrantDate,'2026-10-01');
+          console.log('paid leave tests: PASS');
+          JS
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/server.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
+          npm run test:visual
+
+      - name: Commit only site content
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name imaikura-maintenance-bot
+          git config user.email actions@users.noreply.github.com
+          rm -rf node_modules test-results
+          rm -f package-lock.json
+          git add assets/site.css assets/paid-leave-engine.js assets/paid-leave.js paid-leave paid-leave-guide index.html guides/index.html site-map/index.html updates/index.html feed.xml sitemap.xml package.json playwright.config.js tests/visual-smoke.spec.js
+          git commit -m 'Add paid leave calculator and responsive quality checks'
+          git push origin HEAD:main
