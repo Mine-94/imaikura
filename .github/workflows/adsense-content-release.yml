@@ -19,6 +19,7 @@ jobs:
       - name: Restore verified builder
         run: |
           set -euo pipefail
+          python3 -m pip install --disable-pip-version-check beautifulsoup4
           cat .release/adsense-builder-00 .release/adsense-builder-01 > /tmp/builder.b64
           base64 --decode /tmp/builder.b64 > /tmp/builder.py.gz
           echo '77511ee6c60a25fefa8dde9a46168209132a756e4d637138f4392b26a09a1ae5  /tmp/builder.py.gz' | sha256sum --check --strict
