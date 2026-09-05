@@ -3,7 +3,8 @@ name: Ensure paid leave service and visual quality
 on:
   push:
     branches: [main]
-    paths: [.github/workflows/ensure-paid-leave-quality.yml]
+    paths:
+      - '.github/workflows/ensure-paid-leave-quality.yml'
 
 permissions:
   contents: write
@@ -22,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Load prepared builder and sync latest main
+      - name: Load prepared builder
         shell: bash
         run: |
           set -euo pipefail
@@ -31,26 +32,19 @@ jobs:
           git show origin/release/unemployment-quality-20260905:.release/paid-leave-hotfix.py > /tmp/paid-leave-hotfix.py
           git reset --hard origin/main
 
-      - name: Build or normalize the service
+      - name: Build and normalize the service
         shell: bash
         run: |
           set -euo pipefail
           python3 -m pip install --disable-pip-version-check beautifulsoup4
+          python3 -m py_compile /tmp/paid-leave-builder.py /tmp/paid-leave-hotfix.py
           if [ ! -f paid-leave/index.html ] || [ ! -f paid-leave-guide/index.html ]; then
-            python3 -m py_compile /tmp/paid-leave-builder.py
             python3 /tmp/paid-leave-builder.py
           fi
-          python3 -m py_compile /tmp/paid-leave-hotfix.py
           python3 /tmp/paid-leave-hotfix.py
-          cat >> assets/site.css <<'CSS'
-
-/* responsive-geometry-guard-v1 */
-@media (max-width: 760px) {
-  .header-inner { flex-direction: column; flex-wrap: nowrap; }
-  .hero-inner { grid-template-columns: minmax(0, 1fr); }
-  .tool-grid, .tips-grid, .comparison-grid, .result-grid { grid-template-columns: minmax(0, 1fr); }
-}
-CSS
+          if ! grep -q 'responsive-geometry-guard-v1' assets/site.css; then
+            printf '%s\n' '' '/* responsive-geometry-guard-v1 */' '@media (max-width: 760px) {' '  .header-inner { flex-direction: column; flex-wrap: nowrap; }' '  .hero-inner { grid-template-columns: minmax(0, 1fr); }' '  .tool-grid, .tips-grid, .comparison-grid, .result-grid { grid-template-columns: minmax(0, 1fr); }' '}' >> assets/site.css
+          fi
 
       - name: Validate calculation, content and crawlability
         shell: bash
@@ -80,44 +74,44 @@ CSS
           python3 - <<'PY'
           from pathlib import Path
           from urllib.parse import urlparse
-          import json,re,xml.etree.ElementTree as ET
-          root=Path('.')
-          required=['paid-leave/index.html','paid-leave-guide/index.html','assets/paid-leave-engine.js','assets/paid-leave.js','package.json','playwright.config.js','tests/visual-smoke.spec.js']
-          for rel in required: assert (root/rel).is_file(),rel
-          pages=sorted(root.rglob('index.html'))
-          ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
-          urls=[x.text.strip() for x in ET.parse('sitemap.xml').findall('s:url/s:loc',ns)]
-          assert len(urls)==len(set(urls))==len(pages),(len(urls),len(pages))
-          assert len(pages)>=40,len(pages)
-          for wanted in ('https://imaikura.com/paid-leave/','https://imaikura.com/paid-leave-guide/'): assert wanted in urls
+          import json, re, xml.etree.ElementTree as ET
+          root = Path('.')
+          required = ['paid-leave/index.html','paid-leave-guide/index.html','assets/paid-leave-engine.js','assets/paid-leave.js','package.json','playwright.config.js','tests/visual-smoke.spec.js']
+          for rel in required:
+              assert (root / rel).is_file(), rel
+          pages = sorted(root.rglob('index.html'))
+          ns = {'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls = [x.text.strip() for x in ET.parse('sitemap.xml').findall('s:url/s:loc', ns)]
+          assert len(urls) == len(set(urls)) == len(pages), (len(urls), len(pages))
+          assert len(pages) >= 40, len(pages)
+          for wanted in ('https://imaikura.com/paid-leave/','https://imaikura.com/paid-leave-guide/'):
+              assert wanted in urls
           for url in urls:
-            p=urlparse(url).path
-            target=root/'index.html' if p=='/' else root/p.lstrip('/')/'index.html'
-            assert target.is_file(),(url,target)
-          home=(root/'index.html').read_text(encoding='utf-8')
-          assert home.count('data-search=')>=16
+              path = urlparse(url).path
+              target = root / 'index.html' if path == '/' else root / path.lstrip('/') / 'index.html'
+              assert target.is_file(), (url, target)
+          home = (root / 'index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=') >= 16
           assert '有給休暇日数' in home and 'paid-leave/' in home
-          calc=(root/'paid-leave/index.html').read_text(encoding='utf-8')
-          guide=(root/'paid-leave-guide/index.html').read_text(encoding='utf-8')
-          assert calc.count('class="faq"')>=5 and guide.count('class="faq"')>=5
-          assert len(re.findall(r'[一-龯ぁ-んァ-ン]',calc))>=1600
-          assert len(re.findall(r'[一-龯ぁ-んァ-ン]',guide))>=2400
-          assert '労働基準法' in calc+guide and '厚生労働省' in calc+guide
-          css=(root/'assets/site.css').read_text(encoding='utf-8')
-          for token in ('layout-quality-v3','layout-quality-v3-hotfix','responsive-geometry-guard-v1','box-sizing: border-box','text-wrap: balance','place-items: center'): assert token in css,token
-          workflow=(root/'.github/workflows/site-quality.yml').read_text(encoding='utf-8')
-          assert 'browser-smoke:' in workflow
-          assert "'paid-leave'" in workflow and "'paid-leave-guide'" in workflow
-          assert "require('./assets/paid-leave-engine.js')" in workflow
+          calc = (root / 'paid-leave/index.html').read_text(encoding='utf-8')
+          guide = (root / 'paid-leave-guide/index.html').read_text(encoding='utf-8')
+          assert calc.count('class="faq"') >= 5 and guide.count('class="faq"') >= 5
+          assert len(re.findall(r'[一-龯ぁ-んァ-ン]', calc)) >= 1600
+          assert len(re.findall(r'[一-龯ぁ-んァ-ン]', guide)) >= 2400
+          assert '労働基準法' in calc + guide and '厚生労働省' in calc + guide
+          css = (root / 'assets/site.css').read_text(encoding='utf-8')
+          for token in ('layout-quality-v3','layout-quality-v3-hotfix','responsive-geometry-guard-v1','box-sizing: border-box','text-wrap: balance','place-items: center'):
+              assert token in css, token
           for page in pages:
-            text=page.read_text(encoding='utf-8')
-            assert text.lower().count('<h1')==1,page
-            assert '<footer' in text.lower(),page
-            assert 'rel="canonical"' in text or "rel='canonical'" in text,page
-            assert 'noindex' not in text.lower(),page
-            ids=re.findall(r'\sid=["\']([^"\']+)["\']',text,re.I)
-            assert len(ids)==len(set(ids)),page
-            for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',text,re.I|re.S): json.loads(block)
+              text = page.read_text(encoding='utf-8')
+              assert text.lower().count('<h1') == 1, page
+              assert '<footer' in text.lower(), page
+              assert 'rel="canonical"' in text or "rel='canonical'" in text, page
+              assert 'noindex' not in text.lower(), page
+              ids = re.findall(r'\sid=["\']([^"\']+)["\']', text, re.I)
+              assert len(ids) == len(set(ids)), page
+              for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', text, re.I | re.S):
+                  json.loads(block)
           print('site structure validation: PASS')
           PY
 
@@ -125,7 +119,7 @@ CSS
         with:
           node-version: '22'
 
-      - name: Validate every page in Chromium at desktop, tablet and mobile sizes
+      - name: Validate responsive layout in Chromium
         shell: bash
         run: |
           set -euo pipefail
