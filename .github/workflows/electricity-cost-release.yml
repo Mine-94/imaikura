@@ -1,0 +1,237 @@
+name: Build and verify electricity cost service
+
+on:
+  push:
+    branches: [feature/electricity-cost-20260906]
+    paths:
+      - '.github/workflows/electricity-cost-release.yml'
+      - '.maintenance/build-electricity-cost.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: imaikura-electricity-cost-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build electricity cost service
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check beautifulsoup4
+          python3 -m py_compile .maintenance/build-electricity-cost.py
+          python3 .maintenance/build-electricity-cost.py
+
+      - name: Validate calculation boundaries and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in assets/*.js; do node --check "$file"; done
+          node <<'JS'
+          const assert = require('assert');
+          const electricity = require('./assets/electricity-cost-engine.js');
+
+          let result = electricity.calculateApplianceCost({
+            watts: 1000,
+            quantity: 1,
+            hoursPerDay: 2,
+            daysPerMonth: 30,
+            unitRate: 31,
+            standbyWatts: 0,
+            standbyHoursPerDay: 0
+          });
+          assert.strictEqual(result.ok, true);
+          assert.strictEqual(result.monthlyKwh, 60);
+          assert.strictEqual(result.monthlyCost, 1860);
+          assert.strictEqual(result.annualCost, 22320);
+
+          result = electricity.calculateApplianceCost({
+            watts: 50,
+            quantity: 2,
+            hoursPerDay: 4,
+            daysPerMonth: 30,
+            unitRate: 30,
+            standbyWatts: 2,
+            standbyHoursPerDay: 20
+          });
+          assert.strictEqual(result.ok, true);
+          assert.strictEqual(result.runningKwh, 12);
+          assert.strictEqual(result.standbyKwh, 2.4);
+          assert.strictEqual(result.monthlyCost, 432);
+
+          result = electricity.calculateApplianceCost({watts:1000,quantity:1,hoursPerDay:10,daysPerMonth:30,unitRate:31,standbyWatts:1,standbyHoursPerDay:15});
+          assert.strictEqual(result.ok, false);
+
+          result = electricity.calculateBillEstimate({
+            usageKwh:350,basicCharge:1000,rateMode:'tiered',rate1:20,
+            threshold1:120,rate2:25,threshold2:300,rate3:30,
+            fuelAdjustment:-2,renewableLevy:4,otherAdjustment:-500
+          });
+          assert.strictEqual(result.ok, true);
+          assert.strictEqual(result.energyCharge, 8400);
+          assert.strictEqual(result.fuelCharge, -700);
+          assert.strictEqual(result.levyCharge, 1400);
+          assert.strictEqual(result.total, 9600);
+
+          result = electricity.calculateBillEstimate({
+            usageKwh:100,basicCharge:0,rateMode:'single',rate1:30,
+            fuelAdjustment:0,renewableLevy:0,otherAdjustment:-4000
+          });
+          assert.strictEqual(result.ok, true);
+          assert.strictEqual(result.subtotal, -1000);
+          assert.strictEqual(result.total, 0);
+
+          result = electricity.calculateBillEstimate({
+            usageKwh:350,basicCharge:1000,rateMode:'tiered',rate1:20,
+            threshold1:300,rate2:25,threshold2:120,rate3:30,
+            fuelAdjustment:0,renewableLevy:0,otherAdjustment:0
+          });
+          assert.strictEqual(result.ok, false);
+
+          result = electricity.calculateEffectiveRate({billAmount:9000,usageKwh:300});
+          assert.strictEqual(result.ok, true);
+          assert.strictEqual(result.effectiveRate, 30);
+          console.log('electricity cost boundary tests: PASS');
+          JS
+
+      - name: Validate content, SEO, sitemap and AdSense structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import html.parser
+          import json
+          import re
+          import xml.etree.ElementTree as ET
+
+          root=Path('.')
+          manifest=json.loads((root/'data/site-manifest.json').read_text(encoding='utf-8'))
+          calculators=manifest['calculators']
+          guides=manifest['guides']
+          utility=manifest['utility']
+          expected=1+len(calculators)+len(guides)+len(utility)
+          assert len(calculators)==17, len(calculators)
+          assert len(guides)==16, len(guides)
+          assert manifest['serviceQueue'][0]['slug']=='electricity-cost'
+          assert manifest['serviceQueue'][0]['score']>=90
+
+          required=[
+            'electricity-cost/index.html','electricity-cost-guide/index.html',
+            'assets/electricity-cost-engine.js','assets/electricity-cost.js',
+            'data/site-manifest.json','tests/visual-smoke.spec.js'
+          ]
+          for rel in required: assert (root/rel).is_file(), rel
+
+          ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[node.text.strip() for node in ET.parse('sitemap.xml').findall('s:url/s:loc',ns)]
+          pages=sorted(root.rglob('index.html'))
+          assert len(urls)==len(set(urls))==len(pages)==expected,(len(urls),len(pages),expected)
+          for wanted in ('https://imaikura.com/electricity-cost/','https://imaikura.com/electricity-cost-guide/'):
+            assert wanted in urls
+          for url in urls:
+            path=urlparse(url).path
+            target=root/'index.html' if path=='/' else root/path.lstrip('/')/'index.html'
+            assert target.is_file(),(url,target)
+
+          class Parser(html.parser.HTMLParser):
+            def __init__(self):
+              super().__init__(convert_charrefs=True)
+              self.h1=0; self.ids=[]; self.json=[]; self._json=False; self._buf=[]
+            def handle_starttag(self,tag,attrs):
+              values=dict(attrs)
+              if tag=='h1': self.h1+=1
+              if values.get('id'): self.ids.append(values['id'])
+              if tag=='script' and values.get('type')=='application/ld+json': self._json=True; self._buf=[]
+            def handle_endtag(self,tag):
+              if tag=='script' and self._json: self.json.append(''.join(self._buf)); self._json=False
+            def handle_data(self,data):
+              if self._json:self._buf.append(data)
+
+          for page in pages:
+            text=page.read_text(encoding='utf-8')
+            parser=Parser(); parser.feed(text)
+            assert parser.h1==1,page
+            assert len(parser.ids)==len(set(parser.ids)),page
+            assert '<footer' in text.lower(),page
+            assert 'noindex' not in text.lower(),page
+            for block in parser.json: json.loads(block)
+
+          calc=(root/'electricity-cost/index.html').read_text(encoding='utf-8')
+          guide=(root/'electricity-cost-guide/index.html').read_text(encoding='utf-8')
+          assert calc.count('class="faq"')>=7
+          assert guide.count('class="faq"')>=7
+          assert len(re.findall(r'[一-龯ぁ-んァ-ン]',calc))>=2600
+          assert len(re.findall(r'[一-龯ぁ-んァ-ン]',guide))>=3300
+          for phrase in ('燃料費調整','再エネ賦課金','いまいくら編集部','資源エネルギー庁'):
+            assert phrase in calc+guide,phrase
+          assert '31円は比較用の参考値' in calc
+          assert '特定の電力会社の単価を固定' in (root/'updates/index.html').read_text(encoding='utf-8')
+
+          home=(root/'index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=')==17
+          assert '電気代計算' in home and 'electricity-cost/' in home
+          assert '現在 17ツール・16ガイド公開中' in home
+          guide_hub=(root/'guides/index.html').read_text(encoding='utf-8')
+          assert '../electricity-cost-guide/' in guide_hub
+          feed_items=ET.parse('feed.xml').getroot().findall('./channel/item')
+          assert len(feed_items)==16,len(feed_items)
+          feed_links=[item.findtext('link') for item in feed_items]
+          assert len(feed_links)==len(set(feed_links))
+          assert 'https://imaikura.com/electricity-cost-guide/' in feed_links
+          assert 'ca-pub-8602848692420724' in calc
+          print('electricity content and SEO validation: PASS')
+          PY
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run responsive browser checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/imaikura-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:visual
+
+      - name: Upload responsive evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: electricity-cost-responsive-evidence
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Commit generated site files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name imaikura-maintenance-bot
+          git config user.email actions@users.noreply.github.com
+          rm -rf node_modules test-results
+          rm -f package-lock.json
+          git add index.html assets/site.css assets/electricity-cost-engine.js assets/electricity-cost.js electricity-cost/index.html electricity-cost-guide/index.html data/site-manifest.json guides/index.html site-map/index.html updates/index.html feed.xml sitemap.xml tests/visual-smoke.spec.js
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Add electricity cost calculator and guide'
+          git push origin HEAD:feature/electricity-cost-20260906
