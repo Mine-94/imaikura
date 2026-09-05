@@ -1,0 +1,96 @@
+name: Validate and promote unemployment quality upgrade
+
+on:
+  push:
+    branches: [release/unemployment-quality-20260905]
+    paths: [.github/workflows/promote-unemployment-quality.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: imaikura-promote-unemployment-quality
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Finish prepared builder when necessary
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f .release/quality-part-00 ]; then
+            python3 -m pip install --disable-pip-version-check beautifulsoup4
+            base64 --decode .release/quality-part-00 > /tmp/quality-builder.py.gz
+            gzip -t /tmp/quality-builder.py.gz
+            gunzip -c /tmp/quality-builder.py.gz > /tmp/quality-builder.py
+            python3 -m py_compile /tmp/quality-builder.py
+            python3 /tmp/quality-builder.py
+          fi
+
+      - name: Validate service, content and layout safeguards
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in assets/*.js; do node --check "$file"; done
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import json, re, xml.etree.ElementTree as ET
+
+          root=Path('.')
+          pages=sorted(root.rglob('index.html'))
+          assert len(pages)>=40, len(pages)
+          ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[x.text.strip() for x in ET.parse('sitemap.xml').findall('s:url/s:loc',ns)]
+          assert len(urls)==len(set(urls))==len(pages),(len(urls),len(pages))
+          for url in urls:
+            p=urlparse(url).path
+            f=root/'index.html' if p=='/' else root/p.lstrip('/')/'index.html'
+            assert f.is_file(),(url,f)
+          all_text='\n'.join(p.read_text(encoding='utf-8') for p in pages)
+          assert '失業' in all_text or '雇用保険' in all_text
+          assert '受給資格' in all_text
+          assert '所定給付日数' in all_text
+          assert '厚生労働省' in all_text or 'ハローワーク' in all_text
+          for page in pages:
+            text=page.read_text(encoding='utf-8')
+            assert text.lower().count('<h1')==1,page
+            assert '<footer' in text.lower(),page
+            assert 'rel="canonical"' in text or "rel='canonical'" in text,page
+            assert 'noindex' not in text.lower(),page
+            ids=re.findall(r'\sid=["\']([^"\']+)["\']',text,re.I)
+            assert len(ids)==len(set(ids)),page
+            for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',text,re.I|re.S):
+              json.loads(block)
+          css=(root/'assets/site.css').read_text(encoding='utf-8')
+          for token in ('box-sizing','min-width: 0','overflow-wrap','text-wrap'):
+            assert token in css,token
+          home=(root/'index.html').read_text(encoding='utf-8')
+          assert home.count('data-search=')>=16
+          assert '失業' in home or '雇用保険' in home
+          print('unemployment quality validation: PASS')
+          PY
+
+      - name: Clean release helpers and promote
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name imaikura-maintenance-bot
+          git config user.email actions@users.noreply.github.com
+          rm -f .github/workflows/unemployment-quality-release.yml
+          rm -f .github/workflows/promote-unemployment-quality.yml
+          rm -f .release/quality-part-00
+          rmdir .release 2>/dev/null || true
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m 'Complete unemployment service and visual quality upgrade'
+          fi
+          git push origin HEAD:release/unemployment-quality-20260905
+          git push origin HEAD:main
