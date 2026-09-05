@@ -23,12 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/site.css">
-  <script type="application/ld+json">{
-    "@context":"https://schema.org","@type":"WebApplication","name":"住民税非課税 判定シミュレーター 2026",
-    "url":"https://imaikura.com/resident-tax-exemption/","applicationCategory":"FinanceApplication",
-    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
-  }</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"住民税非課税 判定シミュレーター 2026","url":"https://imaikura.com/resident-tax-exemption/","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"dateModified":"2026-09-05","creator":{"@type":"Organization","name":"いまいくら編集部","url":"https://imaikura.com/about/"},"publisher":{"@type":"Organization","name":"いまいくら","url":"https://imaikura.com/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"住民税非課税の基準はどうやって決まりますか？","acceptedAnswer":{"@type":"Answer","text":"均等割は「35万円×家族の人数（本人・同一生計配偶者・扶養親族の合計）＋10万円＋21万円（扶養親族等がいる場合のみ加算）」以下、所得割は同じ人数に対して「35万円×人数＋42万円」以下（扶養親族等がいない単身者はどちらも45万円以下）で非課税になります。ここでいう金額は年収そのものではなく、給与所得控除後の所得金額です。"}},{"@type":"Question","name":"地域によって基準額が違うと聞きました。このツールはどの基準を使っていますか？","acceptedAnswer":{"@type":"Answer","text":"非課税基準額は物価等を踏まえた地域区分（1級地・2級地・3級地）ごとに係数（1.0／0.9／0.8）が掛けられ、市区町村によって金額が異なります。このツールは都市部の多くで採用されている1級地の基準で計算しているため、地方の市区町村では実際の非課税ラインがこれよりやや低くなる場合があります。正確な金額はお住まいの市区町村にご確認ください。"}},{"@type":"Question","name":"年収と所得は何が違いますか？","acceptedAnswer":{"@type":"Answer","text":"年収（収入）は税引き前に受け取る給与の総額です。そこから給与所得控除（2026年分は最低65万円）を差し引いた金額が「給与所得」で、住民税の非課税判定はこの所得金額をもとに行われます。"}},{"@type":"Question","name":"住民税非課税だと何が変わりますか？","acceptedAnswer":{"@type":"Answer","text":"国民健康保険料の軽減や高額療養費・高額介護サービス費の自己負担上限の引き下げ、保育料の軽減、各種給付金の対象になるなど、多くの制度で住民税非課税（または非課税世帯）であることが基準に使われます。適用条件は制度ごとに異なるため、詳細はお住まいの市区町村や各制度の窓口にご確認ください。"}}]}</script>
 <link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
 <meta property="og:site_name" content="いまいくら">
@@ -38,6 +33,10 @@
 <meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:url" content="https://imaikura.com/resident-tax-exemption/">
+<meta name="twitter:title" content="住民税非課税 判定シミュレーター 2026｜年収からすぐ確認｜いまいくら">
+<meta name="twitter:description" content="年収と家族構成を入力するだけで、住民税が非課税になるかその場で判定。均等割・所得割の非課税基準額も確認できます。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://imaikura.com/"},{"@type":"ListItem","position":2,"name":"住民税非課税 判定シミュレーター 2026","item":"https://imaikura.com/resident-tax-exemption/"}]}</script>
 </head>
 <body>
   <header class="site-header">
@@ -58,8 +57,10 @@
         <div class="trust-badge">入力するとすぐ結果が変わります</div>
       </div>
     </section>
+    <nav class="breadcrumbs container" aria-label="パンくずリスト"><a href="../">ホーム</a><span aria-hidden="true">›</span><span aria-current="page">住民税非課税判定</span></nav>
 
     <div class="container main">
+      <section class="content-section content-card page-review" aria-label="作成・確認情報"><p class="plain-copy"><b>作成・編集：</b><a href="../about/">いまいくら編集部</a>　<b>最終確認：</b>2026年9月5日　<b>結果の性質：</b>判定目安</p><p class="plain-copy">入力した所得・扶養条件による一般的な目安です。非課税限度額や独自加算は自治体によって異なるため、居住自治体の案内を優先します。</p></section>
       <div class="calculator-shell">
         <form class="panel form-panel" id="taxForm">
           <h2 class="panel-title">条件を入力</h2>
@@ -148,10 +149,11 @@
       </section>
     </div>
   
+<section class="content-section content-card related-guide"><h2>計算の前提を詳しく確認</h2><p class="plain-copy">入力欄の意味、計算式、適用条件、結果が実際とずれる理由は「住民税はいつから引かれる？」で確認できます。</p><p style="margin:12px 0 0"><a class="card-link" href="../resident-tax-guide/">住民税はいつから引かれる？を読む</a></p></section>
 <section class="content-section share-box" data-share-box aria-labelledby="share-title"><h2 id="share-title">このページを共有</h2><p>あとで見返すための保存や、同じ制度を調べている人への共有にご利用ください。</p><div class="share-actions"><button class="share-button primary" type="button" data-share="native">共有する</button><a class="share-button" href="#" target="_blank" rel="noopener" data-share="x">Xで共有</a><a class="share-button" href="#" target="_blank" rel="noopener" data-share="line">LINEで共有</a><button class="share-button" type="button" data-share="copy">URLをコピー</button></div><p class="share-status" data-share-status aria-live="polite"></p><a class="feed-link" href="../feed.xml">RSSで新しいガイドを受け取る</a></section>
 </main>
 
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は市区町村の案内をご確認ください。</div></div></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../guides/">制度ガイド</a><a href="../help/">使い方・FAQ</a><a href="../about/">運営・計算基準</a><a href="../contact/">お問い合わせ</a><a href="../updates/">更新履歴</a><a href="../site-map/">サイトマップ</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は市区町村の案内をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
   <script>
     const tax=window.ImaikuraTax, form=document.getElementById('taxForm');

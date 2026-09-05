@@ -148,3 +148,13 @@ details.faq p{padding:0 16px 16px;color:var(--muted);font-size:13px;margin:0}
 .share-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.share-button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:8px 14px;border:1px solid var(--line-strong);border-radius:9px;background:#fff;color:var(--blue-dark);font-size:12px;font-weight:800;cursor:pointer;text-decoration:none}.share-button:hover{border-color:var(--blue);background:#edf6fd}.share-button.primary{background:var(--blue);border-color:var(--blue);color:#fff}.share-button.primary:hover{background:var(--blue-dark)}
 .share-status{min-height:1.6em;margin-top:8px!important;color:#096c66!important;font-weight:700}.feed-link{display:inline-flex;align-items:center;margin-top:12px;font-size:12px;font-weight:800;color:var(--blue-dark)}
 @media(max-width:620px){.share-box{margin:24px 16px;padding:19px}.share-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.share-button{width:100%}}
+
+
+/* adsense-content-trust-20260905 */
+.breadcrumbs{display:flex;align-items:center;gap:8px;padding-top:14px;color:var(--muted);font-size:12px}.breadcrumbs a{color:var(--blue-dark);font-weight:700}
+.page-review{border-left:4px solid var(--blue);padding:18px 20px}.page-review p+p{margin-top:8px}
+.formula-box{display:grid;gap:6px;border:1px solid var(--line);border-radius:10px;background:var(--wash);padding:16px;margin-top:14px}.formula-box b{color:var(--navy);font-size:16px}.formula-box span{color:var(--muted);font-size:12px;line-height:1.75}
+.comparison-grid,.tips-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.comparison-grid>div,.tips-grid>div{border:1px solid var(--line);border-radius:10px;padding:17px;background:#fff}.comparison-grid h3,.tips-grid b{display:block;margin:0 0 7px;color:var(--navy);font-size:14px}.comparison-grid p,.comparison-grid li,.tips-grid p{font-size:12px;color:var(--muted);margin:0;line-height:1.75}.comparison-grid ul{margin:0;padding-left:1.2em}
+ul.check-list{display:grid;gap:8px;padding-left:1.25em}ul.check-list li{color:var(--muted);font-size:13px;line-height:1.75}
+.related-guide{max-width:1080px;margin-left:auto;margin-right:auto}
+@media(max-width:620px){.breadcrumbs{width:min(100% - 28px,1080px);overflow-x:auto;white-space:nowrap}.comparison-grid,.tips-grid{grid-template-columns:1fr}.page-review{padding:16px}}

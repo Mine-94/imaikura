@@ -22,12 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/site.css">
-  <script type="application/ld+json">{
-    "@context":"https://schema.org","@type":"WebApplication","name":"給与・年収の手取り計算 2026",
-    "url":"https://imaikura.com/salary-take-home/","applicationCategory":"FinanceApplication",
-    "operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"}
-  }</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"給与・年収の手取り計算 2026","url":"https://imaikura.com/salary-take-home/","applicationCategory":"FinanceApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"dateModified":"2026-09-05","creator":{"@type":"Organization","name":"いまいくら編集部","url":"https://imaikura.com/about/"},"publisher":{"@type":"Organization","name":"いまいくら","url":"https://imaikura.com/"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"給与明細と数百円〜数千円ずれるのはなぜですか？","acceptedAnswer":{"@type":"Answer","text":"実際の給与明細では、標準報酬月額の決定時期、会社独自の健康保険組合、通勤手当の課税・非課税、賞与の配分、住民税の前年所得、会社ごとの控除月と端数処理が影響します。本ツールは協会けんぽ加入者について2026年1月分から12月分までの保険料所属月を基準にした年間概算です。"}},{"@type":"Question","name":"「月給」には交通費を含めますか？","acceptedAnswer":{"@type":"Answer","text":"社会保険の標準報酬月額には通勤手当も含まれるため、総支給額に含めてください。所得税では非課税限度額内の通勤手当は課税されませんが、本ツールは入力負担を減らすため総支給額で概算します。"}},{"@type":"Question","name":"2026年の「子ども・子育て支援金」も入っていますか？","acceptedAnswer":{"@type":"Answer","text":"はい。給与は2026年4月分から支援金率0.23％を労使折半し、本人負担分を4月分から12月分まで反映します。年間賞与は6月と12月に均等支給される前提で、両方に支援金を反映します。"}},{"@type":"Question","name":"2026年中に40歳または65歳になる場合も正確ですか？","acceptedAnswer":{"@type":"Answer","text":"本ツールは入力した年齢区分が2026年を通じて続く前提で年間概算します。年の途中で介護保険の第2号被保険者になる、または外れる場合は月ごとの保険料が異なるため、給与明細をご確認ください。"}},{"@type":"Question","name":"年収500万円の手取りはいくらですか？","acceptedAnswer":{"@type":"Answer","text":"東京都、30歳、独身・扶養なし、協会けんぽ、賞与なし、前年も同じ年収として計算すると、2026年の年間手取りは約394万3,000円、月平均は約32万9,000円です。標準報酬月額、控除時期、前年所得、追加控除によって実際の金額は変わります。"}}]}</script>
 <link rel="alternate" type="application/rss+xml" title="いまいくら 更新フィード" href="https://imaikura.com/feed.xml">
 <meta property="og:site_name" content="いまいくら">
@@ -37,6 +32,10 @@
 <meta property="og:image:alt" content="いまいくら｜日本のお金・税金・仕事の無料計算ツール">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://imaikura.com/assets/og-default.png">
+<meta property="og:url" content="https://imaikura.com/salary-take-home/">
+<meta name="twitter:title" content="給与・年収の手取り計算 2026｜いまいくら">
+<meta name="twitter:description" content="月給と賞与から、税金・社会保険料を差し引いた手取りを計算。">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://imaikura.com/"},{"@type":"ListItem","position":2,"name":"給与・年収の手取り計算 2026","item":"https://imaikura.com/salary-take-home/"}]}</script>
 </head>
 <body>
   <header class="site-header">
@@ -57,8 +56,10 @@
         <div class="trust-badge">47都道府県の保険料率に対応</div>
       </div>
     </section>
+    <nav class="breadcrumbs container" aria-label="パンくずリスト"><a href="../">ホーム</a><span aria-hidden="true">›</span><span aria-current="page">給与・年収の手取り計算</span></nav>
 
     <div class="container main">
+      <section class="content-section content-card page-review" aria-label="作成・確認情報"><p class="plain-copy"><b>作成・編集：</b><a href="../about/">いまいくら編集部</a>　<b>最終確認：</b>2026年9月5日　<b>結果の性質：</b>概算</p><p class="plain-copy">協会けんぽの保険料率、給与所得税、住民税の一般的な条件を用います。実際の標準報酬月額、健康保険組合、勤務先の端数処理で差が出ます。</p></section>
       <div class="calculator-shell">
         <form class="panel form-panel" id="salaryForm">
           <h2 class="panel-title">条件を入力</h2>
@@ -213,10 +214,11 @@
       </section>
     </div>
   
+<section class="content-section content-card related-guide"><h2>計算の前提を詳しく確認</h2><p class="plain-copy">入力欄の意味、計算式、適用条件、結果が実際とずれる理由は「給与の所得税はどう決まる？」で確認できます。</p><p style="margin:12px 0 0"><a class="card-link" href="../income-tax-guide/">給与の所得税はどう決まる？を読む</a></p></section>
 <section class="content-section share-box" data-share-box aria-labelledby="share-title"><h2 id="share-title">このページを共有</h2><p>あとで見返すための保存や、同じ制度を調べている人への共有にご利用ください。</p><div class="share-actions"><button class="share-button primary" type="button" data-share="native">共有する</button><a class="share-button" href="#" target="_blank" rel="noopener" data-share="x">Xで共有</a><a class="share-button" href="#" target="_blank" rel="noopener" data-share="line">LINEで共有</a><button class="share-button" type="button" data-share="copy">URLをコピー</button></div><p class="share-status" data-share-status aria-live="polite"></p><a class="feed-link" href="../feed.xml">RSSで新しいガイドを受け取る</a></section>
 </main>
 
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../about/">運営・計算方針</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先・自治体の通知をご確認ください。</div></div></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="../"><span class="brand-mark">円</span><span>いまいくら</span></a><div><div class="footer-links"><a href="../guides/">制度ガイド</a><a href="../help/">使い方・FAQ</a><a href="../about/">運営・計算基準</a><a href="../contact/">お問い合わせ</a><a href="../updates/">更新履歴</a><a href="../site-map/">サイトマップ</a><a href="../privacy/">プライバシー</a><a href="../terms/">利用規約・免責</a></div><div>計算結果は概算です。確定額は勤務先・自治体の通知をご確認ください。</div></div></div></footer>
   <script src="../assets/tax-engine.js"></script>
   <script>
     const tax = window.ImaikuraTax;
