@@ -1,0 +1,60 @@
+name: Publish favicon and structured data fixes
+
+on:
+  push:
+    branches: [seo/schema-favicon-20260905]
+    paths: [.github/workflows/schema-favicon-release.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply favicon and schema patch
+        run: |
+          set -euo pipefail
+          python3 .release/patch-schema-favicon.py
+      - name: Validate patch
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,re
+          root=Path('.')
+          pages=list(root.rglob('index.html'))
+          assert len(pages)==38,len(pages)
+          assert (root/'assets/logo.svg').is_file()
+          assert (root/'assets/favicon.svg').is_file()
+          for p in pages:
+              text=p.read_text(encoding='utf-8')
+              assert 'rel="icon"' in text,p
+              for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',text,re.I|re.S):
+                  obj=json.loads(block)
+                  def walk(x):
+                      if isinstance(x,dict):
+                          typ=x.get('@type'); types=typ if isinstance(typ,list) else [typ]
+                          if 'Organization' in types: assert 'logo' in x,(p,x)
+                          if 'Article' in types: assert 'image' in x,(p,x)
+                          for v in x.values(): walk(v)
+                      elif isinstance(x,list):
+                          for v in x: walk(v)
+                  walk(obj)
+          assert '入力方法と結果の見方' in (root/'help/index.html').read_text(encoding='utf-8')
+          assert '制度更新の報告' in (root/'contact/index.html').read_text(encoding='utf-8')
+          print('favicon and schema validation: PASS')
+          PY
+      - name: Commit verified patch
+        run: |
+          set -euo pipefail
+          git config user.name imaikura-maintenance-bot
+          git config user.email actions@users.noreply.github.com
+          git rm .github/workflows/schema-favicon-release.yml .release/patch-schema-favicon.py
+          git add -A
+          git commit -m 'Add favicon and complete structured data images'
+          git push origin HEAD:seo/schema-favicon-20260905
