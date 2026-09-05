@@ -1,0 +1,151 @@
+name: Publish paid leave service and visual quality system
+
+on:
+  push:
+    branches: [release/unemployment-quality-20260905]
+    paths: [.github/workflows/paid-leave-visual-release.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: imaikura-paid-leave-visual-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Finish prior prepared release when present
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check beautifulsoup4
+          if [ -f .release/quality-part-00 ]; then
+            base64 --decode .release/quality-part-00 > /tmp/prior-builder.py.gz
+            gzip -t /tmp/prior-builder.py.gz
+            gunzip -c /tmp/prior-builder.py.gz > /tmp/prior-builder.py
+            python3 -m py_compile /tmp/prior-builder.py
+            python3 /tmp/prior-builder.py
+          fi
+
+      - name: Build paid leave service and quality safeguards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile .release/paid-leave-builder.py
+          python3 .release/paid-leave-builder.py
+
+      - name: Validate calculations and generated files
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in assets/*.js; do node --check "$file"; done
+          node <<'JS'
+          const assert = require('assert');
+          const paid = require('./assets/paid-leave-engine.js');
+          let r = paid.calculatePaidLeave({hireDate:'2024-04-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:5,weeklyHours:40,attendanceRate:95,daysTaken:4});
+          assert.strictEqual(r.ok,true);
+          assert.strictEqual(r.statutoryGrantDays,12);
+          assert.strictEqual(r.remainingDays,8);
+          assert.strictEqual(r.mandatoryFiveApplies,true);
+          assert.strictEqual(r.mandatoryFiveRemaining,1);
+          r = paid.calculatePaidLeave({hireDate:'2026-04-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:3,weeklyHours:18,attendanceRate:100,daysTaken:0});
+          assert.strictEqual(r.beforeFirstGrant,true);
+          assert.strictEqual(r.firstGrantDays,5);
+          assert.strictEqual(r.firstGrantDate,'2026-10-01');
+          r = paid.calculatePaidLeave({hireDate:'2025-01-01',referenceDate:'2026-09-05',scheduleMode:'weekly',weeklyDays:4,weeklyHours:32,attendanceRate:100,daysTaken:0});
+          assert.strictEqual(r.fullTimeEquivalent,true);
+          assert.strictEqual(r.statutoryGrantDays,11);
+          r = paid.calculatePaidLeave({hireDate:'2024-01-01',referenceDate:'2026-09-05',scheduleMode:'annual',annualDays:120,weeklyHours:15,attendanceRate:79.9,daysTaken:0});
+          assert.strictEqual(r.scheduleGroup,'2');
+          assert.strictEqual(r.eligibleByAttendance,false);
+          assert.strictEqual(r.statutoryGrantDays,0);
+          console.log('paid leave boundary tests: PASS');
+          JS
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.parse import urlparse
+          import ast, json, re, xml.etree.ElementTree as ET
+          root=Path('.')
+          required=['paid-leave/index.html','paid-leave-guide/index.html','assets/paid-leave-engine.js','assets/paid-leave.js','package.json','playwright.config.js','tests/visual-smoke.spec.js']
+          for rel in required: assert (root/rel).is_file(),rel
+          pages=sorted(root.rglob('index.html'))
+          ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[x.text.strip() for x in ET.parse('sitemap.xml').findall('s:url/s:loc',ns)]
+          assert len(urls)==len(set(urls))==len(pages),(len(urls),len(pages))
+          assert 'https://imaikura.com/paid-leave/' in urls
+          assert 'https://imaikura.com/paid-leave-guide/' in urls
+          for url in urls:
+            p=urlparse(url).path
+            target=root/'index.html' if p=='/' else root/p.lstrip('/')/'index.html'
+            assert target.is_file(),(url,target)
+          home=(root/'index.html').read_text(encoding='utf-8')
+          assert '有給休暇日数' in home and 'paid-leave/' in home
+          assert home.count('data-search=')>=16
+          guide=(root/'paid-leave-guide/index.html').read_text(encoding='utf-8')
+          calc=(root/'paid-leave/index.html').read_text(encoding='utf-8')
+          assert len(re.findall(r'[一-龯ぁ-んァ-ン]',guide))>=2500
+          assert len(re.findall(r'[一-龯ぁ-んァ-ン]',calc))>=1700
+          assert calc.count('class="faq"')>=5 and guide.count('class="faq"')>=5
+          assert '労働基準法' in calc and '厚生労働省' in guide
+          css=(root/'assets/site.css').read_text(encoding='utf-8')
+          for token in ('layout-quality-v3','box-sizing: border-box','overflow-wrap: break-word','text-wrap: balance','place-items: center'): assert token in css,token
+          workflow=(root/'.github/workflows/site-quality.yml').read_text(encoding='utf-8')
+          assert 'browser-smoke:' in workflow
+          assert "'paid-leave'" in workflow and "'paid-leave-guide'" in workflow
+          for path in pages:
+            text=path.read_text(encoding='utf-8')
+            assert text.lower().count('<h1')==1,path
+            assert '<footer' in text.lower(),path
+            ids=re.findall(r'\sid=["\']([^"\']+)["\']',text,re.I)
+            assert len(ids)==len(set(ids)),path
+            for block in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',text,re.I|re.S): json.loads(block)
+          print('static release validation: PASS')
+          PY
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run browser and responsive layout tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/imaikura-server.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
+          npm run test:visual
+
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paid-leave-responsive-screenshots
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Commit and promote verified release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name imaikura-maintenance-bot
+          git config user.email actions@users.noreply.github.com
+          rm -rf .release
+          rm -f .github/workflows/unemployment-quality-release.yml
+          rm -f .github/workflows/promote-unemployment-quality.yml
+          rm -f .github/workflows/paid-leave-visual-release.yml
+          rm -rf node_modules test-results
+          rm -f package-lock.json
+          git add -A
+          git commit -m 'Add paid leave calculator and continuous responsive QA'
+          git push origin HEAD:release/unemployment-quality-20260905
+          git push origin HEAD:main
